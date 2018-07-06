@@ -12,7 +12,7 @@ echo
 echo your input commit message is：%input%
 
 
-git commit -m %input%
+git commit -m "%input%"
 git push
 
 pause

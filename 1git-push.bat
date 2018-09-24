@@ -1,9 +1,7 @@
 ﻿echo off
 cd /d %~dp0
-
+git status
 git add .
-git pull
-
 :begin
 set input=
 set /p input=please input you commit message:

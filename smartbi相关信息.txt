@@ -1,0 +1,26 @@
+wifi 密码：jianjieshiyong
+xiangshougongzuo
+
+huanghuai1233
+Hh1989521
+
+已经在开发服务器装了mysql，大家可以连服务器mysql，
+ip: 192.168.1.27
+端口:6688
+用户名:admin
+密码:admin
+http://wiki.smartbi.com.cn/api/javaapiv7/
+http://wiki.smartbi.com.cn:18081/pages/viewpage.action?pageId=39945384
+
+hdfs
+192.168.1.26
+root	manager
+
+vnp账户：
+chen1938
+ac2004074
+
+
+root
+root1233
+

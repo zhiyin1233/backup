@@ -1,0 +1,647 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiziton.dataimport.waybill.dao.WaybillInfoMapper">
+  <resultMap id="BaseResultMap" type="com.yiziton.dataimport.waybill.bean.WaybillInfo">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="product_type" jdbcType="INTEGER" property="productType" />
+    <result column="service_type" jdbcType="INTEGER" property="serviceType" />
+    <result column="waybill_status" jdbcType="INTEGER" property="waybillStatus" />
+    <result column="check_type" jdbcType="INTEGER" property="checkType" />
+    <result column="check_code" jdbcType="VARCHAR" property="checkCode" />
+    <result column="check_bill_id" jdbcType="VARCHAR" property="checkBillId" />
+    <result column="check_status" jdbcType="INTEGER" property="checkStatus" />
+    <result column="check_method" jdbcType="INTEGER" property="checkMethod" />
+    <result column="channel_source" jdbcType="INTEGER" property="channelSource" />
+    <result column="payment_type" jdbcType="INTEGER" property="paymentType" />
+    <result column="settlement_type" jdbcType="INTEGER" property="settlementType" />
+    <result column="third_billing_id" jdbcType="VARCHAR" property="thirdBillingId" />
+    <result column="destination" jdbcType="VARCHAR" property="destination" />
+    <result column="total_volume" jdbcType="DOUBLE" property="totalVolume" />
+    <result column="total_install_items" jdbcType="INTEGER" property="totalInstallItems" />
+    <result column="total_packing_items" jdbcType="INTEGER" property="totalPackingItems" />
+    <result column="total_weight" jdbcType="DOUBLE" property="totalWeight" />
+    <result column="statement_value" jdbcType="DOUBLE" property="statementValue" />
+    <result column="open_bill_node" jdbcType="VARCHAR" property="openBillNode" />
+    <result column="open_bill_operator" jdbcType="VARCHAR" property="openBillOperator" />
+    <result column="arrival_node" jdbcType="VARCHAR" property="arrivalNode" />
+    <result column="open_bill_time" jdbcType="TIMESTAMP" property="openBillTime" />
+    <result column="sign_time" jdbcType="TIMESTAMP" property="signTime" />
+    <result column="sale_total_price" jdbcType="DOUBLE" property="saleTotalPrice" />
+    <result column="marble_blocks" jdbcType="INTEGER" property="marbleBlocks" />
+    <result column="salesman" jdbcType="VARCHAR" property="salesman" />
+    <result column="salesman_phone" jdbcType="VARCHAR" property="salesmanPhone" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_id" jdbcType="VARCHAR" property="updateId" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="waybill_type" jdbcType="INTEGER" property="waybillType" />
+    <result column="arrival_area" jdbcType="VARCHAR" property="arrivalArea" />
+    <result column="arrival_address" jdbcType="VARCHAR" property="arrivalAddress" />
+    <result column="pick_up_goods_phone" jdbcType="VARCHAR" property="pickUpGoodsPhone" />
+    <result column="pick_up_goods_password" jdbcType="VARCHAR" property="pickUpGoodsPassword" />
+    <result column="logistics_bill_id" jdbcType="VARCHAR" property="logisticsBillId" />
+    <result column="data_type" jdbcType="INTEGER" property="dataType" />
+    <result column="originating_node" jdbcType="VARCHAR" property="originatingNode" />
+    <result column="check_time" jdbcType="TIMESTAMP" property="checkTime" />
+    <result column="increment_service_type" jdbcType="INTEGER" property="incrementServiceType" />
+    <result column="increment_service_fee" jdbcType="DOUBLE" property="incrementServiceFee" />
+    <result column="goods_type" jdbcType="VARCHAR" property="goodsType" />
+    <result column="packing" jdbcType="VARCHAR" property="packing" />
+    <result column="picking_time" jdbcType="TIMESTAMP" property="pickingTime" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yiziton.dataimport.waybill.bean.WaybillInfo">
+    <result column="open_bill_remark" jdbcType="LONGVARCHAR" property="openBillRemark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, product_type, service_type, waybill_status, check_type, check_code, check_bill_id, 
+    check_status, check_method, channel_source, payment_type, settlement_type, third_billing_id, 
+    destination, total_volume, total_install_items, total_packing_items, total_weight, 
+    statement_value, open_bill_node, open_bill_operator, arrival_node, open_bill_time, 
+    sign_time, sale_total_price, marble_blocks, salesman, salesman_phone, status, create_time, 
+    update_id, update_time, waybill_type, arrival_area, arrival_address, pick_up_goods_phone, 
+    pick_up_goods_password, logistics_bill_id, data_type, originating_node, check_time, 
+    increment_service_type, increment_service_fee, goods_type, packing, picking_time
+  </sql>
+  <sql id="Blob_Column_List">
+    open_bill_remark
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from waybill_info
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from waybill_info
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yiziton.dataimport.waybill.bean.WaybillInfo">
+    insert into waybill_info (id, product_type, service_type, 
+      waybill_status, check_type, check_code, 
+      check_bill_id, check_status, check_method, 
+      channel_source, payment_type, settlement_type, 
+      third_billing_id, destination, total_volume, 
+      total_install_items, total_packing_items, total_weight, 
+      statement_value, open_bill_node, open_bill_operator, 
+      arrival_node, open_bill_time, sign_time, 
+      sale_total_price, marble_blocks, salesman, 
+      salesman_phone, status, create_time, 
+      update_id, update_time, waybill_type, 
+      arrival_area, arrival_address, pick_up_goods_phone, 
+      pick_up_goods_password, logistics_bill_id, data_type, 
+      originating_node, check_time, increment_service_type, 
+      increment_service_fee, goods_type, packing, 
+      picking_time, open_bill_remark)
+    values (#{id,jdbcType=VARCHAR}, #{productType,jdbcType=INTEGER}, #{serviceType,jdbcType=INTEGER}, 
+      #{waybillStatus,jdbcType=INTEGER}, #{checkType,jdbcType=INTEGER}, #{checkCode,jdbcType=VARCHAR}, 
+      #{checkBillId,jdbcType=VARCHAR}, #{checkStatus,jdbcType=INTEGER}, #{checkMethod,jdbcType=INTEGER}, 
+      #{channelSource,jdbcType=INTEGER}, #{paymentType,jdbcType=INTEGER}, #{settlementType,jdbcType=INTEGER}, 
+      #{thirdBillingId,jdbcType=VARCHAR}, #{destination,jdbcType=VARCHAR}, #{totalVolume,jdbcType=DOUBLE}, 
+      #{totalInstallItems,jdbcType=INTEGER}, #{totalPackingItems,jdbcType=INTEGER}, #{totalWeight,jdbcType=DOUBLE}, 
+      #{statementValue,jdbcType=DOUBLE}, #{openBillNode,jdbcType=VARCHAR}, #{openBillOperator,jdbcType=VARCHAR}, 
+      #{arrivalNode,jdbcType=VARCHAR}, #{openBillTime,jdbcType=TIMESTAMP}, #{signTime,jdbcType=TIMESTAMP}, 
+      #{saleTotalPrice,jdbcType=DOUBLE}, #{marbleBlocks,jdbcType=INTEGER}, #{salesman,jdbcType=VARCHAR}, 
+      #{salesmanPhone,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateId,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{waybillType,jdbcType=INTEGER}, 
+      #{arrivalArea,jdbcType=VARCHAR}, #{arrivalAddress,jdbcType=VARCHAR}, #{pickUpGoodsPhone,jdbcType=VARCHAR}, 
+      #{pickUpGoodsPassword,jdbcType=VARCHAR}, #{logisticsBillId,jdbcType=VARCHAR}, #{dataType,jdbcType=INTEGER}, 
+      #{originatingNode,jdbcType=VARCHAR}, #{checkTime,jdbcType=TIMESTAMP}, #{incrementServiceType,jdbcType=INTEGER}, 
+      #{incrementServiceFee,jdbcType=DOUBLE}, #{goodsType,jdbcType=VARCHAR}, #{packing,jdbcType=VARCHAR}, 
+      #{pickingTime,jdbcType=TIMESTAMP}, #{openBillRemark,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yiziton.dataimport.waybill.bean.WaybillInfo">
+    insert into waybill_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="productType != null">
+        product_type,
+      </if>
+      <if test="serviceType != null">
+        service_type,
+      </if>
+      <if test="waybillStatus != null">
+        waybill_status,
+      </if>
+      <if test="checkType != null">
+        check_type,
+      </if>
+      <if test="checkCode != null">
+        check_code,
+      </if>
+      <if test="checkBillId != null">
+        check_bill_id,
+      </if>
+      <if test="checkStatus != null">
+        check_status,
+      </if>
+      <if test="checkMethod != null">
+        check_method,
+      </if>
+      <if test="channelSource != null">
+        channel_source,
+      </if>
+      <if test="paymentType != null">
+        payment_type,
+      </if>
+      <if test="settlementType != null">
+        settlement_type,
+      </if>
+      <if test="thirdBillingId != null">
+        third_billing_id,
+      </if>
+      <if test="destination != null">
+        destination,
+      </if>
+      <if test="totalVolume != null">
+        total_volume,
+      </if>
+      <if test="totalInstallItems != null">
+        total_install_items,
+      </if>
+      <if test="totalPackingItems != null">
+        total_packing_items,
+      </if>
+      <if test="totalWeight != null">
+        total_weight,
+      </if>
+      <if test="statementValue != null">
+        statement_value,
+      </if>
+      <if test="openBillNode != null">
+        open_bill_node,
+      </if>
+      <if test="openBillOperator != null">
+        open_bill_operator,
+      </if>
+      <if test="arrivalNode != null">
+        arrival_node,
+      </if>
+      <if test="openBillTime != null">
+        open_bill_time,
+      </if>
+      <if test="signTime != null">
+        sign_time,
+      </if>
+      <if test="saleTotalPrice != null">
+        sale_total_price,
+      </if>
+      <if test="marbleBlocks != null">
+        marble_blocks,
+      </if>
+      <if test="salesman != null">
+        salesman,
+      </if>
+      <if test="salesmanPhone != null">
+        salesman_phone,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateId != null">
+        update_id,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="waybillType != null">
+        waybill_type,
+      </if>
+      <if test="arrivalArea != null">
+        arrival_area,
+      </if>
+      <if test="arrivalAddress != null">
+        arrival_address,
+      </if>
+      <if test="pickUpGoodsPhone != null">
+        pick_up_goods_phone,
+      </if>
+      <if test="pickUpGoodsPassword != null">
+        pick_up_goods_password,
+      </if>
+      <if test="logisticsBillId != null">
+        logistics_bill_id,
+      </if>
+      <if test="dataType != null">
+        data_type,
+      </if>
+      <if test="originatingNode != null">
+        originating_node,
+      </if>
+      <if test="checkTime != null">
+        check_time,
+      </if>
+      <if test="incrementServiceType != null">
+        increment_service_type,
+      </if>
+      <if test="incrementServiceFee != null">
+        increment_service_fee,
+      </if>
+      <if test="goodsType != null">
+        goods_type,
+      </if>
+      <if test="packing != null">
+        packing,
+      </if>
+      <if test="pickingTime != null">
+        picking_time,
+      </if>
+      <if test="openBillRemark != null">
+        open_bill_remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="productType != null">
+        #{productType,jdbcType=INTEGER},
+      </if>
+      <if test="serviceType != null">
+        #{serviceType,jdbcType=INTEGER},
+      </if>
+      <if test="waybillStatus != null">
+        #{waybillStatus,jdbcType=INTEGER},
+      </if>
+      <if test="checkType != null">
+        #{checkType,jdbcType=INTEGER},
+      </if>
+      <if test="checkCode != null">
+        #{checkCode,jdbcType=VARCHAR},
+      </if>
+      <if test="checkBillId != null">
+        #{checkBillId,jdbcType=VARCHAR},
+      </if>
+      <if test="checkStatus != null">
+        #{checkStatus,jdbcType=INTEGER},
+      </if>
+      <if test="checkMethod != null">
+        #{checkMethod,jdbcType=INTEGER},
+      </if>
+      <if test="channelSource != null">
+        #{channelSource,jdbcType=INTEGER},
+      </if>
+      <if test="paymentType != null">
+        #{paymentType,jdbcType=INTEGER},
+      </if>
+      <if test="settlementType != null">
+        #{settlementType,jdbcType=INTEGER},
+      </if>
+      <if test="thirdBillingId != null">
+        #{thirdBillingId,jdbcType=VARCHAR},
+      </if>
+      <if test="destination != null">
+        #{destination,jdbcType=VARCHAR},
+      </if>
+      <if test="totalVolume != null">
+        #{totalVolume,jdbcType=DOUBLE},
+      </if>
+      <if test="totalInstallItems != null">
+        #{totalInstallItems,jdbcType=INTEGER},
+      </if>
+      <if test="totalPackingItems != null">
+        #{totalPackingItems,jdbcType=INTEGER},
+      </if>
+      <if test="totalWeight != null">
+        #{totalWeight,jdbcType=DOUBLE},
+      </if>
+      <if test="statementValue != null">
+        #{statementValue,jdbcType=DOUBLE},
+      </if>
+      <if test="openBillNode != null">
+        #{openBillNode,jdbcType=VARCHAR},
+      </if>
+      <if test="openBillOperator != null">
+        #{openBillOperator,jdbcType=VARCHAR},
+      </if>
+      <if test="arrivalNode != null">
+        #{arrivalNode,jdbcType=VARCHAR},
+      </if>
+      <if test="openBillTime != null">
+        #{openBillTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="signTime != null">
+        #{signTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="saleTotalPrice != null">
+        #{saleTotalPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="marbleBlocks != null">
+        #{marbleBlocks,jdbcType=INTEGER},
+      </if>
+      <if test="salesman != null">
+        #{salesman,jdbcType=VARCHAR},
+      </if>
+      <if test="salesmanPhone != null">
+        #{salesmanPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateId != null">
+        #{updateId,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="waybillType != null">
+        #{waybillType,jdbcType=INTEGER},
+      </if>
+      <if test="arrivalArea != null">
+        #{arrivalArea,jdbcType=VARCHAR},
+      </if>
+      <if test="arrivalAddress != null">
+        #{arrivalAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="pickUpGoodsPhone != null">
+        #{pickUpGoodsPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="pickUpGoodsPassword != null">
+        #{pickUpGoodsPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="logisticsBillId != null">
+        #{logisticsBillId,jdbcType=VARCHAR},
+      </if>
+      <if test="dataType != null">
+        #{dataType,jdbcType=INTEGER},
+      </if>
+      <if test="originatingNode != null">
+        #{originatingNode,jdbcType=VARCHAR},
+      </if>
+      <if test="checkTime != null">
+        #{checkTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="incrementServiceType != null">
+        #{incrementServiceType,jdbcType=INTEGER},
+      </if>
+      <if test="incrementServiceFee != null">
+        #{incrementServiceFee,jdbcType=DOUBLE},
+      </if>
+      <if test="goodsType != null">
+        #{goodsType,jdbcType=VARCHAR},
+      </if>
+      <if test="packing != null">
+        #{packing,jdbcType=VARCHAR},
+      </if>
+      <if test="pickingTime != null">
+        #{pickingTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="openBillRemark != null">
+        #{openBillRemark,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yiziton.dataimport.waybill.bean.WaybillInfo">
+    update waybill_info
+    <set>
+      <if test="productType != null">
+        product_type = #{productType,jdbcType=INTEGER},
+      </if>
+      <if test="serviceType != null">
+        service_type = #{serviceType,jdbcType=INTEGER},
+      </if>
+      <if test="waybillStatus != null">
+        waybill_status = #{waybillStatus,jdbcType=INTEGER},
+      </if>
+      <if test="checkType != null">
+        check_type = #{checkType,jdbcType=INTEGER},
+      </if>
+      <if test="checkCode != null">
+        check_code = #{checkCode,jdbcType=VARCHAR},
+      </if>
+      <if test="checkBillId != null">
+        check_bill_id = #{checkBillId,jdbcType=VARCHAR},
+      </if>
+      <if test="checkStatus != null">
+        check_status = #{checkStatus,jdbcType=INTEGER},
+      </if>
+      <if test="checkMethod != null">
+        check_method = #{checkMethod,jdbcType=INTEGER},
+      </if>
+      <if test="channelSource != null">
+        channel_source = #{channelSource,jdbcType=INTEGER},
+      </if>
+      <if test="paymentType != null">
+        payment_type = #{paymentType,jdbcType=INTEGER},
+      </if>
+      <if test="settlementType != null">
+        settlement_type = #{settlementType,jdbcType=INTEGER},
+      </if>
+      <if test="thirdBillingId != null">
+        third_billing_id = #{thirdBillingId,jdbcType=VARCHAR},
+      </if>
+      <if test="destination != null">
+        destination = #{destination,jdbcType=VARCHAR},
+      </if>
+      <if test="totalVolume != null">
+        total_volume = #{totalVolume,jdbcType=DOUBLE},
+      </if>
+      <if test="totalInstallItems != null">
+        total_install_items = #{totalInstallItems,jdbcType=INTEGER},
+      </if>
+      <if test="totalPackingItems != null">
+        total_packing_items = #{totalPackingItems,jdbcType=INTEGER},
+      </if>
+      <if test="totalWeight != null">
+        total_weight = #{totalWeight,jdbcType=DOUBLE},
+      </if>
+      <if test="statementValue != null">
+        statement_value = #{statementValue,jdbcType=DOUBLE},
+      </if>
+      <if test="openBillNode != null">
+        open_bill_node = #{openBillNode,jdbcType=VARCHAR},
+      </if>
+      <if test="openBillOperator != null">
+        open_bill_operator = #{openBillOperator,jdbcType=VARCHAR},
+      </if>
+      <if test="arrivalNode != null">
+        arrival_node = #{arrivalNode,jdbcType=VARCHAR},
+      </if>
+      <if test="openBillTime != null">
+        open_bill_time = #{openBillTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="signTime != null">
+        sign_time = #{signTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="saleTotalPrice != null">
+        sale_total_price = #{saleTotalPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="marbleBlocks != null">
+        marble_blocks = #{marbleBlocks,jdbcType=INTEGER},
+      </if>
+      <if test="salesman != null">
+        salesman = #{salesman,jdbcType=VARCHAR},
+      </if>
+      <if test="salesmanPhone != null">
+        salesman_phone = #{salesmanPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateId != null">
+        update_id = #{updateId,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="waybillType != null">
+        waybill_type = #{waybillType,jdbcType=INTEGER},
+      </if>
+      <if test="arrivalArea != null">
+        arrival_area = #{arrivalArea,jdbcType=VARCHAR},
+      </if>
+      <if test="arrivalAddress != null">
+        arrival_address = #{arrivalAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="pickUpGoodsPhone != null">
+        pick_up_goods_phone = #{pickUpGoodsPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="pickUpGoodsPassword != null">
+        pick_up_goods_password = #{pickUpGoodsPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="logisticsBillId != null">
+        logistics_bill_id = #{logisticsBillId,jdbcType=VARCHAR},
+      </if>
+      <if test="dataType != null">
+        data_type = #{dataType,jdbcType=INTEGER},
+      </if>
+      <if test="originatingNode != null">
+        originating_node = #{originatingNode,jdbcType=VARCHAR},
+      </if>
+      <if test="checkTime != null">
+        check_time = #{checkTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="incrementServiceType != null">
+        increment_service_type = #{incrementServiceType,jdbcType=INTEGER},
+      </if>
+      <if test="incrementServiceFee != null">
+        increment_service_fee = #{incrementServiceFee,jdbcType=DOUBLE},
+      </if>
+      <if test="goodsType != null">
+        goods_type = #{goodsType,jdbcType=VARCHAR},
+      </if>
+      <if test="packing != null">
+        packing = #{packing,jdbcType=VARCHAR},
+      </if>
+      <if test="pickingTime != null">
+        picking_time = #{pickingTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="openBillRemark != null">
+        open_bill_remark = #{openBillRemark,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yiziton.dataimport.waybill.bean.WaybillInfo">
+    update waybill_info
+    set product_type = #{productType,jdbcType=INTEGER},
+      service_type = #{serviceType,jdbcType=INTEGER},
+      waybill_status = #{waybillStatus,jdbcType=INTEGER},
+      check_type = #{checkType,jdbcType=INTEGER},
+      check_code = #{checkCode,jdbcType=VARCHAR},
+      check_bill_id = #{checkBillId,jdbcType=VARCHAR},
+      check_status = #{checkStatus,jdbcType=INTEGER},
+      check_method = #{checkMethod,jdbcType=INTEGER},
+      channel_source = #{channelSource,jdbcType=INTEGER},
+      payment_type = #{paymentType,jdbcType=INTEGER},
+      settlement_type = #{settlementType,jdbcType=INTEGER},
+      third_billing_id = #{thirdBillingId,jdbcType=VARCHAR},
+      destination = #{destination,jdbcType=VARCHAR},
+      total_volume = #{totalVolume,jdbcType=DOUBLE},
+      total_install_items = #{totalInstallItems,jdbcType=INTEGER},
+      total_packing_items = #{totalPackingItems,jdbcType=INTEGER},
+      total_weight = #{totalWeight,jdbcType=DOUBLE},
+      statement_value = #{statementValue,jdbcType=DOUBLE},
+      open_bill_node = #{openBillNode,jdbcType=VARCHAR},
+      open_bill_operator = #{openBillOperator,jdbcType=VARCHAR},
+      arrival_node = #{arrivalNode,jdbcType=VARCHAR},
+      open_bill_time = #{openBillTime,jdbcType=TIMESTAMP},
+      sign_time = #{signTime,jdbcType=TIMESTAMP},
+      sale_total_price = #{saleTotalPrice,jdbcType=DOUBLE},
+      marble_blocks = #{marbleBlocks,jdbcType=INTEGER},
+      salesman = #{salesman,jdbcType=VARCHAR},
+      salesman_phone = #{salesmanPhone,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_id = #{updateId,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      waybill_type = #{waybillType,jdbcType=INTEGER},
+      arrival_area = #{arrivalArea,jdbcType=VARCHAR},
+      arrival_address = #{arrivalAddress,jdbcType=VARCHAR},
+      pick_up_goods_phone = #{pickUpGoodsPhone,jdbcType=VARCHAR},
+      pick_up_goods_password = #{pickUpGoodsPassword,jdbcType=VARCHAR},
+      logistics_bill_id = #{logisticsBillId,jdbcType=VARCHAR},
+      data_type = #{dataType,jdbcType=INTEGER},
+      originating_node = #{originatingNode,jdbcType=VARCHAR},
+      check_time = #{checkTime,jdbcType=TIMESTAMP},
+      increment_service_type = #{incrementServiceType,jdbcType=INTEGER},
+      increment_service_fee = #{incrementServiceFee,jdbcType=DOUBLE},
+      goods_type = #{goodsType,jdbcType=VARCHAR},
+      packing = #{packing,jdbcType=VARCHAR},
+      picking_time = #{pickingTime,jdbcType=TIMESTAMP},
+      open_bill_remark = #{openBillRemark,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yiziton.dataimport.waybill.bean.WaybillInfo">
+    update waybill_info
+    set product_type = #{productType,jdbcType=INTEGER},
+      service_type = #{serviceType,jdbcType=INTEGER},
+      waybill_status = #{waybillStatus,jdbcType=INTEGER},
+      check_type = #{checkType,jdbcType=INTEGER},
+      check_code = #{checkCode,jdbcType=VARCHAR},
+      check_bill_id = #{checkBillId,jdbcType=VARCHAR},
+      check_status = #{checkStatus,jdbcType=INTEGER},
+      check_method = #{checkMethod,jdbcType=INTEGER},
+      channel_source = #{channelSource,jdbcType=INTEGER},
+      payment_type = #{paymentType,jdbcType=INTEGER},
+      settlement_type = #{settlementType,jdbcType=INTEGER},
+      third_billing_id = #{thirdBillingId,jdbcType=VARCHAR},
+      destination = #{destination,jdbcType=VARCHAR},
+      total_volume = #{totalVolume,jdbcType=DOUBLE},
+      total_install_items = #{totalInstallItems,jdbcType=INTEGER},
+      total_packing_items = #{totalPackingItems,jdbcType=INTEGER},
+      total_weight = #{totalWeight,jdbcType=DOUBLE},
+      statement_value = #{statementValue,jdbcType=DOUBLE},
+      open_bill_node = #{openBillNode,jdbcType=VARCHAR},
+      open_bill_operator = #{openBillOperator,jdbcType=VARCHAR},
+      arrival_node = #{arrivalNode,jdbcType=VARCHAR},
+      open_bill_time = #{openBillTime,jdbcType=TIMESTAMP},
+      sign_time = #{signTime,jdbcType=TIMESTAMP},
+      sale_total_price = #{saleTotalPrice,jdbcType=DOUBLE},
+      marble_blocks = #{marbleBlocks,jdbcType=INTEGER},
+      salesman = #{salesman,jdbcType=VARCHAR},
+      salesman_phone = #{salesmanPhone,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_id = #{updateId,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      waybill_type = #{waybillType,jdbcType=INTEGER},
+      arrival_area = #{arrivalArea,jdbcType=VARCHAR},
+      arrival_address = #{arrivalAddress,jdbcType=VARCHAR},
+      pick_up_goods_phone = #{pickUpGoodsPhone,jdbcType=VARCHAR},
+      pick_up_goods_password = #{pickUpGoodsPassword,jdbcType=VARCHAR},
+      logistics_bill_id = #{logisticsBillId,jdbcType=VARCHAR},
+      data_type = #{dataType,jdbcType=INTEGER},
+      originating_node = #{originatingNode,jdbcType=VARCHAR},
+      open_bill_remark = #{openBillRemark,jdbcType=VARCHAR},
+      check_time = #{checkTime,jdbcType=TIMESTAMP},
+      increment_service_type = #{incrementServiceType,jdbcType=INTEGER},
+      increment_service_fee = #{incrementServiceFee,jdbcType=DOUBLE},
+      goods_type = #{goodsType,jdbcType=VARCHAR},
+      packing = #{packing,jdbcType=VARCHAR},
+      picking_time = #{pickingTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

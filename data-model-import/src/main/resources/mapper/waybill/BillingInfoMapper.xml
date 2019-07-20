@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiziton.dataimport.waybill.dao.BillingInfoMapper">
+  <resultMap id="BaseResultMap" type="com.yiziton.dataimport.waybill.bean.BillingInfo">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="waybill_id" jdbcType="VARCHAR" property="waybillId" />
+    <result column="billing_object" jdbcType="INTEGER" property="billingObject" />
+    <result column="billing_name" jdbcType="VARCHAR" property="billingName" />
+    <result column="billing_phone" jdbcType="VARCHAR" property="billingPhone" />
+    <result column="billing_type" jdbcType="INTEGER" property="billingType" />
+    <result column="total_price" jdbcType="DOUBLE" property="totalPrice" />
+    <result column="transaction_name" jdbcType="VARCHAR" property="transactionName" />
+    <result column="billing_time" jdbcType="TIMESTAMP" property="billingTime" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="sent_time" jdbcType="TIMESTAMP" property="sentTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="related_bill_id" jdbcType="VARCHAR" property="relatedBillId" />
+    <result column="data_type" jdbcType="INTEGER" property="dataType" />
+    <result column="accounting" jdbcType="INTEGER" property="accounting" />
+    <result column="settlement_type" jdbcType="INTEGER" property="settlementType" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, waybill_id, billing_object, billing_name, billing_phone, billing_type, total_price, 
+    transaction_name, billing_time, status, sent_time, create_time, update_time, related_bill_id, 
+    data_type, accounting, settlement_type
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from billing_info
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from billing_info
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yiziton.dataimport.waybill.bean.BillingInfo">
+    insert into billing_info (id, waybill_id, billing_object, 
+      billing_name, billing_phone, billing_type, 
+      total_price, transaction_name, billing_time, 
+      status, sent_time, create_time, 
+      update_time, related_bill_id, data_type, 
+      accounting, settlement_type)
+    values (#{id,jdbcType=VARCHAR}, #{waybillId,jdbcType=VARCHAR}, #{billingObject,jdbcType=INTEGER}, 
+      #{billingName,jdbcType=VARCHAR}, #{billingPhone,jdbcType=VARCHAR}, #{billingType,jdbcType=INTEGER}, 
+      #{totalPrice,jdbcType=DOUBLE}, #{transactionName,jdbcType=VARCHAR}, #{billingTime,jdbcType=TIMESTAMP}, 
+      #{status,jdbcType=INTEGER}, #{sentTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{relatedBillId,jdbcType=VARCHAR}, #{dataType,jdbcType=INTEGER}, 
+      #{accounting,jdbcType=INTEGER}, #{settlementType,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yiziton.dataimport.waybill.bean.BillingInfo">
+    insert into billing_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="waybillId != null">
+        waybill_id,
+      </if>
+      <if test="billingObject != null">
+        billing_object,
+      </if>
+      <if test="billingName != null">
+        billing_name,
+      </if>
+      <if test="billingPhone != null">
+        billing_phone,
+      </if>
+      <if test="billingType != null">
+        billing_type,
+      </if>
+      <if test="totalPrice != null">
+        total_price,
+      </if>
+      <if test="transactionName != null">
+        transaction_name,
+      </if>
+      <if test="billingTime != null">
+        billing_time,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="sentTime != null">
+        sent_time,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="relatedBillId != null">
+        related_bill_id,
+      </if>
+      <if test="dataType != null">
+        data_type,
+      </if>
+      <if test="accounting != null">
+        accounting,
+      </if>
+      <if test="settlementType != null">
+        settlement_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="waybillId != null">
+        #{waybillId,jdbcType=VARCHAR},
+      </if>
+      <if test="billingObject != null">
+        #{billingObject,jdbcType=INTEGER},
+      </if>
+      <if test="billingName != null">
+        #{billingName,jdbcType=VARCHAR},
+      </if>
+      <if test="billingPhone != null">
+        #{billingPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="billingType != null">
+        #{billingType,jdbcType=INTEGER},
+      </if>
+      <if test="totalPrice != null">
+        #{totalPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="transactionName != null">
+        #{transactionName,jdbcType=VARCHAR},
+      </if>
+      <if test="billingTime != null">
+        #{billingTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="sentTime != null">
+        #{sentTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="relatedBillId != null">
+        #{relatedBillId,jdbcType=VARCHAR},
+      </if>
+      <if test="dataType != null">
+        #{dataType,jdbcType=INTEGER},
+      </if>
+      <if test="accounting != null">
+        #{accounting,jdbcType=INTEGER},
+      </if>
+      <if test="settlementType != null">
+        #{settlementType,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yiziton.dataimport.waybill.bean.BillingInfo">
+    update billing_info
+    <set>
+      <if test="waybillId != null">
+        waybill_id = #{waybillId,jdbcType=VARCHAR},
+      </if>
+      <if test="billingObject != null">
+        billing_object = #{billingObject,jdbcType=INTEGER},
+      </if>
+      <if test="billingName != null">
+        billing_name = #{billingName,jdbcType=VARCHAR},
+      </if>
+      <if test="billingPhone != null">
+        billing_phone = #{billingPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="billingType != null">
+        billing_type = #{billingType,jdbcType=INTEGER},
+      </if>
+      <if test="totalPrice != null">
+        total_price = #{totalPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="transactionName != null">
+        transaction_name = #{transactionName,jdbcType=VARCHAR},
+      </if>
+      <if test="billingTime != null">
+        billing_time = #{billingTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="sentTime != null">
+        sent_time = #{sentTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="relatedBillId != null">
+        related_bill_id = #{relatedBillId,jdbcType=VARCHAR},
+      </if>
+      <if test="dataType != null">
+        data_type = #{dataType,jdbcType=INTEGER},
+      </if>
+      <if test="accounting != null">
+        accounting = #{accounting,jdbcType=INTEGER},
+      </if>
+      <if test="settlementType != null">
+        settlement_type = #{settlementType,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yiziton.dataimport.waybill.bean.BillingInfo">
+    update billing_info
+    set waybill_id = #{waybillId,jdbcType=VARCHAR},
+      billing_object = #{billingObject,jdbcType=INTEGER},
+      billing_name = #{billingName,jdbcType=VARCHAR},
+      billing_phone = #{billingPhone,jdbcType=VARCHAR},
+      billing_type = #{billingType,jdbcType=INTEGER},
+      total_price = #{totalPrice,jdbcType=DOUBLE},
+      transaction_name = #{transactionName,jdbcType=VARCHAR},
+      billing_time = #{billingTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=INTEGER},
+      sent_time = #{sentTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      related_bill_id = #{relatedBillId,jdbcType=VARCHAR},
+      data_type = #{dataType,jdbcType=INTEGER},
+      accounting = #{accounting,jdbcType=INTEGER},
+      settlement_type = #{settlementType,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

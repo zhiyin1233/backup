@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiziton.dataweb.waybill.dao.OrganizeMapper">
+  <resultMap id="BaseResultMap" type="com.yiziton.dataweb.salesindex.pojo.OrganizeDO">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="parent_code" jdbcType="VARCHAR" property="parent_code" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="level" jdbcType="INTEGER" property="level" />
+    <result column="external" jdbcType="BIT" property="external" />
+    <result column="external_type" jdbcType="INTEGER" property="external_type" />
+    <result column="external_type_name" jdbcType="VARCHAR" property="external_type_name" />
+    <result column="area_code" jdbcType="VARCHAR" property="area_code" />
+    <result column="address_detailed" jdbcType="VARCHAR" property="address_detailed" />
+    <result column="address_complete" jdbcType="VARCHAR" property="address_complete" />
+    <result column="lessee_code" jdbcType="VARCHAR" property="lessee_code" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="create_time" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="update_time" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, code, name, parent_code, sort, level, external, external_type, external_type_name, 
+    area_code, address_detailed, address_complete, lessee_code, status, create_time, 
+    update_time
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from organize
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from organize
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+
+  <insert id="insert" parameterType="com.yiziton.dataweb.salesindex.pojo.OrganizeDO">
+    insert into organize (id, code, name, 
+      parent_code, sort, level, 
+      external, external_type, external_type_name, 
+      area_code, address_detailed, address_complete, 
+      lessee_code, status, create_time, 
+      update_time)
+    values (#{id,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{parent_code,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER}, #{level,jdbcType=INTEGER}, 
+      #{external,jdbcType=BIT}, #{external_type,jdbcType=INTEGER}, #{external_type_name,jdbcType=VARCHAR}, 
+      #{area_code,jdbcType=VARCHAR}, #{address_detailed,jdbcType=VARCHAR}, #{address_complete,jdbcType=VARCHAR}, 
+      #{lessee_code,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{create_time,jdbcType=TIMESTAMP}, 
+      #{update_time,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yiziton.dataweb.salesindex.pojo.OrganizeDO">
+    insert into organize
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="code != null">
+        code,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="parent_code != null">
+        parent_code,
+      </if>
+      <if test="sort != null">
+        sort,
+      </if>
+      <if test="level != null">
+        level,
+      </if>
+      <if test="external != null">
+        external,
+      </if>
+      <if test="external_type != null">
+        external_type,
+      </if>
+      <if test="external_type_name != null">
+        external_type_name,
+      </if>
+      <if test="area_code != null">
+        area_code,
+      </if>
+      <if test="address_detailed != null">
+        address_detailed,
+      </if>
+      <if test="address_complete != null">
+        address_complete,
+      </if>
+      <if test="lessee_code != null">
+        lessee_code,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="create_time != null">
+        create_time,
+      </if>
+      <if test="update_time != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="parent_code != null">
+        #{parent_code,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="level != null">
+        #{level,jdbcType=INTEGER},
+      </if>
+      <if test="external != null">
+        #{external,jdbcType=BIT},
+      </if>
+      <if test="external_type != null">
+        #{external_type,jdbcType=INTEGER},
+      </if>
+      <if test="external_type_name != null">
+        #{external_type_name,jdbcType=VARCHAR},
+      </if>
+      <if test="area_code != null">
+        #{area_code,jdbcType=VARCHAR},
+      </if>
+      <if test="address_detailed != null">
+        #{address_detailed,jdbcType=VARCHAR},
+      </if>
+      <if test="address_complete != null">
+        #{address_complete,jdbcType=VARCHAR},
+      </if>
+      <if test="lessee_code != null">
+        #{lessee_code,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="create_time != null">
+        #{create_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="update_time != null">
+        #{update_time,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.yiziton.dataweb.salesindex.pojo.OrganizeDO">
+    update organize
+    <set>
+      <if test="code != null">
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="parent_code != null">
+        parent_code = #{parent_code,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="level != null">
+        level = #{level,jdbcType=INTEGER},
+      </if>
+      <if test="external != null">
+        external = #{external,jdbcType=BIT},
+      </if>
+      <if test="external_type != null">
+        external_type = #{external_type,jdbcType=INTEGER},
+      </if>
+      <if test="external_type_name != null">
+        external_type_name = #{external_type_name,jdbcType=VARCHAR},
+      </if>
+      <if test="area_code != null">
+        area_code = #{area_code,jdbcType=VARCHAR},
+      </if>
+      <if test="address_detailed != null">
+        address_detailed = #{address_detailed,jdbcType=VARCHAR},
+      </if>
+      <if test="address_complete != null">
+        address_complete = #{address_complete,jdbcType=VARCHAR},
+      </if>
+      <if test="lessee_code != null">
+        lessee_code = #{lessee_code,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="create_time != null">
+        create_time = #{create_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="update_time != null">
+        update_time = #{update_time,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yiziton.dataweb.salesindex.pojo.OrganizeDO">
+    update organize
+    set code = #{code,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      parent_code = #{parent_code,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=INTEGER},
+      level = #{level,jdbcType=INTEGER},
+      external = #{external,jdbcType=BIT},
+      external_type = #{external_type,jdbcType=INTEGER},
+      external_type_name = #{external_type_name,jdbcType=VARCHAR},
+      area_code = #{area_code,jdbcType=VARCHAR},
+      address_detailed = #{address_detailed,jdbcType=VARCHAR},
+      address_complete = #{address_complete,jdbcType=VARCHAR},
+      lessee_code = #{lessee_code,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      create_time = #{create_time,jdbcType=TIMESTAMP},
+      update_time = #{update_time,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+
+  <select id="queryAll" resultMap="BaseResultMap">
+    select * from organize
+  </select>
+</mapper>

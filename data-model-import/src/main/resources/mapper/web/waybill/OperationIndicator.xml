@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiziton.dataweb.waybill.dao.OperationIndicatorMapper">
+    <select id="getOneTimeCompletion" parameterType="com.yiziton.dataweb.waybill.vo.IndicatorConditionVO"
+            resultType="com.yiziton.dataweb.waybill.vo.IndicatorExcelVO">
+        select rs.one_time_completion/rs.total*100 as oneTimeCompletedRate
+        from
+        (select count(1) total,sum(case when one_time_completion = 1 then 1 else 0 end ) one_time_completion
+        from operation_planning_department
+        where one_time_completion in (1,2) and sign_time >= #{assessTimeBegin} and sign_time &lt; #{assessTimeEnd}
+        <include refid="andQuery"/>
+        ) rs;
+    </select>
+    <select id="getCircleOneTimeCompletion" parameterType="com.yiziton.dataweb.waybill.vo.IndicatorConditionVO"
+            resultType="com.yiziton.dataweb.waybill.vo.IndicatorExcelVO">
+        select rs.one_time_completion/rs.total*100 as circleOneTimeCompletedRate
+        from
+        (select count(1) total,sum(case when one_time_completion = 1 then 1 else 0 end ) one_time_completion
+        from operation_planning_department
+        where one_time_completion in (1,2) and sign_time >= #{circleAssessTimeBegin} and sign_time &lt; #{circleAssessTimeEnd}
+        <include refid="andQuery"/>
+        ) rs;
+    </select>
+    <select id="getTimelyReturnGoods" parameterType="com.yiziton.dataweb.waybill.vo.IndicatorConditionVO"
+            resultType="com.yiziton.dataweb.waybill.vo.IndicatorExcelVO">
+        select rs.return_in_time/rs.total*100 as timelyReturnGoodsRate
+        from
+        (select count(1) total,sum(case when return_in_time = 1 then 1 else 0 end ) return_in_time
+        from operation_planning_department
+        where return_in_time in (1,2) and sign_time >= #{assessTimeBegin} and sign_time &lt; #{assessTimeEnd} and service_type in(13,14)
+        <include refid="andQuery"/>
+        ) rs;
+    </select>
+    <select id="getCircleTimelyReturnGoods" parameterType="com.yiziton.dataweb.waybill.vo.IndicatorConditionVO"
+            resultType="com.yiziton.dataweb.waybill.vo.IndicatorExcelVO">
+        select rs.return_in_time/rs.total*100 as circleTimelyReturnGoodsRate
+        from
+        (select count(1) total,sum(case when return_in_time = 1 then 1 else 0 end ) return_in_time
+        from operation_planning_department
+        where return_in_time in (1,2) and sign_time >= #{circleAssessTimeBegin} and sign_time &lt; #{circleAssessTimeEnd} and service_type in(13,14)
+        <include refid="andQuery"/>
+        ) rs;
+    </select>
+    <select id="getTimelyOutDeliver" parameterType="com.yiziton.dataweb.waybill.vo.IndicatorConditionVO"
+            resultType="com.yiziton.dataweb.waybill.vo.IndicatorExcelVO">
+        select rs.outgoing_in_time/rs.total*100 as timelyOutDeliverRate
+        from
+        (select count(1) total,sum(case when outgoing_in_time = 1 then 1 else 0 end ) outgoing_in_time
+        from operation_planning_department
+        where outgoing_in_time in (1,2) and latest_confirmation_of_outbound_time >= #{assessTimeBegin} and latest_confirmation_of_outbound_time &lt; #{assessTimeEnd}
+        and service_type in (1,2,6,7,8,9)
+        <include refid="andQuery"/>
+        ) rs;
+    </select>
+    <select id="getCircleTimelyOutDeliver" parameterType="com.yiziton.dataweb.waybill.vo.IndicatorConditionVO"
+            resultType="com.yiziton.dataweb.waybill.vo.IndicatorExcelVO">
+        select rs.outgoing_in_time/rs.total*100 as circleTimelyOutDeliverRate
+        from
+        (select count(1) total,sum(case when outgoing_in_time = 1 then 1 else 0 end ) outgoing_in_time
+        from operation_planning_department
+        where outgoing_in_time in (1,2) and latest_confirmation_of_outbound_time >= #{circleAssessTimeBegin} and latest_confirmation_of_outbound_time &lt; #{circleAssessTimeEnd}
+        and service_type in (1,2,6,7,8,9)
+        <include refid="andQuery"/>
+        ) rs;
+    </select>
+    <select id="getOvertimeNotOutDeliver" parameterType="com.yiziton.dataweb.waybill.vo.IndicatorConditionVO"
+            resultType="com.yiziton.dataweb.waybill.vo.IndicatorExcelVO">
+        select timeout_has_not_been_issued as overtimeNotOutDeliverTotal,rs.timeout_has_not_been_issued/rs.total*100 as overtimeNotOutDeliverRate
+        from
+        (select count(1) total,sum(case when timeout_has_not_been_issued = 1 then 1 else 0 end ) timeout_has_not_been_issued
+        from operation_planning_department
+        where timeout_has_not_been_issued in (1,2)
+        <include refid="andQuery"/>
+        ) rs;
+    </select>
+    <select id="getTimelyAppointment" parameterType="com.yiziton.dataweb.waybill.vo.IndicatorConditionVO"
+            resultType="com.yiziton.dataweb.waybill.vo.IndicatorExcelVO">
+        select rs.timely_appointment/rs.total*100 as timelyAppointmentRate
+        from
+        (select count(1) total,sum(case when timely_appointment = 1 then 1 else 0 end ) timely_appointment
+        from operation_planning_department
+        where timely_appointment in (1,2) and latest_allocation_time >= #{assessTimeBegin} and latest_allocation_time &lt; #{assessTimeEnd}
+        and service_type not in (1,2)
+        <include refid="andQuery"/>
+        ) rs;
+    </select>
+    <select id="getCircleTimelyAppointment" parameterType="com.yiziton.dataweb.waybill.vo.IndicatorConditionVO"
+            resultType="com.yiziton.dataweb.waybill.vo.IndicatorExcelVO">
+        select rs.timely_appointment/rs.total*100 as circleTimelyAppointmentRate
+        from
+        (select count(1) total,sum(case when timely_appointment = 1 then 1 else 0 end ) timely_appointment
+        from operation_planning_department
+        where timely_appointment in (1,2) and latest_allocation_time >= #{circleAssessTimeBegin} and latest_allocation_time &lt; #{circleAssessTimeEnd}
+        and service_type not in (1,2)
+        <include refid="andQuery"/>
+        ) rs;
+    </select>
+    <select id="getOvertimeNotAppointment" parameterType="com.yiziton.dataweb.waybill.vo.IndicatorConditionVO"
+            resultType="com.yiziton.dataweb.waybill.vo.IndicatorExcelVO">
+        select timeout_not_reserved as overtimeNotAppointmentTotal,rs.timeout_not_reserved/rs.total*100 as overtimeNotAppointmentRate
+        from
+        (select count(1) total,sum(case when timeout_not_reserved = 1 then 1 else 0 end ) timeout_not_reserved
+        from operation_planning_department
+        where timeout_not_reserved in (1,2)
+        and service_type not in (1,2)
+        <include refid="andQuery"/>
+        ) rs;
+    </select>
+    <select id="getTimelyInstall" parameterType="com.yiziton.dataweb.waybill.vo.IndicatorConditionVO"
+            resultType="com.yiziton.dataweb.waybill.vo.IndicatorExcelVO">
+        select rs.installation_on_time/rs.total*100 as timelyInstallRate
+        from
+        (select count(1) total,sum(case when installation_on_time = 1 then 1 else 0 end ) installation_on_time
+        from operation_planning_department
+        where installation_on_time in (1,2) and sign_time >= #{assessTimeBegin} and sign_time &lt; #{assessTimeEnd}
+        and service_type not in (1,2)
+        <include refid="andQuery"/>
+        ) rs;
+    </select>
+    <select id="getCircleTimelyInstall" parameterType="com.yiziton.dataweb.waybill.vo.IndicatorConditionVO"
+            resultType="com.yiziton.dataweb.waybill.vo.IndicatorExcelVO">
+        select rs.installation_on_time/rs.total*100 as circleTimelyInstallRate
+        from
+        (select count(1) total,sum(case when installation_on_time = 1 then 1 else 0 end ) installation_on_time
+        from operation_planning_department
+        where
+        installation_on_time in (1,2) and sign_time >= #{circleAssessTimeBegin} and sign_time &lt; #{circleAssessTimeEnd}
+        and service_type not in (1,2)
+        <include refid="andQuery"/>
+        ) rs;
+    </select>
+    <select id="getH48TimelyInstall" parameterType="com.yiziton.dataweb.waybill.vo.IndicatorConditionVO"
+            resultType="com.yiziton.dataweb.waybill.vo.IndicatorExcelVO">
+        select rs.hours_48_installation_in_time/rs.total*100 as h48TimelyInstallRate
+        from
+        (select count(1) total,sum(case when hours_48_installation_in_time = 1 then 1 else 0 end ) hours_48_installation_in_time
+        from operation_planning_department
+        where hours_48_installation_in_time in (1,2) and sign_time >= #{assessTimeBegin} and sign_time &lt; #{assessTimeEnd}
+        and service_type not in (1,2)
+        <include refid="andQuery"/>
+        ) rs;
+    </select>
+    <select id="getCircleH48TimelyInstall" parameterType="com.yiziton.dataweb.waybill.vo.IndicatorConditionVO"
+            resultType="com.yiziton.dataweb.waybill.vo.IndicatorExcelVO">
+        select rs.hours_48_installation_in_time/rs.total*100 as circleH48TimelyInstallRate
+        from
+        (select count(1) total,sum(case when hours_48_installation_in_time = 1 then 1 else 0 end ) hours_48_installation_in_time
+        from operation_planning_department
+        where hours_48_installation_in_time in (1,2) and sign_time >= #{circleAssessTimeBegin} and sign_time &lt; #{circleAssessTimeEnd}
+        and service_type not in (1,2)
+        <include refid="andQuery"/>
+        ) rs;
+    </select>
+    <select id="getOvertimeNotInstall" parameterType="com.yiziton.dataweb.waybill.vo.IndicatorConditionVO"
+            resultType="com.yiziton.dataweb.waybill.vo.IndicatorExcelVO">
+        select timeout_not_installed as overtimeNotInstallTotal,rs.timeout_not_installed/rs.total*100 as overtimeNotInstallRate
+        from
+        (select count(1) total,sum(case when timeout_not_installed = 1 then 1 else 0 end ) timeout_not_installed
+        from operation_planning_department
+        where timeout_not_installed in (1,2)
+        <include refid="andQuery"/>
+        ) rs;
+    </select>
+
+    <sql id="andQuery">
+        <!-- 二级商家 -->
+        <if test="secondCustomer != null and secondCustomer.size() gt 0 ">
+            and merchant in
+            <foreach collection="secondCustomer" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <!-- 发货人 -->
+        <if test="consignor == null || consignor.size() eq 0">
+            and (sender NOT LIKE '%线上' or sender = '南方线上')
+        </if>
+        <if test="consignor != null and consignor.size() gt 0">
+            and sender in
+            <foreach collection="consignor" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <!-- 目的地 -->
+        <if test="destination != null and destination.size() gt 0">
+            and (destination LIKE
+                <foreach collection="destination" index="index" item="item" open="" separator="OR destination LIKE" close="">CONCAT('%', #{item}, '%')</foreach>
+            )
+        </if>
+        <!-- 开单网点 -->
+        <if test="openBillNode != null and openBillNode.size() gt 0">
+            and open_bill_node in
+            <foreach collection="openBillNode" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <!-- 承运商 -->
+        <if test="carrier != null and carrier.size() gt 0">
+            and carrier_code in
+            <foreach collection="carrier" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <!-- 安装师傅 -->
+        <if test="master != null and master.size() gt 0">
+            and master_name in
+            <foreach collection="master" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <!-- 安装师傅所属网点 = 末端网点 -->
+        <if test="masterNode != null and masterNode.size() gt 0">
+            and master_node in
+            <foreach collection="masterNode" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </sql>
+
+</mapper>

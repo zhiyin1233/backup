@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiziton.dataimport.waybill.dao.ext.CarrierInfoExtMapper">
+  <resultMap id="BaseResultMap" type="com.yiziton.dataimport.waybill.bean.CarrierInfo">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="waybill_id" jdbcType="VARCHAR" property="waybillId" />
+    <result column="carrier" jdbcType="VARCHAR" property="carrier" />
+    <result column="carrier_code" jdbcType="VARCHAR" property="carrierCode" />
+    <result column="pick_up_method" jdbcType="VARCHAR" property="pickUpMethod" />
+    <result column="carrier_receiver" jdbcType="VARCHAR" property="carrierReceiver" />
+    <result column="carrier_receiver_phone" jdbcType="VARCHAR" property="carrierReceiverPhone" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="area_id" jdbcType="VARCHAR" property="areaId" />
+    <result column="carrier_address" jdbcType="VARCHAR" property="carrierAddress" />
+    <result column="carrier_company_name" jdbcType="VARCHAR" property="carrierCompanyName" />
+    <result column="start_sent_area" jdbcType="VARCHAR" property="startSentArea" />
+    <result column="carrier_destination" jdbcType="VARCHAR" property="carrierDestination" />
+    <result column="carrier_settlement_type" jdbcType="VARCHAR" property="carrierSettlementType" />
+    <result column="out_deliver_relayId" jdbcType="VARCHAR" property="outDeliverRelayid" />
+    <result column="carrier_departure_time" jdbcType="TIMESTAMP" property="carrierDepartureTime" />
+    <result column="carrier_departure_line" jdbcType="VARCHAR" property="carrierDepartureLine" />
+    <result column="transfer_bill_id" jdbcType="VARCHAR" property="transferBillId" />
+    <result column="limit_arrival_time" jdbcType="TIMESTAMP" property="limitArrivalTime" />
+    <result column="actual_arrival_time" jdbcType="TIMESTAMP" property="actualArrivalTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="data_type" jdbcType="INTEGER" property="dataType" />
+    <result column="carrier_bill_id" jdbcType="VARCHAR" property="carrierBillId" />
+    <result column="carrier_type" jdbcType="INTEGER" property="carrierType" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, waybill_id, carrier, carrier_code, pick_up_method, carrier_receiver, carrier_receiver_phone,
+    status, area_id, carrier_address, carrier_company_name, start_sent_area, carrier_destination,
+    carrier_settlement_type, out_deliver_relayId, carrier_departure_time, carrier_departure_line,
+    transfer_bill_id, limit_arrival_time, actual_arrival_time, create_time, update_time,
+    data_type, carrier_bill_id, carrier_type
+  </sql>
+  <select id="selectByWaybillIdAndStatus" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from carrier_info
+    where waybill_id = #{waybillId,jdbcType=VARCHAR}
+    <if test="status != null"> and status = #{status,jdbcType=INTEGER} </if>
+    <if test="carrierType != null and carrierType != 0"> and carrier_type = #{carrierType,jdbcType=INTEGER} </if>
+    order by carrier_type desc limit 1
+  </select>
+</mapper>

@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiziton.dataimport.waybill.dao.MasterInfoMapper">
+  <resultMap id="BaseResultMap" type="com.yiziton.dataimport.waybill.bean.MasterInfo">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="waybill_id" jdbcType="VARCHAR" property="waybillId" />
+    <result column="master_name" jdbcType="VARCHAR" property="masterName" />
+    <result column="master_node" jdbcType="VARCHAR" property="masterNode" />
+    <result column="master_phone" jdbcType="VARCHAR" property="masterPhone" />
+    <result column="master_type" jdbcType="INTEGER" property="masterType" />
+    <result column="master_code" jdbcType="VARCHAR" property="masterCode" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="limit_appointment_time" jdbcType="TIMESTAMP" property="limitAppointmentTime" />
+    <result column="actual_appoinment_time" jdbcType="TIMESTAMP" property="actualAppoinmentTime" />
+    <result column="limit_door_time" jdbcType="TIMESTAMP" property="limitDoorTime" />
+    <result column="actual_door_time" jdbcType="TIMESTAMP" property="actualDoorTime" />
+    <result column="limit_sign_time" jdbcType="TIMESTAMP" property="limitSignTime" />
+    <result column="actual_sign_time" jdbcType="TIMESTAMP" property="actualSignTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="actual_distribute_time" jdbcType="TIMESTAMP" property="actualDistributeTime" />
+    <result column="data_type" jdbcType="INTEGER" property="dataType" />
+    <result column="node_code" jdbcType="VARCHAR" property="nodeCode" />
+    <result column="node_type" jdbcType="INTEGER" property="nodeType" />
+    <result column="node_duty_name" jdbcType="VARCHAR" property="nodeDutyName" />
+    <result column="limit_distribute_time" jdbcType="TIMESTAMP" property="limitDistributeTime" />
+    <result column="trunk_end_time" jdbcType="TIMESTAMP" property="trunkEndTime" />
+    <result column="distribution_type" jdbcType="INTEGER" property="distributionType" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, waybill_id, master_name, master_node, master_phone, master_type, master_code, 
+    status, limit_appointment_time, actual_appoinment_time, limit_door_time, actual_door_time, 
+    limit_sign_time, actual_sign_time, create_time, update_time, actual_distribute_time, 
+    data_type, node_code, node_type, node_duty_name, limit_distribute_time, trunk_end_time, 
+    distribution_type
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from master_info
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from master_info
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yiziton.dataimport.waybill.bean.MasterInfo">
+    insert into master_info (id, waybill_id, master_name, 
+      master_node, master_phone, master_type, 
+      master_code, status, limit_appointment_time, 
+      actual_appoinment_time, limit_door_time, 
+      actual_door_time, limit_sign_time, actual_sign_time, 
+      create_time, update_time, actual_distribute_time, 
+      data_type, node_code, node_type, 
+      node_duty_name, limit_distribute_time, trunk_end_time, 
+      distribution_type)
+    values (#{id,jdbcType=VARCHAR}, #{waybillId,jdbcType=VARCHAR}, #{masterName,jdbcType=VARCHAR}, 
+      #{masterNode,jdbcType=VARCHAR}, #{masterPhone,jdbcType=VARCHAR}, #{masterType,jdbcType=INTEGER}, 
+      #{masterCode,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{limitAppointmentTime,jdbcType=TIMESTAMP}, 
+      #{actualAppoinmentTime,jdbcType=TIMESTAMP}, #{limitDoorTime,jdbcType=TIMESTAMP}, 
+      #{actualDoorTime,jdbcType=TIMESTAMP}, #{limitSignTime,jdbcType=TIMESTAMP}, #{actualSignTime,jdbcType=TIMESTAMP}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{actualDistributeTime,jdbcType=TIMESTAMP}, 
+      #{dataType,jdbcType=INTEGER}, #{nodeCode,jdbcType=VARCHAR}, #{nodeType,jdbcType=INTEGER}, 
+      #{nodeDutyName,jdbcType=VARCHAR}, #{limitDistributeTime,jdbcType=TIMESTAMP}, #{trunkEndTime,jdbcType=TIMESTAMP}, 
+      #{distributionType,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yiziton.dataimport.waybill.bean.MasterInfo">
+    insert into master_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="waybillId != null">
+        waybill_id,
+      </if>
+      <if test="masterName != null">
+        master_name,
+      </if>
+      <if test="masterNode != null">
+        master_node,
+      </if>
+      <if test="masterPhone != null">
+        master_phone,
+      </if>
+      <if test="masterType != null">
+        master_type,
+      </if>
+      <if test="masterCode != null">
+        master_code,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="limitAppointmentTime != null">
+        limit_appointment_time,
+      </if>
+      <if test="actualAppoinmentTime != null">
+        actual_appoinment_time,
+      </if>
+      <if test="limitDoorTime != null">
+        limit_door_time,
+      </if>
+      <if test="actualDoorTime != null">
+        actual_door_time,
+      </if>
+      <if test="limitSignTime != null">
+        limit_sign_time,
+      </if>
+      <if test="actualSignTime != null">
+        actual_sign_time,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="actualDistributeTime != null">
+        actual_distribute_time,
+      </if>
+      <if test="dataType != null">
+        data_type,
+      </if>
+      <if test="nodeCode != null">
+        node_code,
+      </if>
+      <if test="nodeType != null">
+        node_type,
+      </if>
+      <if test="nodeDutyName != null">
+        node_duty_name,
+      </if>
+      <if test="limitDistributeTime != null">
+        limit_distribute_time,
+      </if>
+      <if test="trunkEndTime != null">
+        trunk_end_time,
+      </if>
+      <if test="distributionType != null">
+        distribution_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="waybillId != null">
+        #{waybillId,jdbcType=VARCHAR},
+      </if>
+      <if test="masterName != null">
+        #{masterName,jdbcType=VARCHAR},
+      </if>
+      <if test="masterNode != null">
+        #{masterNode,jdbcType=VARCHAR},
+      </if>
+      <if test="masterPhone != null">
+        #{masterPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="masterType != null">
+        #{masterType,jdbcType=INTEGER},
+      </if>
+      <if test="masterCode != null">
+        #{masterCode,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="limitAppointmentTime != null">
+        #{limitAppointmentTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="actualAppoinmentTime != null">
+        #{actualAppoinmentTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="limitDoorTime != null">
+        #{limitDoorTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="actualDoorTime != null">
+        #{actualDoorTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="limitSignTime != null">
+        #{limitSignTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="actualSignTime != null">
+        #{actualSignTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="actualDistributeTime != null">
+        #{actualDistributeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dataType != null">
+        #{dataType,jdbcType=INTEGER},
+      </if>
+      <if test="nodeCode != null">
+        #{nodeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="nodeType != null">
+        #{nodeType,jdbcType=INTEGER},
+      </if>
+      <if test="nodeDutyName != null">
+        #{nodeDutyName,jdbcType=VARCHAR},
+      </if>
+      <if test="limitDistributeTime != null">
+        #{limitDistributeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="trunkEndTime != null">
+        #{trunkEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="distributionType != null">
+        #{distributionType,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yiziton.dataimport.waybill.bean.MasterInfo">
+    update master_info
+    <set>
+      <if test="waybillId != null">
+        waybill_id = #{waybillId,jdbcType=VARCHAR},
+      </if>
+      <if test="masterName != null">
+        master_name = #{masterName,jdbcType=VARCHAR},
+      </if>
+      <if test="masterNode != null">
+        master_node = #{masterNode,jdbcType=VARCHAR},
+      </if>
+      <if test="masterPhone != null">
+        master_phone = #{masterPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="masterType != null">
+        master_type = #{masterType,jdbcType=INTEGER},
+      </if>
+      <if test="masterCode != null">
+        master_code = #{masterCode,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="limitAppointmentTime != null">
+        limit_appointment_time = #{limitAppointmentTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="actualAppoinmentTime != null">
+        actual_appoinment_time = #{actualAppoinmentTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="limitDoorTime != null">
+        limit_door_time = #{limitDoorTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="actualDoorTime != null">
+        actual_door_time = #{actualDoorTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="limitSignTime != null">
+        limit_sign_time = #{limitSignTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="actualSignTime != null">
+        actual_sign_time = #{actualSignTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="actualDistributeTime != null">
+        actual_distribute_time = #{actualDistributeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dataType != null">
+        data_type = #{dataType,jdbcType=INTEGER},
+      </if>
+      <if test="nodeCode != null">
+        node_code = #{nodeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="nodeType != null">
+        node_type = #{nodeType,jdbcType=INTEGER},
+      </if>
+      <if test="nodeDutyName != null">
+        node_duty_name = #{nodeDutyName,jdbcType=VARCHAR},
+      </if>
+      <if test="limitDistributeTime != null">
+        limit_distribute_time = #{limitDistributeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="trunkEndTime != null">
+        trunk_end_time = #{trunkEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="distributionType != null">
+        distribution_type = #{distributionType,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yiziton.dataimport.waybill.bean.MasterInfo">
+    update master_info
+    set waybill_id = #{waybillId,jdbcType=VARCHAR},
+      master_name = #{masterName,jdbcType=VARCHAR},
+      master_node = #{masterNode,jdbcType=VARCHAR},
+      master_phone = #{masterPhone,jdbcType=VARCHAR},
+      master_type = #{masterType,jdbcType=INTEGER},
+      master_code = #{masterCode,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      limit_appointment_time = #{limitAppointmentTime,jdbcType=TIMESTAMP},
+      actual_appoinment_time = #{actualAppoinmentTime,jdbcType=TIMESTAMP},
+      limit_door_time = #{limitDoorTime,jdbcType=TIMESTAMP},
+      actual_door_time = #{actualDoorTime,jdbcType=TIMESTAMP},
+      limit_sign_time = #{limitSignTime,jdbcType=TIMESTAMP},
+      actual_sign_time = #{actualSignTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      actual_distribute_time = #{actualDistributeTime,jdbcType=TIMESTAMP},
+      data_type = #{dataType,jdbcType=INTEGER},
+      node_code = #{nodeCode,jdbcType=VARCHAR},
+      node_type = #{nodeType,jdbcType=INTEGER},
+      node_duty_name = #{nodeDutyName,jdbcType=VARCHAR},
+      limit_distribute_time = #{limitDistributeTime,jdbcType=TIMESTAMP},
+      trunk_end_time = #{trunkEndTime,jdbcType=TIMESTAMP},
+      distribution_type = #{distributionType,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

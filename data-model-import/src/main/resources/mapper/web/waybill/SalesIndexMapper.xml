@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiziton.dataweb.waybill.dao.SalesIndexMapper">
+
+    <resultMap id="noCamelSalesIndexDO" type="com.yiziton.dataweb.salesindex.pojo.SalesIndexDO" autoMapping="true">
+        <id column="waybill_id" property="waybill_id"></id>
+        <result column="take_goods_fee" property="take_goods_fee"></result>
+        <result column="transport_fee" property="transport_fee"></result>
+        <result column="delivery_fee" property="delivery_fee"></result>
+        <result column="install_fee" property="install_fee"></result>
+        <result column="insurance_fee" property="insurance_fee"></result>
+        <result column="upstairs_fee" property="upstairs_fee"></result>
+        <result column="entry_home_fee" property="entry_home_fee"></result>
+        <result column="door_fee" property="door_fee"></result>
+        <result column="exceed_square_fee" property="exceed_square_fee"></result>
+        <result column="wooden_fee" property="wooden_fee"></result>
+        <result column="exceed_area_fee" property="exceed_area_fee"></result>
+        <result column="large_extra_fee" property="large_extra_fee"></result>
+        <result column="marble_fee" property="marble_fee"></result>
+        <result column="other_fee" property="other_fee"></result>
+        <result column="increment_service_fee" property="increment_service_fee"></result>
+        <result column="coupon_relief" property="coupon_relief"></result>
+        <result column="gift_relief" property="gift_relief"></result>
+        <result column="cash_relief" property="cash_relief"></result>
+        <result column="client_fee" property="client_fee"></result>
+        <result column="billing_income" property="billing_income"></result>
+        <result column="sales_departments" property="sales_departments"></result>
+        <result column="departments_grade" property="departments_grade"></result>
+        <result column="position" property="position"></result>
+        <result column="salesman" property="salesman"></result>
+        <result column="customer_name" property="customer_name"></result>
+        <result column="customer_code" property="customer_code"></result>
+        <result column="second_name" property="second_name"></result>
+        <result column="originating_node" property="originating_node"></result>
+        <result column="originating_node_type" property="originating_node_type"></result>
+        <result column="destination" property="destination"></result>
+        <result column="waybill_type" property="waybill_type"></result>
+        <result column="client_grade" property="client_grade"></result>
+        <result column="service_type" property="service_type"></result>
+        <result column="settlement_type" property="settlement_type"></result>
+        <result column="payment_period" property="payment_period"></result>
+        <result column="open_bill_time" property="open_bill_time"></result>
+        <result column="sign_time" property="sign_time"></result>
+    </resultMap>
+
+    <select id="queryAll" resultMap="noCamelSalesIndexDO">
+select * from salesindex
+    </select>
+
+    <select id="queryLimit" resultMap="noCamelSalesIndexDO">
+select * from salesindex limit #{start},#{size}
+
+    </select>
+
+    <select id="queryByDateAndDept" resultMap="noCamelSalesIndexDO">
+select * from salesindex where open_bill_time &gt; #{startDate} and open_bill_time &lt; #{endDate} and organize_code in ${organize_codes}
+
+    </select>
+    <select id="querOriginatingNode" resultType="java.lang.String">
+    SELECT originating_node FROM waybill_info WHERE `status` = 1 AND originating_node IS NOT NULL GROUP BY originating_node
+    </select>
+
+    <select id="querNewConsignorTrend" resultType="java.util.Map">
+    SELECT open_bill_month, COUNT(open_bill_month) AS count FROM consignor_opentime WHERE customer_label = 1 AND open_bill_month > DATE_FORMAT( DATE_SUB(NOW(),INTERVAL 6 MONTH) , '%Y-%m' )
+        <if test='organizeCodes != null and organizeCodes.size > 0'> AND organize_code IN
+            <foreach collection="organizeCodes" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    GROUP BY open_bill_month
+    </select>
+
+    <select id="querNewConsignor" resultType="com.yiziton.dataweb.salesindex.pojo.NewUserVO">
+        SELECT
+        open_bill_month AS openBillMonth,
+        CONCAT(ROUND(SUM(IF(customer_label IN (1,2),billing_income,0)) / (SUM(IF(customer_label IN (1,2),billing_income,0)) + SUM(IF(customer_label = 3,billing_income,0))) * 100, 2),'%') AS percentageOfNewCustomers,
+        CONCAT(ROUND(SUM(IF(customer_label = 3,billing_income,0)) / (SUM(IF(customer_label IN (1,2),billing_income,0)) + SUM(IF(customer_label = 3,billing_income,0))) * 100, 2),'%') AS percentageOfOtherCustomers,
+        SUM(IF(customer_label IN (1,2),1,0)) AS numberOfNewCustomers,
+        SUM(IF(customer_label = 3,1,0)) AS numberOfOtherCustomers,
+        SUM(IF(customer_label IN (1,2),billing_income,0)) AS newCustomerBillingIncome,
+        SUM(IF(customer_label = 3,billing_income,0)) AS revenueFromOtherCustomersBilling,
+        SUM(IF(customer_label IN (1,2),order_number,0)) AS numberOfInvoicesIssuedByNewCustomers,
+        SUM(IF(customer_label = 3,order_number,0)) AS numberOfInvoicesIssuedByOtherCustomers,
+        GROUP_CONCAT(IF(customer_label IN (1,2) AND customer_code IS NOT NULL,customer_code,NULL) SEPARATOR ',') AS newUserCode
+        FROM consignor_opentime
+        WHERE open_bill_month > DATE_FORMAT( DATE_SUB(NOW(),INTERVAL 6 MONTH) , '%Y-%m' )
+       <if test='organizeCodes != null and organizeCodes.size > 0'> AND organize_code IN
+            <foreach collection="organizeCodes" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        GROUP BY open_bill_month
+    </select>
+
+    <select id="getOrganize" resultType="com.yiziton.dataweb.salesindex.pojo.OrganizeVO">
+        SELECT id, `code`, parent_code AS parentCode, `name`, sort, `level` FROM organize WHERE `status` = 1 AND `level` IS NOT NULL
+    </select>
+
+
+    <select id="waybillQuery" resultMap="noCamelSalesIndexDO">
+        select * from salesindex where
+        <trim prefix="" suffix="" suffixOverrides="and">
+            <if test="organize_code != null">
+                organize_code in ${organize_code} and
+            </if>
+            <if test="waybill_id != null">
+                waybill_id=#{waybill_id} and
+            </if>
+            <if test="second_name != null">
+                second_name=#{second_name} and
+            </if>
+            <if test="open_bill_time_start != null">
+                open_bill_time &gt; #{open_bill_time_start} and
+            </if>
+            <if test="open_bill_time_end != null">
+                open_bill_time &lt; #{open_bill_time_end} and
+            </if>
+            <if test="sign_time_start != null">
+                sign_time &gt; #{sign_time_start} and
+            </if>
+            <if test="sign_time_end != null">
+                sign_time &lt; #{sign_time_end}
+            </if>
+        </trim>
+    </select>
+
+
+
+    <select id="customerQuery" resultMap="noCamelSalesIndexDO">
+        select * from salesindex where
+        <trim prefix="" suffix="" suffixOverrides="and">
+            <if test="organize_code != null">
+                organize_code in ${organize_code} and
+            </if>
+            <if test="customer_name != null">
+                customer_name=#{customer_name} and
+            </if>
+            <if test="client_grade != null">
+                client_grade=#{client_grade} and
+            </if>
+            <if test="settlement_type != null">
+                settlement_type=#{settlement_type} and
+            </if>
+            <if test="client_type != null">
+                client_type=#{client_type}
+            </if>
+        </trim>
+
+    </select>
+
+    <select id="queryRetain" resultType="com.yiziton.dataweb.salesindex.pojo.QueryRetainDO">
+        SELECT open_bill_month as openBillMonth,GROUP_CONCAT(customer_code) AS customerCode,count(*) as consignorCount FROM consignor_opentime WHERE open_bill_month >= LEFT(DATE_SUB(NOW(),INTERVAL 11 MONTH),7)
+        AND customer_label =1
+        <if test="clientGrade != null and clientGrade !=''"> AND client_grade =#{clientGrade,jdbcType=VARCHAR}</if>
+        <if test="organizeCodeList != null and organizeCodeList.size() != 0"> AND organize_code in
+            <foreach collection="organizeCodeList" index="index" item="item" open="(" separator="," close=")">
+                #{item.code}
+            </foreach>
+        </if>
+        GROUP  BY open_bill_month
+    </select>
+
+    <select id="queryRetainAll" resultType="com.yiziton.dataweb.salesindex.pojo.QueryRetainDO">
+        SELECT open_bill_month as openBillMonth,GROUP_CONCAT(customer_code) AS customerCode FROM consignor_opentime WHERE open_bill_month >= LEFT(DATE_SUB(NOW(),INTERVAL 10 MONTH),7)
+        <if test="clientGrade != null and clientGrade !=''"  > AND client_grade =#{clientGrade,jdbcType=VARCHAR}</if>
+        <if test="organizeCodeList != null and organizeCodeList.size() != 0"> AND organize_code in
+            <foreach collection="organizeCodeList" index="index" item="item" open="(" separator="," close=")">
+                #{item.code}
+            </foreach>
+        </if>
+        GROUP  BY open_bill_month
+    </select>
+
+    <select id="queryRetainDetail" resultType="com.yiziton.dataweb.salesindex.pojo.QueryRetainDetailDO">
+        SELECT customer_name ,settlement_type,client_type,salesman,open_bill_month as openBillMonth FROM consignor_opentime
+        WHERE customer_label =1
+        <if test="customerCodeList != null and customerCodeList.size() !=0" > AND customer_code in
+            <foreach collection="customerCodeList" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+
+
+    <resultMap id="penetrationAnalysisDO" type="com.yiziton.dataweb.salesindex.pojo.PenetrationAnalysisDO">
+        <result column="total_billing_income" property="totalBillingIncome"></result>
+        <result column="total_logistics_cost" property="totalLogisticsCost"></result>
+        <result column="customer_grade" property="customerGrade"></result>
+        <result column="settlement_type" property="settlementType"></result>
+        <result column="penetration_rate" property="penetrationRate"></result>
+    </resultMap>
+
+    <select id="queryPenetrationAnalysis" resultMap="penetrationAnalysisDO">
+        select sum(rs.billing_income)/(sum(rs.logistics_cost)*10000)*100 as penetration_rate,
+        sum(rs.billing_income)/10000 as total_billing_income,
+        sum(rs.logistics_cost) as total_logistics_cost
+        from (
+        select c.name, c.logistics_cost*${queryVO.days}/30 logistics_cost, sum(billing_income) as billing_income
+        from consignor c
+        left join salesindex s on s.customer_code = c.code
+        where 1 = 1
+        and c.logistics_cost is not null
+        and c.logistics_cost > 0
+        and c.status = 1
+        <if test="queryVO.openBillTimeBegin != null">and s.open_bill_time >= #{queryVO.openBillTimeBegin}</if>
+        <if test="queryVO.openBillTimeEnd != null">and s.open_bill_time &lt; #{queryVO.openBillTimeEnd}</if>
+        <if test="organizeDOS != null and organizeDOS.size() gt 0">
+            and s.organize_code in
+            <foreach collection="organizeDOS" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        group by c.name
+        ) rs;
+    </select>
+    <select id="queryPenetrationAnalysisCustomerGrade" resultMap="penetrationAnalysisDO">
+        select s.client_grade as customer_grade,
+        sum(billing_income)/(c.logistics_cost*${queryVO.days}/30*10000)*100 as penetration_rate,
+        c.logistics_cost*${queryVO.days}/30 as total_logistics_cost,
+        sum(billing_income)/10000 as total_billing_income
+        from consignor c
+        left join salesindex s on s.customer_code = c.code
+        where 1 = 1
+        and c.logistics_cost is not null
+        and c.logistics_cost > 0
+        and c.status = 1
+        and s.client_grade is not null
+        <if test="queryVO.openBillTimeBegin != null">and s.open_bill_time >= #{queryVO.openBillTimeBegin}</if>
+        <if test="queryVO.openBillTimeEnd != null">and s.open_bill_time &lt; #{queryVO.openBillTimeEnd}</if>
+        <if test="organizeDOS != null and organizeDOS.size() gt 0">
+            and s.organize_code in
+            <foreach collection="organizeDOS" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        group by s.client_grade
+        order by s.client_grade asc;
+    </select>
+    <select id="queryPenetrationAnalysisSettlementType"  resultMap="penetrationAnalysisDO">
+        select s.settlement_type as settlement_type,
+        sum(billing_income)/(c.logistics_cost*${queryVO.days}/30*10000)*100 as penetration_rate,
+        c.logistics_cost*${queryVO.days}/30/10000 as total_logistics_cost,
+        sum(billing_income) as total_billing_income
+        from consignor c
+        left join salesindex s on s.customer_code = c.code
+        where 1 = 1
+        and c.logistics_cost is not null
+        and c.logistics_cost > 0
+        and c.status = 1
+        and s.settlement_type is not null
+        and s.settlement_type != "其他"
+        <if test="queryVO.openBillTimeBegin != null">and s.open_bill_time >= #{queryVO.openBillTimeBegin}</if>
+        <if test="queryVO.openBillTimeEnd != null">and s.open_bill_time &lt; #{queryVO.openBillTimeEnd}</if>
+        <if test="organizeDOS != null and organizeDOS.size() gt 0">
+            and s.organize_code in
+            <foreach collection="organizeDOS" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        group by s.settlement_type
+        order by s.settlement_type asc;
+    </select>
+
+
+</mapper>

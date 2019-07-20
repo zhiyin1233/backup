@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiziton.dataimport.waybill.dao.ext.ConsignorExtMapper">
+  <resultMap id="BaseResultMap" type="com.yiziton.dataimport.waybill.bean.Consignor">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="telephone" jdbcType="VARCHAR" property="telephone" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="type_name" jdbcType="VARCHAR" property="typeName" />
+    <result column="is_vip" jdbcType="BIT" property="isVip" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="contact" jdbcType="VARCHAR" property="contact" />
+    <result column="contact_telephone" jdbcType="VARCHAR" property="contactTelephone" />
+    <result column="contact_address" jdbcType="VARCHAR" property="contactAddress" />
+    <result column="business_contact" jdbcType="VARCHAR" property="businessContact" />
+    <result column="business_contact_job_num" jdbcType="VARCHAR" property="businessContactJobNum" />
+    <result column="business_contact_telephone" jdbcType="VARCHAR" property="businessContactTelephone" />
+    <result column="user_code" jdbcType="VARCHAR" property="userCode" />
+    <result column="user_account" jdbcType="VARCHAR" property="userAccount" />
+    <result column="pay_password" jdbcType="VARCHAR" property="payPassword" />
+    <result column="shipping_method" jdbcType="INTEGER" property="shippingMethod" />
+    <result column="shipping_method_name" jdbcType="VARCHAR" property="shippingMethodName" />
+    <result column="source_system" jdbcType="VARCHAR" property="sourceSystem" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="creator_name" jdbcType="VARCHAR" property="creatorName" />
+    <result column="modifier" jdbcType="VARCHAR" property="modifier" />
+    <result column="modifier_name" jdbcType="VARCHAR" property="modifierName" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="level" jdbcType="INTEGER" property="level" />
+    <result column="level_name" jdbcType="VARCHAR" property="levelName" />
+    <result column="label" jdbcType="INTEGER" property="label" />
+    <result column="label_name" jdbcType="VARCHAR" property="labelName" />
+    <result column="account_period" jdbcType="INTEGER" property="accountPeriod" />
+    <result column="account_period_name" jdbcType="VARCHAR" property="accountPeriodName" />
+    <result column="logistics_cost" jdbcType="DOUBLE" property="logisticsCost" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, code, name, telephone, type, type_name, is_vip, remark, contact, contact_telephone,
+    contact_address, business_contact, business_contact_job_num, business_contact_telephone,
+    user_code, user_account, pay_password, shipping_method, shipping_method_name, source_system,
+    creator, creator_name, modifier, modifier_name, status, level, level_name, label,
+    label_name, account_period, account_period_name, logistics_cost, create_time, update_time
+  </sql>
+  <select id="selectByCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from consignor
+    where code = #{code,jdbcType=VARCHAR} and status = 1
+  </select>
+  <update id="update" parameterType="com.yiziton.dataimport.waybill.bean.Consignor">
+    update consignor
+    set code = #{code,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      telephone = #{telephone,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      type_name = #{typeName,jdbcType=VARCHAR},
+      business_contact = #{businessContact,jdbcType=VARCHAR},
+      business_contact_job_num = #{businessContactJobNum,jdbcType=VARCHAR},
+      business_contact_telephone = #{businessContactTelephone,jdbcType=VARCHAR},
+      shipping_method = #{shippingMethod,jdbcType=INTEGER},
+      shipping_method_name = #{shippingMethodName,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+    <if test="level != null">
+      level = #{level,jdbcType=INTEGER},
+    </if>
+    <if test="levelName != null">
+      level_name = #{levelName,jdbcType=VARCHAR},
+    </if>
+    <if test="label != null">
+      label = #{label,jdbcType=INTEGER},
+    </if>
+    <if test="labelName != null">
+      label_name = #{labelName,jdbcType=VARCHAR},
+    </if>
+    <if test="accountPeriod != null">
+      account_period = #{accountPeriod,jdbcType=INTEGER},
+    </if>
+    <if test="accountPeriodName != null">
+      account_period_name = #{accountPeriodName,jdbcType=VARCHAR},
+    </if>
+    <if test="logisticsCost != null">
+      logistics_cost = #{logisticsCost,jdbcType=DOUBLE},
+    </if>
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

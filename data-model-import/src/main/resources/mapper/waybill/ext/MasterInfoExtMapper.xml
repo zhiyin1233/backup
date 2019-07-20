@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiziton.dataimport.waybill.dao.ext.MasterInfoExtMapper">
+  <resultMap id="BaseResultMap" type="com.yiziton.dataimport.waybill.bean.MasterInfo">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="waybill_id" jdbcType="VARCHAR" property="waybillId" />
+    <result column="master_name" jdbcType="VARCHAR" property="masterName" />
+    <result column="master_node" jdbcType="VARCHAR" property="masterNode" />
+    <result column="master_phone" jdbcType="VARCHAR" property="masterPhone" />
+    <result column="master_type" jdbcType="INTEGER" property="masterType" />
+    <result column="master_code" jdbcType="VARCHAR" property="masterCode" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="limit_appointment_time" jdbcType="TIMESTAMP" property="limitAppointmentTime" />
+    <result column="actual_appoinment_time" jdbcType="TIMESTAMP" property="actualAppoinmentTime" />
+    <result column="limit_door_time" jdbcType="TIMESTAMP" property="limitDoorTime" />
+    <result column="actual_door_time" jdbcType="TIMESTAMP" property="actualDoorTime" />
+    <result column="limit_sign_time" jdbcType="TIMESTAMP" property="limitSignTime" />
+    <result column="actual_sign_time" jdbcType="TIMESTAMP" property="actualSignTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="actual_distribute_time" jdbcType="TIMESTAMP" property="actualDistributeTime" />
+    <result column="data_type" jdbcType="INTEGER" property="dataType" />
+    <result column="node_code" jdbcType="VARCHAR" property="nodeCode" />
+    <result column="node_type" jdbcType="INTEGER" property="nodeType" />
+    <result column="node_duty_name" jdbcType="VARCHAR" property="nodeDutyName" />
+    <result column="limit_distribute_time" jdbcType="TIMESTAMP" property="limitDistributeTime" />
+    <result column="trunk_end_time" jdbcType="TIMESTAMP" property="trunkEndTime" />
+    <result column="distribution_type" jdbcType="INTEGER" property="distributionType" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, waybill_id, master_name, master_node, master_phone, master_type, master_code, 
+    status, limit_appointment_time, actual_appoinment_time, limit_door_time, actual_door_time, 
+    limit_sign_time, actual_sign_time, create_time, update_time, actual_distribute_time,
+    data_type, node_code, node_type, node_duty_name, limit_distribute_time, trunk_end_time,
+    distribution_type
+  </sql>
+  <select id="selectByWaybillIdAndStatus" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from master_info
+    where waybill_id = #{waybillId,jdbcType=VARCHAR}
+    <if test="status != null"> and status = #{status,jdbcType=INTEGER} </if>
+    <if test="distributionType != null and distributionType != 0"> and distribution_type = #{distributionType,jdbcType=INTEGER} </if>
+    order by distribution_type desc limit 1
+  </select>
+  <select id="selectListByWaybillIdAndStatus" parameterType="map" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from master_info
+    where 1=1
+    <if test="status != null"> and `status` = #{status,jdbcType=INTEGER} </if>
+    and waybill_id in
+    <foreach collection="waybillIds" index="index" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </select>
+</mapper>

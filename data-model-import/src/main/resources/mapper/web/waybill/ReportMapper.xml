@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiziton.dataimport.waybill.dao.ReportMapper">
+    <select id="selectWayBillInfoForReport" parameterType="com.yiziton.dataweb.waybill.vo.ReportConditionVO" resultType="com.yiziton.dataweb.waybill.vo.ReportExportVO">
+        select
+        wb.`id` as waybillId, wb.open_bill_time as openBillTime, wb.waybill_status as waybillStatus, wb.waybill_type as waybillType, wb.settlement_type as settlementType, wb.service_type as serviceType,
+        wb.sale_total_price as saleTotalPrice, wb.open_bill_operator as openBillOperator, wb.open_bill_remark as openBillRemark, wb.originating_node as originatingNode, wb.open_bill_node as openBillNode,
+        wb.logistics_bill_id as logisticsBillId, wb.check_type as checkType, wb.check_method as checkMethod, wb.check_code as checkCode, wb.check_status as checkStatus, wb.payment_type as paymentType,
+        wb.statement_value as statementValue, wb.channel_source as channelSource, wb.pick_up_goods_phone as pickUpGoodsPhone, wb.arrival_address as arrivalAddress, wb.product_type as productType, wb.salesman,
+        wb.check_bill_id as checkBillId, wb.check_time as checkTime, wb.goods_type as goodsType, wb.packing, wb.picking_time as pickingTime, wb.sign_time as signTime,
+        cs.`name` as consignorName, cs.`mobile` as consignorMobile, cs.second_name as secondMerchantName, cs.customer_type as merchantType,
+        rcv.`name` as receiveName, rcv.`mobile` as receiveMobile, CONCAT(rcv.province, rcv.city, rcv.area) as destination, rcv.province, rcv.city, rcv.area, rcv.street, rcv.address as receiveAddress,
+        carr.carrier,
+        case when isnull(mst2.master_phone) then mst1.master_phone else mst2.master_phone end as masterPhone,
+        case when isnull(mst2.master_phone) then mst1.master_name else mst2.master_name end as masterName,
+        case when isnull(mst2.master_phone) then mst1.master_node else mst2.master_node end as masterNode,
+        case when isnull(mst2.master_phone) then mst1.master_type else mst2.master_type end as masterType
+        from waybill_info wb
+        left join consignor_info cs on wb.`id`=cs.waybill_id and cs.`status`=1
+        left join master_info mst1 on wb.`id`=mst1.waybill_id and mst1.`status`=1 and mst1.distribution_type=1
+        left join master_info mst2 on wb.`id`=mst2.waybill_id and mst2.`status`=1 and mst2.distribution_type=2
+        left join carrier_info carr on wb.`id`=carr.waybill_id and carr.`status`=1 and carr.carrier_type=1
+        left join recevice_info rcv on wb.`id`=rcv.waybill_id and rcv.`status`=1
+        <if test="homeCheckTimeBegin != null">
+            LEFT JOIN (
+                SELECT result.waybill_id,result.operation_oganization,result.operate_time
+                FROM (
+                    SELECT heyf_tmp.*,@rownum :=@rownum+1 AS rankNum,IF (@pdept=heyf_tmp.waybill_id,@rank :=@rank+1,@rank :=1) AS rank,@pdept :=heyf_tmp.waybill_id AS wid
+                    FROM (
+                        SELECT * FROM milestone_info a WHERE `status`=1 AND operation=390 ORDER BY a.waybill_id,a.operate_time DESC,a.operation_oganization
+                    ) heyf_tmp,(SELECT @rownum :=0,@pdept :=NULL,@rank :=0) a
+                ) result WHERE result.rank=1
+            ) rs ON rs.waybill_id=wb.id
+        </if>
+        <if test="trunkEndTimeBegin != null">
+            LEFT JOIN (
+                SELECT result.waybill_id,result.operation_oganization,result.operate_time
+                FROM (
+                    SELECT heyf_tmp.*,@rownum :=@rownum+1 AS rankNum,IF (@pdept=heyf_tmp.waybill_id,@rank :=@rank+1,@rank :=1) AS rank,@pdept :=heyf_tmp.waybill_id AS wid
+                    FROM (
+                        SELECT * FROM milestone_info a WHERE `status`=1 AND operation=250 ORDER BY a.waybill_id,a.operate_time DESC,a.operation_oganization
+                    ) heyf_tmp,(SELECT @rownum :=0,@pdept :=NULL,@rank :=0) a
+                ) result WHERE result.rank=1
+            ) rs2 ON rs2.waybill_id=wb.id
+        </if>
+        <include refid="whereQuery" />
+        order by wb.open_bill_time desc limit ${offset}, ${size}
+    </select>
+
+    <sql id="whereQuery" >
+        where wb.`status`=1
+        and wb.waybill_type=1
+        <!-- 开单时间-开始 -->
+        <if test="openBillTimeBegin != null">
+            <![CDATA[
+            and wb.open_bill_time >= #{openBillTimeBegin}
+            ]]>
+        </if>
+        <!-- 开单时间-结束 -->
+        <if test="openBillTimeEnd != null">
+            <![CDATA[
+            and wb.open_bill_time < #{openBillTimeEnd}
+            ]]>
+        </if>
+        <!-- 签收时间-开始 -->
+        <if test="signTimeBegin != null">
+            <![CDATA[
+            and wb.sign_time >= #{signTimeBegin}
+            ]]>
+        </if>
+        <!-- 签收时间-结束 -->
+        <if test="signTimeEnd != null">
+            <![CDATA[
+            and wb.sign_time < #{signTimeEnd}
+            ]]>
+        </if>
+        <!-- 上门打卡时间-开始 -->
+        <if test="homeCheckTimeBegin != null">
+            <![CDATA[
+            and rs.operate_time >= #{homeCheckTimeBegin}
+            ]]>
+        </if>
+        <!-- 上门打卡时间-结束 -->
+        <if test="homeCheckTimeEnd != null">
+            <![CDATA[
+            and rs.operate_time < #{homeCheckTimeEnd}
+            ]]>
+        </if>
+        <!-- 干结时间-开始 -->
+        <if test="trunkEndTimeBegin != null">
+            <![CDATA[
+            and rs2.operate_time >= #{trunkEndTimeBegin}
+            ]]>
+        </if>
+        <!-- 干结时间-结束 -->
+        <if test="trunkEndTimeEnd != null">
+            <![CDATA[
+            and rs2.operate_time < #{trunkEndTimeEnd}
+            ]]>
+        </if>
+        <!-- 目的地 -->
+        <if test="destination != null">
+            and wb.destination like CONCAT('%', #{destination}, '%')
+        </if>
+        <!-- 运单号 -->
+        <if test="waybillIdList != null and waybillIdList.size > 0">
+            AND wb.id IN
+            <foreach item="item" index="index" collection="waybillIdList"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <!-- 发货人 -->
+        <if test="consignor != null and consignor.size() gt 0">
+            and cs.name in
+            <foreach collection="consignor" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <!-- 二级商家 -->
+        <if test="secondCustomer != null and secondCustomer.size() gt 0 ">
+            and cs.second_name in
+            <foreach collection="secondCustomer" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <!-- 服务类型 -->
+        <if test="serviceType != null and serviceType.size() gt 0">
+            and wb.service_type in
+            <foreach collection="serviceType" index="index" item="item" open="(" separator="," close=")">
+                #{item.code}
+            </foreach>
+        </if>
+        <!-- 开单网点 -->
+        <if test="openBillNode != null and openBillNode.size() gt 0">
+            and wb.open_bill_node in
+            <foreach collection="openBillNode" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <!-- 运单状态 -->
+        <if test="waybillStatus != null and waybillStatus.size() gt 0">
+            and wb.waybill_status in
+            <foreach collection="waybillStatus" index="index" item="item" open="(" separator="," close=")">
+                #{item.code}
+            </foreach>
+        </if>
+        <!-- 商家类型 -->
+        <if test="customerType != null and customerType.size() gt 0">
+            and cs.customer_type in
+            <foreach collection="customerType" index="index" item="item" open="(" separator="," close=")">
+                #{item.code}
+            </foreach>
+        </if>
+        <!-- 安装师傅 -->
+        <if test="master != null and master.size() gt 0">
+            and (mst1.master_name in
+            <foreach collection="master" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+            or mst2.master_name in
+            <foreach collection="master" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>)
+        </if>
+        <!-- 安装师傅所属网点 = 末端网点 -->
+        <if test="masterNode != null and masterNode.size() gt 0">
+            and (mst1.master_node in
+            <foreach collection="masterNode" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+            or mst2.master_node in
+            <foreach collection="masterNode" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>)
+        </if>
+        <!-- 承运商 -->
+        <if test="carrier != null and carrier.size() gt 0">
+            and carr.carrier in
+            <foreach collection="carrier" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <!-- 结款方式 -->
+        <if test="settlementType != null and settlementType.size() gt 0">
+            and wb.settlement_type in
+            <foreach collection="settlementType" index="index" item="item" open="(" separator="," close=")">
+                #{item.code}
+            </foreach>
+        </if>
+        <!-- 业务员 -->
+        <if test="salesman != null and salesman.size() gt 0">
+            and wb.salesman in
+            <foreach collection="salesman" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </sql>
+
+    <select id="countWayBillInfoForReport" parameterType="com.yiziton.dataweb.waybill.vo.ReportConditionVO" resultType="java.lang.Long">
+        select count(*)
+        from waybill_info wb
+        <if test="(consignor != null and consignor.size() gt 0) or (secondCustomer != null and secondCustomer.size() gt 0) or (customerType != null and customerType.size() gt 0)">
+            left join consignor_info cs on wb.`id`=cs.waybill_id
+        </if>
+        <if test="(masterNode != null and masterNode.size() gt 0) or (master != null and master.size() gt 0)">
+            left join master_info mst1 on wb.`id`=mst1.waybill_id and mst1.`status`=1 and mst1.distribution_type=1
+            left join master_info mst2 on wb.`id`=mst2.waybill_id and mst2.`status`=1 and mst2.distribution_type=2
+        </if>
+        <if test="carrier != null and carrier.size() gt 0">
+            left join carrier_info carr on wb.`id`=carr.waybill_id
+        </if>
+        <if test="homeCheckTimeBegin != null">
+            LEFT JOIN (
+                SELECT result.waybill_id,result.operation_oganization,result.operate_time
+                FROM (
+                    SELECT heyf_tmp.*,@rownum :=@rownum+1 AS rankNum,IF (@pdept=heyf_tmp.waybill_id,@rank :=@rank+1,@rank :=1) AS rank,@pdept :=heyf_tmp.waybill_id AS wid
+                    FROM (
+                      SELECT * FROM milestone_info a WHERE `status`=1 AND operation=390 ORDER BY a.waybill_id,a.operate_time DESC,a.operation_oganization
+                    ) heyf_tmp,(SELECT @rownum :=0,@pdept :=NULL,@rank :=0) a
+                ) result WHERE result.rank=1
+            ) rs ON rs.waybill_id=wb.id
+        </if>
+        <if test="trunkEndTimeBegin != null">
+            LEFT JOIN (
+                SELECT result.waybill_id,result.operation_oganization,result.operate_time
+                FROM (
+                    SELECT heyf_tmp.*,@rownum :=@rownum+1 AS rankNum,IF (@pdept=heyf_tmp.waybill_id,@rank :=@rank+1,@rank :=1) AS rank,@pdept :=heyf_tmp.waybill_id AS wid
+                    FROM (
+                      SELECT * FROM milestone_info a WHERE `status`=1 AND operation=250 ORDER BY a.waybill_id,a.operate_time DESC,a.operation_oganization
+                    ) heyf_tmp,(SELECT @rownum :=0,@pdept :=NULL,@rank :=0) a
+                ) result WHERE result.rank=1
+            ) rs2 ON rs2.waybill_id=wb.id
+        </if>
+        <include refid="whereQuery" />
+    </select>
+
+    <!--<select id="selectByParams" parameterType="com.yiziton.dataweb.waybill.vo.SelectConditionVO" resultType="java.lang.String">
+        select distinct ${column} from ${table} where status=1 and ${column} like '%${value}%' order by ${column} desc
+        <if test="size != 0">
+            limit ${offset}, ${size}
+        </if>
+    </select>-->
+
+    <select id="selectForCommon" parameterType="com.yiziton.dataweb.waybill.vo.SelectConditionVO" resultType="com.yiziton.dataweb.waybill.vo.CommonVO">
+        select distinct ${column} as 'value' from ${table} where status=1 and ${column}!=''
+        <if test="value != null and value.length() gt 0">
+          and ${column} like '%${value}%'
+        </if>
+        order by ${column} desc
+        <if test="size != 0">
+            limit ${offset}, ${size}
+        </if>
+
+    </select>
+
+    <select id="countForCommon" parameterType="com.yiziton.dataweb.waybill.vo.SelectConditionVO" resultType="java.lang.Long">
+        select count(distinct ${column}) from ${table} where status=1 and ${column}!=''
+        <if test="value != null and value.length() gt 0">
+            and ${column} like '%${value}%'
+        </if>
+    </select>
+
+</mapper>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiziton.dataimport.waybill.dao.ext.BillingInfoExtMapper">
+  <resultMap id="BaseResultMap" type="com.yiziton.dataimport.waybill.bean.BillingInfo">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="waybill_id" jdbcType="VARCHAR" property="waybillId" />
+    <result column="billing_object" jdbcType="INTEGER" property="billingObject" />
+    <result column="billing_name" jdbcType="VARCHAR" property="billingName" />
+    <result column="billing_phone" jdbcType="VARCHAR" property="billingPhone" />
+    <result column="billing_type" jdbcType="INTEGER" property="billingType" />
+    <result column="total_price" jdbcType="DOUBLE" property="totalPrice" />
+    <result column="transaction_name" jdbcType="VARCHAR" property="transactionName" />
+    <result column="billing_time" jdbcType="TIMESTAMP" property="billingTime" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="sent_time" jdbcType="TIMESTAMP" property="sentTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="related_bill_id" jdbcType="VARCHAR" property="relatedBillId" />
+    <result column="data_type" jdbcType="INTEGER" property="dataType" />
+    <result column="accounting" jdbcType="INTEGER" property="accounting" />
+    <result column="settlement_type" jdbcType="INTEGER" property="settlementType" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, waybill_id, billing_object, billing_name, billing_phone, billing_type, total_price,
+    transaction_name, billing_time, status, sent_time, create_time, update_time, related_bill_id,
+    data_type, accounting
+  </sql>
+
+  <select id="selectByParams" parameterType="com.yiziton.dataimport.waybill.bean.BillingInfo" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from billing_info a
+    where  1=1
+    and a.waybill_id = #{waybillId,jdbcType=VARCHAR}
+    and a.billing_object = #{billingObject,jdbcType=INTEGER}
+    <if test='billingName != null'> and a.billing_name = #{billingName,jdbcType=VARCHAR} </if>
+    and a.billing_type = #{billingType,jdbcType=INTEGER}
+    <if test='status != null'> and a.status = #{status,jdbcType=INTEGER}</if>
+    <if test='relatedBillId == null'> and a.related_bill_id is null</if>
+    <if test='relatedBillId != null'> and a.related_bill_id = #{relatedBillId,jdbcType=VARCHAR}</if>
+    limit 1
+  </select>
+
+  <select id="selectListByParams" parameterType="com.yiziton.dataimport.waybill.bean.BillingInfo" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from billing_info a
+    where 1=1
+    and a.waybill_id = #{waybillId,jdbcType=VARCHAR}
+    and a.billing_object = #{billingObject,jdbcType=INTEGER}
+    and a.billing_name = #{billingName,jdbcType=VARCHAR}
+    and a.billing_type = #{billingType,jdbcType=INTEGER}
+    and a.status = #{status,jdbcType=INTEGER}
+    <if test='relatedBillId == null'> and a.related_bill_id is null</if>
+    <if test='relatedBillId != null'> and a.related_bill_id = #{relatedBillId,jdbcType=VARCHAR}</if>
+  </select>
+
+  <select id="selectCountForSame" parameterType="com.yiziton.dataimport.waybill.bean.BillingInfo" resultType="Integer">
+    select count(1)
+    from billing_info
+    where  1=1
+    and waybill_id = #{waybillId,jdbcType=VARCHAR}
+    and billing_object = #{billingObject,jdbcType=INTEGER}
+    and billing_type = #{billingType,jdbcType=INTEGER}
+    and billing_name = #{billingName,jdbcType=VARCHAR}
+    and billing_phone = #{billingPhone,jdbcType=VARCHAR}
+    and billing_time = #{billingTime,jdbcType=TIMESTAMP}
+    and sent_time = #{sentTime,jdbcType=TIMESTAMP}
+    and data_type = #{dataType,jdbcType=INTEGER}
+    and status = #{status,jdbcType=INTEGER}
+    <if test='relatedBillId == null'> and related_bill_id is null</if>
+    <if test='relatedBillId != null'> and related_bill_id = #{relatedBillId,jdbcType=VARCHAR}</if>
+  </select>
+
+</mapper>

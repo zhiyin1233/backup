@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiziton.dataimport.waybill.dao.ext.CompensationInfoExtMapper">
+  <resultMap id="BaseResultMap" type="com.yiziton.dataimport.waybill.bean.CompensationInfo">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="waybill_id" jdbcType="VARCHAR" property="waybillId" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="compensation_bill_id" jdbcType="VARCHAR" property="compensationBillId" />
+    <result column="compensation_class" jdbcType="VARCHAR" property="compensationClass" />
+    <result column="bill_id" jdbcType="VARCHAR" property="billId" />
+    <result column="bill_name" jdbcType="VARCHAR" property="billName" />
+    <result column="compensation_bill_month" jdbcType="VARCHAR" property="compensationBillMonth" />
+    <result column="duty_object" jdbcType="VARCHAR" property="dutyObject" />
+    <result column="duty_name" jdbcType="VARCHAR" property="dutyName" />
+    <result column="duty_code" jdbcType="VARCHAR" property="dutyCode" />
+    <result column="compensation_goods" jdbcType="VARCHAR" property="compensationGoods" />
+    <result column="compensation_type" jdbcType="VARCHAR" property="compensationType" />
+    <result column="compensation_reason" jdbcType="VARCHAR" property="compensationReason" />
+    <result column="full_offer" jdbcType="VARCHAR" property="fullOffer" />
+    <result column="handle_view" jdbcType="VARCHAR" property="handleView" />
+    <result column="close_view" jdbcType="VARCHAR" property="closeView" />
+    <result column="apply_time" jdbcType="TIMESTAMP" property="applyTime" />
+    <result column="first_handle_time" jdbcType="TIMESTAMP" property="firstHandleTime" />
+    <result column="close_time" jdbcType="TIMESTAMP" property="closeTime" />
+    <result column="apply_name" jdbcType="VARCHAR" property="applyName" />
+    <result column="handle_name" jdbcType="VARCHAR" property="handleName" />
+    <result column="close_name" jdbcType="VARCHAR" property="closeName" />
+    <result column="compensation_fee" jdbcType="DOUBLE" property="compensationFee" />
+    <result column="handle_fee" jdbcType="DOUBLE" property="handleFee" />
+    <result column="accommodation_fee" jdbcType="DOUBLE" property="accommodationFee" />
+    <result column="close_fee" jdbcType="DOUBLE" property="closeFee" />
+    <result column="count_fee" jdbcType="DOUBLE" property="countFee" />
+    <result column="compensation_letter" jdbcType="VARCHAR" property="compensationLetter" />
+    <result column="lost_list" jdbcType="VARCHAR" property="lostList" />
+    <result column="sign_bill" jdbcType="VARCHAR" property="signBill" />
+    <result column="goods_value_instruction" jdbcType="VARCHAR" property="goodsValueInstruction" />
+    <result column="damage_picture" jdbcType="VARCHAR" property="damagePicture" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="data_type" jdbcType="INTEGER" property="dataType" />
+    <result column="damage_degree" jdbcType="VARCHAR" property="damageDegree" />
+    <result column="compensation_status" jdbcType="VARCHAR" property="compensationStatus" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, waybill_id, status, compensation_bill_id, compensation_class, bill_id, bill_name,
+    compensation_bill_month, duty_object, duty_name, duty_code, compensation_goods, compensation_type,
+    compensation_reason, full_offer, handle_view, close_view, apply_time, first_handle_time,
+    close_time, apply_name, handle_name, close_name, compensation_fee, handle_fee, accommodation_fee,
+    close_fee, count_fee, compensation_letter, lost_list, sign_bill, goods_value_instruction,
+    damage_picture, create_time, update_time, data_type, damage_degree, compensation_status
+  </sql>
+  <select id="selectByWaybillIdAndCompensationBillId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from compensation_info
+    where waybill_id = #{waybillId,jdbcType=VARCHAR} and compensation_bill_id = #{compensationBillId,jdbcType=VARCHAR}
+    and status = 1
+  </select>
+  <select id="selectByWaybillId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from compensation_info
+    where waybill_id = #{waybillId,jdbcType=VARCHAR}
+    and status = 1
+    order by apply_time desc
+  </select>
+
+</mapper>

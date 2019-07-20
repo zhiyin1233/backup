@@ -1,0 +1,603 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiziton.dataimport.waybill.dao.MasterDictInfoMapper">
+  <resultMap id="BaseResultMap" type="com.yiziton.dataimport.waybill.bean.MasterDictInfo">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="node" jdbcType="VARCHAR" property="node" />
+    <result column="account_ number" jdbcType="VARCHAR" property="accountNumber" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="certificates_type" jdbcType="INTEGER" property="certificatesType" />
+    <result column="certificates_code" jdbcType="VARCHAR" property="certificatesCode" />
+    <result column="certificates_picture" jdbcType="VARCHAR" property="certificatesPicture" />
+    <result column="service_type" jdbcType="INTEGER" property="serviceType" />
+    <result column="added_value_service" jdbcType="INTEGER" property="addedValueService" />
+    <result column="service_areas" jdbcType="VARCHAR" property="serviceAreas" />
+    <result column="master_status" jdbcType="INTEGER" property="masterStatus" />
+    <result column="settlement_type" jdbcType="INTEGER" property="settlementType" />
+    <result column="reflect_type" jdbcType="INTEGER" property="reflectType" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="account" jdbcType="VARCHAR" property="account" />
+    <result column="account_name" jdbcType="VARCHAR" property="accountName" />
+    <result column="bank_name" jdbcType="VARCHAR" property="bankName" />
+    <result column="bank_code" jdbcType="VARCHAR" property="bankCode" />
+    <result column="sub_bank_name" jdbcType="VARCHAR" property="subBankName" />
+    <result column="car_type" jdbcType="INTEGER" property="carType" />
+    <result column="car_number" jdbcType="VARCHAR" property="carNumber" />
+    <result column="car_length" jdbcType="VARCHAR" property="carLength" />
+    <result column="car_weight_bearing" jdbcType="VARCHAR" property="carWeightBearing" />
+    <result column="car_space" jdbcType="VARCHAR" property="carSpace" />
+    <result column="car_picture" jdbcType="VARCHAR" property="carPicture" />
+    <result column="driving license_picture" jdbcType="VARCHAR" property="drivingLicensePicture" />
+    <result column="warehouse_address" jdbcType="VARCHAR" property="warehouseAddress" />
+    <result column="warehouse_area" jdbcType="VARCHAR" property="warehouseArea" />
+    <result column="warehouse_size" jdbcType="VARCHAR" property="warehouseSize" />
+    <result column="team_number" jdbcType="INTEGER" property="teamNumber" />
+    <result column="maximum_bill_count" jdbcType="INTEGER" property="maximumBillCount" />
+    <result column="bailmoney" jdbcType="INTEGER" property="bailmoney" />
+    <result column="repair_node" jdbcType="VARCHAR" property="repairNode" />
+    <result column="back_node" jdbcType="VARCHAR" property="backNode" />
+    <result column="install_node" jdbcType="VARCHAR" property="installNode" />
+    <result column="second_door_node" jdbcType="VARCHAR" property="secondDoorNode" />
+    <result column="register_time" jdbcType="TIMESTAMP" property="registerTime" />
+    <result column="authentication_time" jdbcType="TIMESTAMP" property="authenticationTime" />
+    <result column="last_modify_time" jdbcType="TIMESTAMP" property="lastModifyTime" />
+    <result column="last_modify" jdbcType="VARCHAR" property="lastModify" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name, node, "account_ number", phone, type, code, certificates_type, certificates_code, 
+    certificates_picture, service_type, added_value_service, service_areas, master_status, 
+    settlement_type, reflect_type, status, province, city, account, account_name, bank_name, 
+    bank_code, sub_bank_name, car_type, car_number, car_length, car_weight_bearing, car_space, 
+    car_picture, "driving license_picture", warehouse_address, warehouse_area, warehouse_size, 
+    team_number, maximum_bill_count, bailmoney, repair_node, back_node, install_node, 
+    second_door_node, register_time, authentication_time, last_modify_time, last_modify, 
+    remark, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from master_dict_info
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from master_dict_info
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yiziton.dataimport.waybill.bean.MasterDictInfo">
+    insert into master_dict_info (id, name, node, 
+      "account_ number", phone, type, 
+      code, certificates_type, certificates_code, 
+      certificates_picture, service_type, added_value_service, 
+      service_areas, master_status, settlement_type, 
+      reflect_type, status, province, 
+      city, account, account_name, 
+      bank_name, bank_code, sub_bank_name, 
+      car_type, car_number, car_length, 
+      car_weight_bearing, car_space, car_picture, 
+      "driving license_picture", warehouse_address, 
+      warehouse_area, warehouse_size, team_number, 
+      maximum_bill_count, bailmoney, repair_node, 
+      back_node, install_node, second_door_node, 
+      register_time, authentication_time, last_modify_time, 
+      last_modify, remark, create_time, 
+      update_time)
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{node,jdbcType=VARCHAR}, 
+      #{accountNumber,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
+      #{code,jdbcType=VARCHAR}, #{certificatesType,jdbcType=INTEGER}, #{certificatesCode,jdbcType=VARCHAR}, 
+      #{certificatesPicture,jdbcType=VARCHAR}, #{serviceType,jdbcType=INTEGER}, #{addedValueService,jdbcType=INTEGER}, 
+      #{serviceAreas,jdbcType=VARCHAR}, #{masterStatus,jdbcType=INTEGER}, #{settlementType,jdbcType=INTEGER}, 
+      #{reflectType,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, 
+      #{city,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, #{accountName,jdbcType=VARCHAR}, 
+      #{bankName,jdbcType=VARCHAR}, #{bankCode,jdbcType=VARCHAR}, #{subBankName,jdbcType=VARCHAR}, 
+      #{carType,jdbcType=INTEGER}, #{carNumber,jdbcType=VARCHAR}, #{carLength,jdbcType=VARCHAR}, 
+      #{carWeightBearing,jdbcType=VARCHAR}, #{carSpace,jdbcType=VARCHAR}, #{carPicture,jdbcType=VARCHAR}, 
+      #{drivingLicensePicture,jdbcType=VARCHAR}, #{warehouseAddress,jdbcType=VARCHAR}, 
+      #{warehouseArea,jdbcType=VARCHAR}, #{warehouseSize,jdbcType=VARCHAR}, #{teamNumber,jdbcType=INTEGER}, 
+      #{maximumBillCount,jdbcType=INTEGER}, #{bailmoney,jdbcType=INTEGER}, #{repairNode,jdbcType=VARCHAR}, 
+      #{backNode,jdbcType=VARCHAR}, #{installNode,jdbcType=VARCHAR}, #{secondDoorNode,jdbcType=VARCHAR}, 
+      #{registerTime,jdbcType=TIMESTAMP}, #{authenticationTime,jdbcType=TIMESTAMP}, #{lastModifyTime,jdbcType=TIMESTAMP}, 
+      #{lastModify,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yiziton.dataimport.waybill.bean.MasterDictInfo">
+    insert into master_dict_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="node != null">
+        node,
+      </if>
+      <if test="accountNumber != null">
+        "account_ number",
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="code != null">
+        code,
+      </if>
+      <if test="certificatesType != null">
+        certificates_type,
+      </if>
+      <if test="certificatesCode != null">
+        certificates_code,
+      </if>
+      <if test="certificatesPicture != null">
+        certificates_picture,
+      </if>
+      <if test="serviceType != null">
+        service_type,
+      </if>
+      <if test="addedValueService != null">
+        added_value_service,
+      </if>
+      <if test="serviceAreas != null">
+        service_areas,
+      </if>
+      <if test="masterStatus != null">
+        master_status,
+      </if>
+      <if test="settlementType != null">
+        settlement_type,
+      </if>
+      <if test="reflectType != null">
+        reflect_type,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="province != null">
+        province,
+      </if>
+      <if test="city != null">
+        city,
+      </if>
+      <if test="account != null">
+        account,
+      </if>
+      <if test="accountName != null">
+        account_name,
+      </if>
+      <if test="bankName != null">
+        bank_name,
+      </if>
+      <if test="bankCode != null">
+        bank_code,
+      </if>
+      <if test="subBankName != null">
+        sub_bank_name,
+      </if>
+      <if test="carType != null">
+        car_type,
+      </if>
+      <if test="carNumber != null">
+        car_number,
+      </if>
+      <if test="carLength != null">
+        car_length,
+      </if>
+      <if test="carWeightBearing != null">
+        car_weight_bearing,
+      </if>
+      <if test="carSpace != null">
+        car_space,
+      </if>
+      <if test="carPicture != null">
+        car_picture,
+      </if>
+      <if test="drivingLicensePicture != null">
+        "driving license_picture",
+      </if>
+      <if test="warehouseAddress != null">
+        warehouse_address,
+      </if>
+      <if test="warehouseArea != null">
+        warehouse_area,
+      </if>
+      <if test="warehouseSize != null">
+        warehouse_size,
+      </if>
+      <if test="teamNumber != null">
+        team_number,
+      </if>
+      <if test="maximumBillCount != null">
+        maximum_bill_count,
+      </if>
+      <if test="bailmoney != null">
+        bailmoney,
+      </if>
+      <if test="repairNode != null">
+        repair_node,
+      </if>
+      <if test="backNode != null">
+        back_node,
+      </if>
+      <if test="installNode != null">
+        install_node,
+      </if>
+      <if test="secondDoorNode != null">
+        second_door_node,
+      </if>
+      <if test="registerTime != null">
+        register_time,
+      </if>
+      <if test="authenticationTime != null">
+        authentication_time,
+      </if>
+      <if test="lastModifyTime != null">
+        last_modify_time,
+      </if>
+      <if test="lastModify != null">
+        last_modify,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="node != null">
+        #{node,jdbcType=VARCHAR},
+      </if>
+      <if test="accountNumber != null">
+        #{accountNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="certificatesType != null">
+        #{certificatesType,jdbcType=INTEGER},
+      </if>
+      <if test="certificatesCode != null">
+        #{certificatesCode,jdbcType=VARCHAR},
+      </if>
+      <if test="certificatesPicture != null">
+        #{certificatesPicture,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceType != null">
+        #{serviceType,jdbcType=INTEGER},
+      </if>
+      <if test="addedValueService != null">
+        #{addedValueService,jdbcType=INTEGER},
+      </if>
+      <if test="serviceAreas != null">
+        #{serviceAreas,jdbcType=VARCHAR},
+      </if>
+      <if test="masterStatus != null">
+        #{masterStatus,jdbcType=INTEGER},
+      </if>
+      <if test="settlementType != null">
+        #{settlementType,jdbcType=INTEGER},
+      </if>
+      <if test="reflectType != null">
+        #{reflectType,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="province != null">
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null">
+        #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="accountName != null">
+        #{accountName,jdbcType=VARCHAR},
+      </if>
+      <if test="bankName != null">
+        #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCode != null">
+        #{bankCode,jdbcType=VARCHAR},
+      </if>
+      <if test="subBankName != null">
+        #{subBankName,jdbcType=VARCHAR},
+      </if>
+      <if test="carType != null">
+        #{carType,jdbcType=INTEGER},
+      </if>
+      <if test="carNumber != null">
+        #{carNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="carLength != null">
+        #{carLength,jdbcType=VARCHAR},
+      </if>
+      <if test="carWeightBearing != null">
+        #{carWeightBearing,jdbcType=VARCHAR},
+      </if>
+      <if test="carSpace != null">
+        #{carSpace,jdbcType=VARCHAR},
+      </if>
+      <if test="carPicture != null">
+        #{carPicture,jdbcType=VARCHAR},
+      </if>
+      <if test="drivingLicensePicture != null">
+        #{drivingLicensePicture,jdbcType=VARCHAR},
+      </if>
+      <if test="warehouseAddress != null">
+        #{warehouseAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="warehouseArea != null">
+        #{warehouseArea,jdbcType=VARCHAR},
+      </if>
+      <if test="warehouseSize != null">
+        #{warehouseSize,jdbcType=VARCHAR},
+      </if>
+      <if test="teamNumber != null">
+        #{teamNumber,jdbcType=INTEGER},
+      </if>
+      <if test="maximumBillCount != null">
+        #{maximumBillCount,jdbcType=INTEGER},
+      </if>
+      <if test="bailmoney != null">
+        #{bailmoney,jdbcType=INTEGER},
+      </if>
+      <if test="repairNode != null">
+        #{repairNode,jdbcType=VARCHAR},
+      </if>
+      <if test="backNode != null">
+        #{backNode,jdbcType=VARCHAR},
+      </if>
+      <if test="installNode != null">
+        #{installNode,jdbcType=VARCHAR},
+      </if>
+      <if test="secondDoorNode != null">
+        #{secondDoorNode,jdbcType=VARCHAR},
+      </if>
+      <if test="registerTime != null">
+        #{registerTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="authenticationTime != null">
+        #{authenticationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastModifyTime != null">
+        #{lastModifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastModify != null">
+        #{lastModify,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yiziton.dataimport.waybill.bean.MasterDictInfo">
+    update master_dict_info
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="node != null">
+        node = #{node,jdbcType=VARCHAR},
+      </if>
+      <if test="accountNumber != null">
+        "account_ number" = #{accountNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="code != null">
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="certificatesType != null">
+        certificates_type = #{certificatesType,jdbcType=INTEGER},
+      </if>
+      <if test="certificatesCode != null">
+        certificates_code = #{certificatesCode,jdbcType=VARCHAR},
+      </if>
+      <if test="certificatesPicture != null">
+        certificates_picture = #{certificatesPicture,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceType != null">
+        service_type = #{serviceType,jdbcType=INTEGER},
+      </if>
+      <if test="addedValueService != null">
+        added_value_service = #{addedValueService,jdbcType=INTEGER},
+      </if>
+      <if test="serviceAreas != null">
+        service_areas = #{serviceAreas,jdbcType=VARCHAR},
+      </if>
+      <if test="masterStatus != null">
+        master_status = #{masterStatus,jdbcType=INTEGER},
+      </if>
+      <if test="settlementType != null">
+        settlement_type = #{settlementType,jdbcType=INTEGER},
+      </if>
+      <if test="reflectType != null">
+        reflect_type = #{reflectType,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="province != null">
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null">
+        account = #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="accountName != null">
+        account_name = #{accountName,jdbcType=VARCHAR},
+      </if>
+      <if test="bankName != null">
+        bank_name = #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCode != null">
+        bank_code = #{bankCode,jdbcType=VARCHAR},
+      </if>
+      <if test="subBankName != null">
+        sub_bank_name = #{subBankName,jdbcType=VARCHAR},
+      </if>
+      <if test="carType != null">
+        car_type = #{carType,jdbcType=INTEGER},
+      </if>
+      <if test="carNumber != null">
+        car_number = #{carNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="carLength != null">
+        car_length = #{carLength,jdbcType=VARCHAR},
+      </if>
+      <if test="carWeightBearing != null">
+        car_weight_bearing = #{carWeightBearing,jdbcType=VARCHAR},
+      </if>
+      <if test="carSpace != null">
+        car_space = #{carSpace,jdbcType=VARCHAR},
+      </if>
+      <if test="carPicture != null">
+        car_picture = #{carPicture,jdbcType=VARCHAR},
+      </if>
+      <if test="drivingLicensePicture != null">
+        "driving license_picture" = #{drivingLicensePicture,jdbcType=VARCHAR},
+      </if>
+      <if test="warehouseAddress != null">
+        warehouse_address = #{warehouseAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="warehouseArea != null">
+        warehouse_area = #{warehouseArea,jdbcType=VARCHAR},
+      </if>
+      <if test="warehouseSize != null">
+        warehouse_size = #{warehouseSize,jdbcType=VARCHAR},
+      </if>
+      <if test="teamNumber != null">
+        team_number = #{teamNumber,jdbcType=INTEGER},
+      </if>
+      <if test="maximumBillCount != null">
+        maximum_bill_count = #{maximumBillCount,jdbcType=INTEGER},
+      </if>
+      <if test="bailmoney != null">
+        bailmoney = #{bailmoney,jdbcType=INTEGER},
+      </if>
+      <if test="repairNode != null">
+        repair_node = #{repairNode,jdbcType=VARCHAR},
+      </if>
+      <if test="backNode != null">
+        back_node = #{backNode,jdbcType=VARCHAR},
+      </if>
+      <if test="installNode != null">
+        install_node = #{installNode,jdbcType=VARCHAR},
+      </if>
+      <if test="secondDoorNode != null">
+        second_door_node = #{secondDoorNode,jdbcType=VARCHAR},
+      </if>
+      <if test="registerTime != null">
+        register_time = #{registerTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="authenticationTime != null">
+        authentication_time = #{authenticationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastModifyTime != null">
+        last_modify_time = #{lastModifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastModify != null">
+        last_modify = #{lastModify,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yiziton.dataimport.waybill.bean.MasterDictInfo">
+    update master_dict_info
+    set name = #{name,jdbcType=VARCHAR},
+      node = #{node,jdbcType=VARCHAR},
+      "account_ number" = #{accountNumber,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      code = #{code,jdbcType=VARCHAR},
+      certificates_type = #{certificatesType,jdbcType=INTEGER},
+      certificates_code = #{certificatesCode,jdbcType=VARCHAR},
+      certificates_picture = #{certificatesPicture,jdbcType=VARCHAR},
+      service_type = #{serviceType,jdbcType=INTEGER},
+      added_value_service = #{addedValueService,jdbcType=INTEGER},
+      service_areas = #{serviceAreas,jdbcType=VARCHAR},
+      master_status = #{masterStatus,jdbcType=INTEGER},
+      settlement_type = #{settlementType,jdbcType=INTEGER},
+      reflect_type = #{reflectType,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      province = #{province,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      account = #{account,jdbcType=VARCHAR},
+      account_name = #{accountName,jdbcType=VARCHAR},
+      bank_name = #{bankName,jdbcType=VARCHAR},
+      bank_code = #{bankCode,jdbcType=VARCHAR},
+      sub_bank_name = #{subBankName,jdbcType=VARCHAR},
+      car_type = #{carType,jdbcType=INTEGER},
+      car_number = #{carNumber,jdbcType=VARCHAR},
+      car_length = #{carLength,jdbcType=VARCHAR},
+      car_weight_bearing = #{carWeightBearing,jdbcType=VARCHAR},
+      car_space = #{carSpace,jdbcType=VARCHAR},
+      car_picture = #{carPicture,jdbcType=VARCHAR},
+      "driving license_picture" = #{drivingLicensePicture,jdbcType=VARCHAR},
+      warehouse_address = #{warehouseAddress,jdbcType=VARCHAR},
+      warehouse_area = #{warehouseArea,jdbcType=VARCHAR},
+      warehouse_size = #{warehouseSize,jdbcType=VARCHAR},
+      team_number = #{teamNumber,jdbcType=INTEGER},
+      maximum_bill_count = #{maximumBillCount,jdbcType=INTEGER},
+      bailmoney = #{bailmoney,jdbcType=INTEGER},
+      repair_node = #{repairNode,jdbcType=VARCHAR},
+      back_node = #{backNode,jdbcType=VARCHAR},
+      install_node = #{installNode,jdbcType=VARCHAR},
+      second_door_node = #{secondDoorNode,jdbcType=VARCHAR},
+      register_time = #{registerTime,jdbcType=TIMESTAMP},
+      authentication_time = #{authenticationTime,jdbcType=TIMESTAMP},
+      last_modify_time = #{lastModifyTime,jdbcType=TIMESTAMP},
+      last_modify = #{lastModify,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

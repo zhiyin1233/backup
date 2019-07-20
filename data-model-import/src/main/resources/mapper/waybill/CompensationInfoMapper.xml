@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiziton.dataimport.waybill.dao.CompensationInfoMapper">
+  <resultMap id="BaseResultMap" type="com.yiziton.dataimport.waybill.bean.CompensationInfo">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="waybill_id" jdbcType="VARCHAR" property="waybillId" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="compensation_bill_id" jdbcType="VARCHAR" property="compensationBillId" />
+    <result column="compensation_class" jdbcType="VARCHAR" property="compensationClass" />
+    <result column="bill_id" jdbcType="VARCHAR" property="billId" />
+    <result column="bill_name" jdbcType="VARCHAR" property="billName" />
+    <result column="compensation_bill_month" jdbcType="VARCHAR" property="compensationBillMonth" />
+    <result column="duty_object" jdbcType="VARCHAR" property="dutyObject" />
+    <result column="duty_name" jdbcType="VARCHAR" property="dutyName" />
+    <result column="duty_code" jdbcType="VARCHAR" property="dutyCode" />
+    <result column="compensation_goods" jdbcType="VARCHAR" property="compensationGoods" />
+    <result column="compensation_type" jdbcType="VARCHAR" property="compensationType" />
+    <result column="compensation_reason" jdbcType="VARCHAR" property="compensationReason" />
+    <result column="full_offer" jdbcType="VARCHAR" property="fullOffer" />
+    <result column="handle_view" jdbcType="VARCHAR" property="handleView" />
+    <result column="close_view" jdbcType="VARCHAR" property="closeView" />
+    <result column="apply_time" jdbcType="TIMESTAMP" property="applyTime" />
+    <result column="first_handle_time" jdbcType="TIMESTAMP" property="firstHandleTime" />
+    <result column="close_time" jdbcType="TIMESTAMP" property="closeTime" />
+    <result column="apply_name" jdbcType="VARCHAR" property="applyName" />
+    <result column="handle_name" jdbcType="VARCHAR" property="handleName" />
+    <result column="close_name" jdbcType="VARCHAR" property="closeName" />
+    <result column="compensation_fee" jdbcType="DOUBLE" property="compensationFee" />
+    <result column="handle_fee" jdbcType="DOUBLE" property="handleFee" />
+    <result column="accommodation_fee" jdbcType="DOUBLE" property="accommodationFee" />
+    <result column="close_fee" jdbcType="DOUBLE" property="closeFee" />
+    <result column="count_fee" jdbcType="DOUBLE" property="countFee" />
+    <result column="compensation_letter" jdbcType="VARCHAR" property="compensationLetter" />
+    <result column="lost_list" jdbcType="VARCHAR" property="lostList" />
+    <result column="sign_bill" jdbcType="VARCHAR" property="signBill" />
+    <result column="goods_value_instruction" jdbcType="VARCHAR" property="goodsValueInstruction" />
+    <result column="damage_picture" jdbcType="VARCHAR" property="damagePicture" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="data_type" jdbcType="INTEGER" property="dataType" />
+    <result column="damage_degree" jdbcType="VARCHAR" property="damageDegree" />
+    <result column="compensation_status" jdbcType="VARCHAR" property="compensationStatus" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, waybill_id, status, compensation_bill_id, compensation_class, bill_id, bill_name, 
+    compensation_bill_month, duty_object, duty_name, duty_code, compensation_goods, compensation_type, 
+    compensation_reason, full_offer, handle_view, close_view, apply_time, first_handle_time, 
+    close_time, apply_name, handle_name, close_name, compensation_fee, handle_fee, accommodation_fee, 
+    close_fee, count_fee, compensation_letter, lost_list, sign_bill, goods_value_instruction, 
+    damage_picture, create_time, update_time, data_type, damage_degree, compensation_status
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from compensation_info
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from compensation_info
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yiziton.dataimport.waybill.bean.CompensationInfo">
+    insert into compensation_info (id, waybill_id, status, 
+      compensation_bill_id, compensation_class, 
+      bill_id, bill_name, compensation_bill_month, 
+      duty_object, duty_name, duty_code, 
+      compensation_goods, compensation_type, compensation_reason, 
+      full_offer, handle_view, close_view, 
+      apply_time, first_handle_time, close_time, 
+      apply_name, handle_name, close_name, 
+      compensation_fee, handle_fee, accommodation_fee, 
+      close_fee, count_fee, compensation_letter, 
+      lost_list, sign_bill, goods_value_instruction, 
+      damage_picture, create_time, update_time, 
+      data_type, damage_degree, compensation_status
+      )
+    values (#{id,jdbcType=VARCHAR}, #{waybillId,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+      #{compensationBillId,jdbcType=VARCHAR}, #{compensationClass,jdbcType=VARCHAR}, 
+      #{billId,jdbcType=VARCHAR}, #{billName,jdbcType=VARCHAR}, #{compensationBillMonth,jdbcType=VARCHAR}, 
+      #{dutyObject,jdbcType=VARCHAR}, #{dutyName,jdbcType=VARCHAR}, #{dutyCode,jdbcType=VARCHAR}, 
+      #{compensationGoods,jdbcType=VARCHAR}, #{compensationType,jdbcType=VARCHAR}, #{compensationReason,jdbcType=VARCHAR}, 
+      #{fullOffer,jdbcType=VARCHAR}, #{handleView,jdbcType=VARCHAR}, #{closeView,jdbcType=VARCHAR}, 
+      #{applyTime,jdbcType=TIMESTAMP}, #{firstHandleTime,jdbcType=TIMESTAMP}, #{closeTime,jdbcType=TIMESTAMP}, 
+      #{applyName,jdbcType=VARCHAR}, #{handleName,jdbcType=VARCHAR}, #{closeName,jdbcType=VARCHAR}, 
+      #{compensationFee,jdbcType=DOUBLE}, #{handleFee,jdbcType=DOUBLE}, #{accommodationFee,jdbcType=DOUBLE}, 
+      #{closeFee,jdbcType=DOUBLE}, #{countFee,jdbcType=DOUBLE}, #{compensationLetter,jdbcType=VARCHAR}, 
+      #{lostList,jdbcType=VARCHAR}, #{signBill,jdbcType=VARCHAR}, #{goodsValueInstruction,jdbcType=VARCHAR}, 
+      #{damagePicture,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{dataType,jdbcType=INTEGER}, #{damageDegree,jdbcType=VARCHAR}, #{compensationStatus,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yiziton.dataimport.waybill.bean.CompensationInfo">
+    insert into compensation_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="waybillId != null">
+        waybill_id,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="compensationBillId != null">
+        compensation_bill_id,
+      </if>
+      <if test="compensationClass != null">
+        compensation_class,
+      </if>
+      <if test="billId != null">
+        bill_id,
+      </if>
+      <if test="billName != null">
+        bill_name,
+      </if>
+      <if test="compensationBillMonth != null">
+        compensation_bill_month,
+      </if>
+      <if test="dutyObject != null">
+        duty_object,
+      </if>
+      <if test="dutyName != null">
+        duty_name,
+      </if>
+      <if test="dutyCode != null">
+        duty_code,
+      </if>
+      <if test="compensationGoods != null">
+        compensation_goods,
+      </if>
+      <if test="compensationType != null">
+        compensation_type,
+      </if>
+      <if test="compensationReason != null">
+        compensation_reason,
+      </if>
+      <if test="fullOffer != null">
+        full_offer,
+      </if>
+      <if test="handleView != null">
+        handle_view,
+      </if>
+      <if test="closeView != null">
+        close_view,
+      </if>
+      <if test="applyTime != null">
+        apply_time,
+      </if>
+      <if test="firstHandleTime != null">
+        first_handle_time,
+      </if>
+      <if test="closeTime != null">
+        close_time,
+      </if>
+      <if test="applyName != null">
+        apply_name,
+      </if>
+      <if test="handleName != null">
+        handle_name,
+      </if>
+      <if test="closeName != null">
+        close_name,
+      </if>
+      <if test="compensationFee != null">
+        compensation_fee,
+      </if>
+      <if test="handleFee != null">
+        handle_fee,
+      </if>
+      <if test="accommodationFee != null">
+        accommodation_fee,
+      </if>
+      <if test="closeFee != null">
+        close_fee,
+      </if>
+      <if test="countFee != null">
+        count_fee,
+      </if>
+      <if test="compensationLetter != null">
+        compensation_letter,
+      </if>
+      <if test="lostList != null">
+        lost_list,
+      </if>
+      <if test="signBill != null">
+        sign_bill,
+      </if>
+      <if test="goodsValueInstruction != null">
+        goods_value_instruction,
+      </if>
+      <if test="damagePicture != null">
+        damage_picture,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="dataType != null">
+        data_type,
+      </if>
+      <if test="damageDegree != null">
+        damage_degree,
+      </if>
+      <if test="compensationStatus != null">
+        compensation_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="waybillId != null">
+        #{waybillId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="compensationBillId != null">
+        #{compensationBillId,jdbcType=VARCHAR},
+      </if>
+      <if test="compensationClass != null">
+        #{compensationClass,jdbcType=VARCHAR},
+      </if>
+      <if test="billId != null">
+        #{billId,jdbcType=VARCHAR},
+      </if>
+      <if test="billName != null">
+        #{billName,jdbcType=VARCHAR},
+      </if>
+      <if test="compensationBillMonth != null">
+        #{compensationBillMonth,jdbcType=VARCHAR},
+      </if>
+      <if test="dutyObject != null">
+        #{dutyObject,jdbcType=VARCHAR},
+      </if>
+      <if test="dutyName != null">
+        #{dutyName,jdbcType=VARCHAR},
+      </if>
+      <if test="dutyCode != null">
+        #{dutyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="compensationGoods != null">
+        #{compensationGoods,jdbcType=VARCHAR},
+      </if>
+      <if test="compensationType != null">
+        #{compensationType,jdbcType=VARCHAR},
+      </if>
+      <if test="compensationReason != null">
+        #{compensationReason,jdbcType=VARCHAR},
+      </if>
+      <if test="fullOffer != null">
+        #{fullOffer,jdbcType=VARCHAR},
+      </if>
+      <if test="handleView != null">
+        #{handleView,jdbcType=VARCHAR},
+      </if>
+      <if test="closeView != null">
+        #{closeView,jdbcType=VARCHAR},
+      </if>
+      <if test="applyTime != null">
+        #{applyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="firstHandleTime != null">
+        #{firstHandleTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="closeTime != null">
+        #{closeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="applyName != null">
+        #{applyName,jdbcType=VARCHAR},
+      </if>
+      <if test="handleName != null">
+        #{handleName,jdbcType=VARCHAR},
+      </if>
+      <if test="closeName != null">
+        #{closeName,jdbcType=VARCHAR},
+      </if>
+      <if test="compensationFee != null">
+        #{compensationFee,jdbcType=DOUBLE},
+      </if>
+      <if test="handleFee != null">
+        #{handleFee,jdbcType=DOUBLE},
+      </if>
+      <if test="accommodationFee != null">
+        #{accommodationFee,jdbcType=DOUBLE},
+      </if>
+      <if test="closeFee != null">
+        #{closeFee,jdbcType=DOUBLE},
+      </if>
+      <if test="countFee != null">
+        #{countFee,jdbcType=DOUBLE},
+      </if>
+      <if test="compensationLetter != null">
+        #{compensationLetter,jdbcType=VARCHAR},
+      </if>
+      <if test="lostList != null">
+        #{lostList,jdbcType=VARCHAR},
+      </if>
+      <if test="signBill != null">
+        #{signBill,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsValueInstruction != null">
+        #{goodsValueInstruction,jdbcType=VARCHAR},
+      </if>
+      <if test="damagePicture != null">
+        #{damagePicture,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dataType != null">
+        #{dataType,jdbcType=INTEGER},
+      </if>
+      <if test="damageDegree != null">
+        #{damageDegree,jdbcType=VARCHAR},
+      </if>
+      <if test="compensationStatus != null">
+        #{compensationStatus,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yiziton.dataimport.waybill.bean.CompensationInfo">
+    update compensation_info
+    <set>
+      <if test="waybillId != null">
+        waybill_id = #{waybillId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="compensationBillId != null">
+        compensation_bill_id = #{compensationBillId,jdbcType=VARCHAR},
+      </if>
+      <if test="compensationClass != null">
+        compensation_class = #{compensationClass,jdbcType=VARCHAR},
+      </if>
+      <if test="billId != null">
+        bill_id = #{billId,jdbcType=VARCHAR},
+      </if>
+      <if test="billName != null">
+        bill_name = #{billName,jdbcType=VARCHAR},
+      </if>
+      <if test="compensationBillMonth != null">
+        compensation_bill_month = #{compensationBillMonth,jdbcType=VARCHAR},
+      </if>
+      <if test="dutyObject != null">
+        duty_object = #{dutyObject,jdbcType=VARCHAR},
+      </if>
+      <if test="dutyName != null">
+        duty_name = #{dutyName,jdbcType=VARCHAR},
+      </if>
+      <if test="dutyCode != null">
+        duty_code = #{dutyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="compensationGoods != null">
+        compensation_goods = #{compensationGoods,jdbcType=VARCHAR},
+      </if>
+      <if test="compensationType != null">
+        compensation_type = #{compensationType,jdbcType=VARCHAR},
+      </if>
+      <if test="compensationReason != null">
+        compensation_reason = #{compensationReason,jdbcType=VARCHAR},
+      </if>
+      <if test="fullOffer != null">
+        full_offer = #{fullOffer,jdbcType=VARCHAR},
+      </if>
+      <if test="handleView != null">
+        handle_view = #{handleView,jdbcType=VARCHAR},
+      </if>
+      <if test="closeView != null">
+        close_view = #{closeView,jdbcType=VARCHAR},
+      </if>
+      <if test="applyTime != null">
+        apply_time = #{applyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="firstHandleTime != null">
+        first_handle_time = #{firstHandleTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="closeTime != null">
+        close_time = #{closeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="applyName != null">
+        apply_name = #{applyName,jdbcType=VARCHAR},
+      </if>
+      <if test="handleName != null">
+        handle_name = #{handleName,jdbcType=VARCHAR},
+      </if>
+      <if test="closeName != null">
+        close_name = #{closeName,jdbcType=VARCHAR},
+      </if>
+      <if test="compensationFee != null">
+        compensation_fee = #{compensationFee,jdbcType=DOUBLE},
+      </if>
+      <if test="handleFee != null">
+        handle_fee = #{handleFee,jdbcType=DOUBLE},
+      </if>
+      <if test="accommodationFee != null">
+        accommodation_fee = #{accommodationFee,jdbcType=DOUBLE},
+      </if>
+      <if test="closeFee != null">
+        close_fee = #{closeFee,jdbcType=DOUBLE},
+      </if>
+      <if test="countFee != null">
+        count_fee = #{countFee,jdbcType=DOUBLE},
+      </if>
+      <if test="compensationLetter != null">
+        compensation_letter = #{compensationLetter,jdbcType=VARCHAR},
+      </if>
+      <if test="lostList != null">
+        lost_list = #{lostList,jdbcType=VARCHAR},
+      </if>
+      <if test="signBill != null">
+        sign_bill = #{signBill,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsValueInstruction != null">
+        goods_value_instruction = #{goodsValueInstruction,jdbcType=VARCHAR},
+      </if>
+      <if test="damagePicture != null">
+        damage_picture = #{damagePicture,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dataType != null">
+        data_type = #{dataType,jdbcType=INTEGER},
+      </if>
+      <if test="damageDegree != null">
+        damage_degree = #{damageDegree,jdbcType=VARCHAR},
+      </if>
+      <if test="compensationStatus != null">
+        compensation_status = #{compensationStatus,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yiziton.dataimport.waybill.bean.CompensationInfo">
+    update compensation_info
+    set waybill_id = #{waybillId,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      compensation_bill_id = #{compensationBillId,jdbcType=VARCHAR},
+      compensation_class = #{compensationClass,jdbcType=VARCHAR},
+      bill_id = #{billId,jdbcType=VARCHAR},
+      bill_name = #{billName,jdbcType=VARCHAR},
+      compensation_bill_month = #{compensationBillMonth,jdbcType=VARCHAR},
+      duty_object = #{dutyObject,jdbcType=VARCHAR},
+      duty_name = #{dutyName,jdbcType=VARCHAR},
+      duty_code = #{dutyCode,jdbcType=VARCHAR},
+      compensation_goods = #{compensationGoods,jdbcType=VARCHAR},
+      compensation_type = #{compensationType,jdbcType=VARCHAR},
+      compensation_reason = #{compensationReason,jdbcType=VARCHAR},
+      full_offer = #{fullOffer,jdbcType=VARCHAR},
+      handle_view = #{handleView,jdbcType=VARCHAR},
+      close_view = #{closeView,jdbcType=VARCHAR},
+      apply_time = #{applyTime,jdbcType=TIMESTAMP},
+      first_handle_time = #{firstHandleTime,jdbcType=TIMESTAMP},
+      close_time = #{closeTime,jdbcType=TIMESTAMP},
+      apply_name = #{applyName,jdbcType=VARCHAR},
+      handle_name = #{handleName,jdbcType=VARCHAR},
+      close_name = #{closeName,jdbcType=VARCHAR},
+      compensation_fee = #{compensationFee,jdbcType=DOUBLE},
+      handle_fee = #{handleFee,jdbcType=DOUBLE},
+      accommodation_fee = #{accommodationFee,jdbcType=DOUBLE},
+      close_fee = #{closeFee,jdbcType=DOUBLE},
+      count_fee = #{countFee,jdbcType=DOUBLE},
+      compensation_letter = #{compensationLetter,jdbcType=VARCHAR},
+      lost_list = #{lostList,jdbcType=VARCHAR},
+      sign_bill = #{signBill,jdbcType=VARCHAR},
+      goods_value_instruction = #{goodsValueInstruction,jdbcType=VARCHAR},
+      damage_picture = #{damagePicture,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      data_type = #{dataType,jdbcType=INTEGER},
+      damage_degree = #{damageDegree,jdbcType=VARCHAR},
+      compensation_status = #{compensationStatus,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

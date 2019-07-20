@@ -1,0 +1,478 @@
+spring:
+  application:
+    name: data-model-import
+  datasource:
+    # 数据源类型：Druid
+    type: com.alibaba.druid.pool.DruidDataSource
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.100.71:3306/bigdata?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: root
+    password: XfeUhv1AcZOZ0W31MfUy
+    # 配置Druid的其他参数，以下配置必须增加一个配置文件才能有效
+    # 初始化大小，最小，最大
+    initialSize: 5
+    minIdle: 5
+#    maxActive: 80
+    maxActive: 400
+    # 获取连接等待超时的时间
+    maxWait: 60000
+    # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+    timeBetweenEvictionRunsMillis: 60000
+    # 配置一个连接在池中最小生存的时间，单位是毫秒
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 'x' #SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    # 打开PSCache，并且指定每个连接上PSCache的大小
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 20
+    # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+    filters: stat,wall #,log4j
+    # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+  redis:
+    jedis:
+      pool:
+        #最大连接数据库连接数,设 0 为没有限制
+        max-active: 8
+        #最大等待连接中的数量,设 0 为没有限制
+        max-idle: 8
+        #最大建立连接等待时间。如果超过此时间将接到异常。设为-1表示无限制。
+        max-wait: 3s
+        #最小等待连接中的数量,设 0 为没有限制
+        min-idle: 1
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        max-wait: 3s
+        min-idle: 1
+  mail:
+    host: smtp.mxhichina.com
+    username: it@1ziton.com
+    password: Kt&aXu&%
+    defaultEncoding: UTF-8
+    to-receiver: huangxiaohong@1ziton.com
+    properties:
+      mail:
+       smtp:
+        auth: true
+        socketFactory:
+         class: javax.net.ssl.SSLSocketFactory
+         port: 465
+        starttls:
+         enable: false
+         required: false
+
+kafka:
+  services: 192.168.100.73:9092,192.168.100.74:9092,192.168.100.75:9092
+  AUTO_COMMIT_INTERVAL_MS_CONFIG: 1000
+  SESSION_TIMEOUT_MS_CONFIG: 60000
+  MAX_POLL_INTERVAL_MS_CONFIG: 100000
+  MAX_POLL_RECORDS_CONFIG: 20
+mybatis:
+  # 注意：对应实体类的路径
+  type-aliases-package: com.yiziton.dataimport.*,com.yiziton.dataweb.*
+#  config-location: classpath:mybatis-config.xml
+  #注意：一定要对应mapper映射xml文件的所在路径
+  mapper-locations: classpath:mapper/**/*.xml
+
+olddata:
+  # 刷历史数据启动线程数
+  poolNum: 300
+
+oldFinanceData:
+  # 刷历史流水数据启动线程数
+  poolNum: 50
+
+remote:
+  requestTimeOut: 10000
+  connectTimeOut: 10000
+  readTimeOut: 10000
+
+#pagehelper
+pagehelper:
+  helperDialect: mysql
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health"
+  endpoint:
+    health:
+      enabled: true
+      show-details: always
+
+saveFile:
+  path: logs/datafile/
+
+orderno:
+  sychronized: false
+
+#logging:
+#  level:
+#    com.yiziton.dataimport.waybill.dao.ext: debug
+#    com.yiziton.dataimport.waybill.dao: debug
+
+publicKeyValue:
+  -----BEGIN PUBLIC KEY-----
+  MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCb2J8J6yVxhD8oYFI8EOismjGJGo3JwexorXWhHxLrV5XX4EXplNqCd2R56qhXDCb88c6TgM6uppmTEEYHB3ds94s/Sr7wLqyi1cwDgrf24iXWhlZae3P4sHfLtXEDSwQMFJNJutUTCfquWzLSMkOODmUG/3P0G0d/J7cIqvx1RwIDAQAB
+  -----END PUBLIC KEY-----
+
+xxl:
+  job:
+    admin:
+      addresses: http://192.168.100.90:8601/
+    executor:
+       appname:  data-job-executor
+       port: 9999
+       logpath: /data/applogs/xxl-job/jobhandler/
+       accessToken:
+       logretentiondays: 5
+
+historyDataImport:
+  scmPassport: http://192.168.100.121:17800
+  scmDomain: http://192.168.100.121:17777
+  cmpAuthorization: Bearer eyJraWQiOiI1NDQ2OWU1Yi03NjY0LTRiNzgtYTZhOS02NGVlMmU0NjgxNDciLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJpc3N1ZXIiLCJhdWQiOiJhdWRpZW5jZSIsImV4cCI6MTU0OTcwMjk0MiwianRpIjoiZGRpd01qZEdCUnl6b2J4YW03MlpNZyIsImlhdCI6MTU0ODQ5MzM0MiwibmJmIjoxNTQ4NDkzMjIyLCJzdWIiOiIxODAwMDAwMDAwMCIsImF0dHJpYnV0ZXMiOiJ7XCJzZXR0bGVtZW50VHlwZVwiOlwiTU9OVEhMWVwiLFwiYWdlbnRJZFwiOlwiQ1lTQTIwMTcxMjAxNlwiLFwiZmxvd1RpbWVSdWxlXCI6XCJBUlJJVkFMX1RJTUVcIixcImFjY291bnRUeXBlXCI6XCJQQVJFTlRcIixcIm1vYmlsZVwiOlwiMTgwMDAwMDAwMDBcIixcImFjdGl2ZVwiOnRydWUsXCJhZ2VudE5hbWVcIjpcInRiYy3mtYvor5Xmib_ov5DllYZcIixcIm9ubGluZVwiOmZhbHNlLFwiJGV4cGlyYXRpb24tdGltZVwiOjE1NDk3MDI5NDIwMDAsXCJ1c2VyTmFtZVwiOlwi5bCP6ZmG5rWL6K-VXCJ9In0.GcYvXvcNW4D-Q8QbmSMBHwQ6Lm8az6DFYN43paDnPZ8ARDkFdGyHuiFY3jq-iAIWwxt7h4L46YlwVPWvf9_eR6VyoW_okSHMUzqfuutb1e5qhb-sH2ovNDmTUrAzhDHA9L2FH63iMB6Fc1ecpx6wLgviQF3ExCK9h0gxla0MobZVfGvrkWBmYDM-RETSa0JPU5Zzc1Z7-ll7sUiPnYxutTdwR2uRucnOEO9ZKCrXZXwGnKp-hbOyp0Ko2fg7u-YUcGxqPsLVgj8sAJXF8sufp3yF9d34oH0hRPhdAaNDM9vHui81IXSl3iCOxWc8sCi3UHTrpr0WqZI1QcLUQkFxeg
+  cmp: http://192.168.100.20:11107
+  ips: http://192.168.100.20:11101
+
+---
+spring:
+  profiles: test20
+  datasource:
+    url: jdbc:mysql://192.168.100.76:9002/bigdata?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: bigdata
+    password: bigdata
+  redis:
+    timeout: 50s
+    database: 0
+    password: Password1
+    cluster:
+      nodes: 192.168.100.191:7000,192.168.100.191:7001,192.168.100.191:7002,192.168.100.191:7003,192.168.100.191:7004,192.168.100.191:7005
+      max-edirects: 3
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        max-wait: 500s
+        min-idle: 1
+  mail:
+    to-receiver: huangxiaohong@1ziton.com,kongdehuai@1ziton.com,chenweiqing@1ziton.com,huangweiming@1ziton.com
+
+kafka:
+  services: 192.168.100.193:9092
+  AUTO_COMMIT_INTERVAL_MS_CONFIG: 1000
+  SESSION_TIMEOUT_MS_CONFIG: 6000
+  MAX_POLL_INTERVAL_MS_CONFIG: 5000
+  MAX_POLL_RECORDS_CONFIG: 500
+
+orderno:
+  sychronized: true
+
+publicKeyValue:
+  -----BEGIN PUBLIC KEY-----
+  MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCSznR1F0G/QjoXybjp9cz5m3Q5ckpblSytQ+3r875Lwxp8ovY71Kgq7ewAJgpw46XBXDUbv2nEEBXv4oespFLFmvn69Aft80FEY2/7YbFXvCFicaRZNAnZLb7H34TcYfAx/0JboUvcwzcCg0HDj4zuT8ctWlGXUcnpBc2yoHFkJQIDAQAB
+  -----END PUBLIC KEY-----
+
+xxl:
+  job:
+    admin:
+      addresses: http://192.168.100.20:8601/
+    executor:
+
+       appname:  data-job-executor
+       port: 9999
+       logpath: /data/applogs/xxl-job/jobhandler/
+       accessToken:
+       logretentiondays: 5
+
+historyDataImport:
+  scmPassport: http://passport-test01.1ziton.com
+  scmDomain: http://domain-test01.1ziton.com
+  cmpAuthorization: Bearer eyJraWQiOiI1NDQ2OWU1Yi03NjY0LTRiNzgtYTZhOS02NGVlMmU0NjgxNDciLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJpc3N1ZXIiLCJhdWQiOiJhdWRpZW5jZSIsImV4cCI6MTU0OTcwMjk0MiwianRpIjoiZGRpd01qZEdCUnl6b2J4YW03MlpNZyIsImlhdCI6MTU0ODQ5MzM0MiwibmJmIjoxNTQ4NDkzMjIyLCJzdWIiOiIxODAwMDAwMDAwMCIsImF0dHJpYnV0ZXMiOiJ7XCJzZXR0bGVtZW50VHlwZVwiOlwiTU9OVEhMWVwiLFwiYWdlbnRJZFwiOlwiQ1lTQTIwMTcxMjAxNlwiLFwiZmxvd1RpbWVSdWxlXCI6XCJBUlJJVkFMX1RJTUVcIixcImFjY291bnRUeXBlXCI6XCJQQVJFTlRcIixcIm1vYmlsZVwiOlwiMTgwMDAwMDAwMDBcIixcImFjdGl2ZVwiOnRydWUsXCJhZ2VudE5hbWVcIjpcInRiYy3mtYvor5Xmib_ov5DllYZcIixcIm9ubGluZVwiOmZhbHNlLFwiJGV4cGlyYXRpb24tdGltZVwiOjE1NDk3MDI5NDIwMDAsXCJ1c2VyTmFtZVwiOlwi5bCP6ZmG5rWL6K-VXCJ9In0.GcYvXvcNW4D-Q8QbmSMBHwQ6Lm8az6DFYN43paDnPZ8ARDkFdGyHuiFY3jq-iAIWwxt7h4L46YlwVPWvf9_eR6VyoW_okSHMUzqfuutb1e5qhb-sH2ovNDmTUrAzhDHA9L2FH63iMB6Fc1ecpx6wLgviQF3ExCK9h0gxla0MobZVfGvrkWBmYDM-RETSa0JPU5Zzc1Z7-ll7sUiPnYxutTdwR2uRucnOEO9ZKCrXZXwGnKp-hbOyp0Ko2fg7u-YUcGxqPsLVgj8sAJXF8sufp3yF9d34oH0hRPhdAaNDM9vHui81IXSl3iCOxWc8sCi3UHTrpr0WqZI1QcLUQkFxeg
+  cmp: http://192.168.100.20:11107
+  ips: http://192.168.100.20:11101
+  ipsLogin: http://192.168.100.20:11101
+
+---
+spring:
+  profiles: test30
+  datasource:
+    url: jdbc:mysql://192.168.100.71:3306/bigdata?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: root
+    password: XfeUhv1AcZOZ0W31MfUy
+  redis:
+    timeout: 50s
+    database: 0
+    password: Password1
+    cluster:
+      nodes: 192.168.100.192:7000,192.168.100.192:7001,192.168.100.192:7002,192.168.100.192:7003,192.168.100.192:7004,192.168.100.192:7005
+      max-edirects: 3
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        max-wait: 500s
+        min-idle: 1
+  mail:
+    to-receiver: huangxiaohong@1ziton.com,kongdehuai@1ziton.com,chenweiqing@1ziton.com,huangweiming@1ziton.com
+
+kafka:
+  services: 192.168.100.192:9092
+  AUTO_COMMIT_INTERVAL_MS_CONFIG: 1000
+  SESSION_TIMEOUT_MS_CONFIG: 6000
+  MAX_POLL_INTERVAL_MS_CONFIG: 5000
+  MAX_POLL_RECORDS_CONFIG: 500
+
+orderno:
+  sychronized: true
+
+publicKeyValue:
+  -----BEGIN PUBLIC KEY-----
+  MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCSznR1F0G/QjoXybjp9cz5m3Q5ckpblSytQ+3r875Lwxp8ovY71Kgq7ewAJgpw46XBXDUbv2nEEBXv4oespFLFmvn69Aft80FEY2/7YbFXvCFicaRZNAnZLb7H34TcYfAx/0JboUvcwzcCg0HDj4zuT8ctWlGXUcnpBc2yoHFkJQIDAQAB
+  -----END PUBLIC KEY-----
+
+xxl:
+  job:
+    admin:
+      addresses: http://192.168.100.20:8601/
+    executor:
+       appname:  data-job-executor
+       port: 9999
+       logpath: /data/applogs/xxl-job/jobhandler/
+       accessToken:
+       logretentiondays: 5
+
+historyDataImport:
+  scmPassport: http://passport-test02.1ziton.com
+  scmDomain: http://domain-test02.1ziton.com
+  cmpAuthorization: Bearer eyJraWQiOiI0MjU0MjQ5ZC0xYzQyLTQxNGItYWIxOC1jMzQ2MzFhOGUyM2MiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJpc3N1ZXIiLCJhdWQiOiJhdWRpZW5jZSIsImV4cCI6MTU0OTcwNjU0OCwianRpIjoiclM5ckFZS0NfOVgyTHlTTW9RUmJUZyIsImlhdCI6MTU0ODQ5Njk0OCwibmJmIjoxNTQ4NDk2ODI4LCJzdWIiOiIxMzcxNDAwNDQwMSIsImF0dHJpYnV0ZXMiOiJ7XCJzZXR0bGVtZW50VHlwZVwiOlwiTU9OVEhMWVwiLFwiYWdlbnRJZFwiOlwiQ1lTQTIwMTcwOTg5OFwiLFwiZmxvd1RpbWVSdWxlXCI6XCJSRUxBWV9USU1FXCIsXCJhY2NvdW50VHlwZVwiOlwiUEFSRU5UXCIsXCJtb2JpbGVcIjpcIjEzNzE0MDA0NDAxXCIsXCJhY3RpdmVcIjp0cnVlLFwiYWdlbnROYW1lXCI6XCLljavmmI7mtYvor5VcIixcIm9ubGluZVwiOmZhbHNlLFwiJGV4cGlyYXRpb24tdGltZVwiOjE1NDk3MDY1NDg2MTQsXCJ1c2VyTmFtZVwiOlwi5Y2r5piOXCJ9In0.GbanMTHynlDaSIt7qqS5r6gQ1RrtDxXDfKXa1uKseNq0sl_iAWfPl_SMirLTvED1S5JQ7jVc44Rqfx4OM040-4MXOGWFUdLrd6o61ZcW9ZT_pmzkRsO4pPRKzMw-6JkYAmUB7qOPWlBvZ7qSrvnNz4stEhLcmAgqKxg2uj1emxnbt9BLCP9ux-14kGBRat40vqCIcSLlhsBi2xwbnRy6WgZvgBijEVxH_9fGD3tbXy4Lq2AsPvIKFj6mCKiaXDWVJ8AeeXWwphh5OdooMZ_g9ETZ78oXtPB0LuLG1o_0IKLdDgYUsyv1oee_4vZL_qqElW6z_hhXjv1TyNnWA9XGtQ
+  cmp: http://192.168.100.30:11107
+  ips: http://192.168.100.30:11101
+  ipsLogin: http://192.168.100.30:11101
+
+#logging:
+#  level:
+#    com.yiziton.dataimport.waybill.dao.ext: debug
+#    com.yiziton.dataimport.waybill.dao: debug
+
+---
+spring:
+  profiles: dev
+  datasource:
+    url: jdbc:mysql://192.168.100.65:9003/bigdata?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: root
+    password: Password@mysql
+  redis:
+    timeout: 10s
+    database: 0
+    cluster:
+      nodes: 192.168.100.190:7000,192.168.100.190:7001,192.168.100.190:7002,192.168.100.190:7003,192.168.100.190:7004,192.168.100.190:7005
+      max-edirects: 3
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        max-wait: 500s
+        min-idle: 1
+
+
+kafka:
+  services: 192.168.100.191:9092
+  MAX_POLL_INTERVAL_MS_CONFIG: 300000
+
+orderno:
+  sychronized: true
+
+publicKeyValue:
+  -----BEGIN PUBLIC KEY-----
+  MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCSznR1F0G/QjoXybjp9cz5m3Q5ckpblSytQ+3r875Lwxp8ovY71Kgq7ewAJgpw46XBXDUbv2nEEBXv4oespFLFmvn69Aft80FEY2/7YbFXvCFicaRZNAnZLb7H34TcYfAx/0JboUvcwzcCg0HDj4zuT8ctWlGXUcnpBc2yoHFkJQIDAQAB
+  -----END PUBLIC KEY-----
+
+xxl:
+  job:
+    admin:
+      addresses: http://192.168.100.90:8601/
+    executor:
+       appname:  data-job-executor
+       port: 9999
+       logpath: /data/applogs/xxl-job/jobhandler/
+       accessToken:
+       logretentiondays: 5
+
+historyDataImport:
+  scmPassport: http://passport-dev01.1ziton.com
+  scmDomain: domain-dev01.1ziton.com
+  cmpAuthorization: Bearer eyJraWQiOiI3ZDMyYWMxZC1kYTUwLTRkZDAtODk4Ni04YmUzMjZmODk4YzUiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJpc3N1ZXIiLCJhdWQiOiJhdWRpZW5jZSIsImV4cCI6MTU1MzI2ODY3MiwianRpIjoibk90UjlVd055RFZqVl9kSWFqSkJuQSIsImlhdCI6MTU1MjA1OTA3MiwibmJmIjoxNTUyMDU4OTUyLCJzdWIiOiIxODAwMDAwMDAwMCIsImF0dHJpYnV0ZXMiOiJ7XCJzZXR0bGVtZW50VHlwZVwiOlwiTU9OVEhMWVwiLFwiYWdlbnRJZFwiOlwiQ1lTQTIwMTcxMjAxNlwiLFwiZmxvd1RpbWVSdWxlXCI6XCJBUlJJVkFMX1RJTUVcIixcImFjY291bnRUeXBlXCI6XCJQQVJFTlRcIixcIm1vYmlsZVwiOlwiMTgwMDAwMDAwMDBcIixcImFjdGl2ZVwiOnRydWUsXCJhZ2VudE5hbWVcIjpcInRiYy3mtYvor5Xmib_ov5DllYZcIixcIm9ubGluZVwiOmZhbHNlLFwiJGV4cGlyYXRpb24tdGltZVwiOjE1NTMyNjg2NzIxMzcsXCJ1c2VyTmFtZVwiOlwi5bCP6ZmG5rWL6K-VXCJ9In0.O8lgAwZgLY1u6vqznGK9wESx1rCTTjGf1LmBcBpOp_J9iI6WlBZ8Uc6trHSzE8wo-fSYfY-Cwlt1FLBM6lhR56cQqkqAhAmzOecSW9xnw0Kd4lZ19A3gCL1LtntorlHgYKyCZc593eaZ3iSw5Q-t3W454F19QWYwTOIUCsqFB2ujRulpxtml2avRj7UzGdV5nN74RbRNGWLkCLOXsoKE7vx2MenCmSz_bizVTsxL7yG4Jutihhm-1j1K19tb5QirxGcqt4b7QBnt37qp_4mPB7gfDxVSXiVGhkWjuWmo_IE8UW_OIQm8uWSoxDwi9Q-6Fd0OQKeHjMPO-ouEC7p7_Q
+  cmp: http://192.168.100.90:11107
+  ips: http://192.168.100.90:11101
+  ipsLogin: http://192.168.100.90:11101
+
+---
+spring:
+  profiles: uat
+  datasource:
+    url: jdbc:mysql://172.16.100.63:9002/bigdata?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: bigdata_uat
+    password: mKKj!1#WICRFdikm
+  redis:
+    timeout: 10s
+    database: 0
+    cluster:
+      nodes: 172.16.100.61:7000,172.16.100.62:7001,172.16.100.63:7002,172.16.100.62:7003,172.16.100.63:7004,172.16.100.61:7005
+      max-edirects: 3
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        max-wait: 500s
+        min-idle: 1
+    password: sD1Et9OsDAkF3Ogx
+  mail:
+      to-receiver: huangxiaohong@1ziton.com,tangwei@1ziton.com,com,kongdehuai@1ziton.com,chenweiqing@1ziton.com,huangweiming@1ziton.com
+
+
+kafka:
+  services: 172.16.100.61:9092,172.16.100.62:9092,172.16.100.63:9092
+  AUTO_COMMIT_INTERVAL_MS_CONFIG: 1000
+  SESSION_TIMEOUT_MS_CONFIG: 6000
+
+orderno:
+  sychronized: true
+
+publicKeyValue:
+  -----BEGIN PUBLIC KEY-----
+  MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCSznR1F0G/QjoXybjp9cz5m3Q5ckpblSytQ+3r875Lwxp8ovY71Kgq7ewAJgpw46XBXDUbv2nEEBXv4oespFLFmvn69Aft80FEY2/7YbFXvCFicaRZNAnZLb7H34TcYfAx/0JboUvcwzcCg0HDj4zuT8ctWlGXUcnpBc2yoHFkJQIDAQAB
+  -----END PUBLIC KEY-----
+
+xxl:
+  job:
+    admin:
+      addresses: https://uatjob.1ziton.com/
+    executor:
+       appname:  data-job-executor
+       port: 9999
+       logpath: /data/applogs/xxl-job/jobhandler/
+       accessToken: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9
+       logretentiondays: 5
+
+historyDataImport:
+  scmPassport: https://uatpassport.1ziton.com
+  scmDomain: https://uatdomain.1ziton.com
+  cmpAuthorization: Bearer eyJraWQiOiJkZGViYzU2MS1iZDIwLTQyNDctODcyNi1jZmE0MGMyZTIwNjgiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJpc3N1ZXIiLCJhdWQiOiJhdWRpZW5jZSIsImV4cCI6MTU0OTYxNjMyNSwianRpIjoicjBWZXU2U2dQaW9nWC1jTERLUmttZyIsImlhdCI6MTU0ODQwNjcyNSwibmJmIjoxNTQ4NDA2NjA1LCJzdWIiOiIxMzcxNDAwNDQwMSIsImF0dHJpYnV0ZXMiOiJ7XCJzZXR0bGVtZW50VHlwZVwiOlwiQ0FTSFwiLFwiYWdlbnRJZFwiOlwiQ1lTQTIwMTcwOTg5OFwiLFwiZmxvd1RpbWVSdWxlXCI6XCJSRUxBWV9USU1FXCIsXCJhY2NvdW50VHlwZVwiOlwiUEFSRU5UXCIsXCJtb2JpbGVcIjpcIjEzNzE0MDA0NDAxXCIsXCJhY3RpdmVcIjp0cnVlLFwiYWdlbnROYW1lXCI6XCLljavmmI7mtYvor5VcIixcIm9ubGluZVwiOmZhbHNlLFwiJGV4cGlyYXRpb24tdGltZVwiOjE1NDk2MTYzMjU4NjAsXCJ1c2VyTmFtZVwiOlwi5Y2r5piOXCJ9In0.Koe42PWjeAMnMcqAIVfmQAmDXEGfYT8av5R8Yo8AmZENTpo7ygfcPnZsTAdyZ3qBUXZQ7b1v2n1dgl0enhN6lPwb1Kz3u48NAX-QkXHdX3MnwJLYiRc5BLm0ogg7EZmUEAR83EPsWp7oWAKrDUwihTdm48s9YTtzPBohUVDKZbpCKvUqBC6EiXZgENNakj2wISZG5uVz7p4cG5ZUxX0fI6gdFVaWtsNDpL5ab0v5FS3Zm6jfIXBXzb1dyT6kO6qwunEcNJ7nEUA8U8f6bFtjpPkmyTv7akIqqVs4_n45Lx6M44K-ZMubB9ah3CKjBUfHGfMVlVwBssFLQEZyGGfv1g
+  cmp: https://uatcmp.1ziton.com/api/core
+  ips: https://uatcore.1ziton.com/api/core
+  ipsLogin: https://uatcore.1ziton.com/api/core
+
+---
+spring:
+  profiles: prd
+  datasource:
+    url: jdbc:mysql://172.16.100.73:9002/bigdata?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: bigdata_prd
+    password: TjAZD@URPkA77guy
+
+  redis:
+    timeout: 10s
+    database: 0
+    cluster:
+      nodes: 172.16.100.71:7000,172.16.100.72:7001,172.16.100.73:7002,172.16.100.72:7003,172.16.100.73:7004,172.16.100.71:7005
+      max-edirects: 3
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        max-wait: 500s
+        min-idle: 1
+    password: H1CIyePk3fe3DIsC
+  mail:
+      to-receiver: zhangchao@1ziton.com,daige@1ziton.com,linzhenchao@1ziton.com,xieqizhou@1ziton.com,chenxiaoping@1ziton.com,wangxinqin@1ziton.com,xiaoyiguanlibu@1ziton.com,huangxiaohong@1ziton.com,tangwei@1ziton.com,xiongminmin@1ziton.com
+
+kafka:
+  services: 172.16.100.71:9092,172.16.100.72:9092,172.16.100.73:9092
+  AUTO_COMMIT_INTERVAL_MS_CONFIG: 1000
+  SESSION_TIMEOUT_MS_CONFIG: 6000
+orderno:
+  sychronized: true
+
+publicKeyValue:
+  -----BEGIN PUBLIC KEY-----
+  MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCXi9SYVE6AWt2sqPMQnQMOubKGVeOEyHkx78vNcvDckq7rm2HUqZ90xVzzK/cfEUhkEwN76I/DLWzo2OdLFOHYBpA5WM2E7Liy5HAGPJmRLUqFqxk4/o1b98T1zjJBz7tprzVzD9YU8a329wtsfxaHJjyzcJaOng8nei17G4E8fQIDAQAB
+  -----END PUBLIC KEY-----
+
+xxl:
+  job:
+    admin:
+      addresses: https://job.1ziton.com/
+    executor:
+       appname:  data-job-executor
+       port: 9999
+       logpath: /data/applogs/xxl-job/jobhandler/
+       accessToken: 43idFjrkjcQh2Tii
+       logretentiondays: 5
+
+historyDataImport:
+  scmPassport: https://passport.1ziton.com
+  scmDomain: https://gatewaydata-intranet.1ziton.com
+  cmpAuthorization: Bearer eyJraWQiOiI0NDdmM2VjZC03ODIxLTRiZDEtODdhZi01ZmRjNzBmY2U0NDIiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJpc3N1ZXIiLCJhdWQiOiJhdWRpZW5jZSIsImV4cCI6MTU0OTk0MzcyOCwianRpIjoiczJqYXhaeGRiRFFNMVpwc0oxY0VvZyIsImlhdCI6MTU0ODczNDEyOCwibmJmIjoxNTQ4NzM0MDA4LCJzdWIiOiIxODAwMDAwMDAwMCIsImF0dHJpYnV0ZXMiOiJ7XCJzZXR0bGVtZW50VHlwZVwiOlwiTU9OVEhMWVwiLFwiYWdlbnRJZFwiOlwiQ1lTQTIwMTcxMjAxNlwiLFwiZmxvd1RpbWVSdWxlXCI6XCJBUlJJVkFMX1RJTUVcIixcImFjY291bnRUeXBlXCI6XCJQQVJFTlRcIixcIm1vYmlsZVwiOlwiMTgwMDAwMDAwMDBcIixcImFjdGl2ZVwiOnRydWUsXCJhZ2VudE5hbWVcIjpcInRiYy3mtYvor5Xmib_ov5DllYZcIixcIm9ubGluZVwiOmZhbHNlLFwiJGV4cGlyYXRpb24tdGltZVwiOjE1NDk5NDM3MjgwNzEsXCJ1c2VyTmFtZVwiOlwi5bCP6ZmG5rWL6K-VXCJ9In0.AYTZQwfOy-Mbl5Bi8PwIhyfO4yAN6iffxsKW_vrsOwbeX-Dud5tt1wbZI33hPighYnj1S1mu14u3WvjCx7knRX7pTG7HJz5jMxVdozpstGtQO7EjhtkQWw97-mHKJxLNT_Inw67xw8-MUvZvdQUR4Js0NlVID8YmkQcfwE8Gi2H7NLawm2W483kF2c_wTgv3qB8V4Ir7WMnmmQNTa68NDuyCG9e19QEgk0hvZ0CfEpa1SrsLPP-zHq2h3i1sHSwpwZjbd8H54qMuQJOgRScBcTtfLUC8A_sJiOfzVixsQ1OMBAhh8MF0gBfC8OAkD4P-HUXiPJi6d5m1j-LrMnL8Zw
+  cmp: http://192.168.100.58:11307
+  ips: http://192.168.100.58:11501
+  ipsLogin: https://core.1ziton.com/api/core
+
+---
+spring:
+  profiles: swarm
+  datasource:
+    url: jdbc:mysql://192.168.101.120:9002/bigdata?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: bigdata
+    password: bigdata
+
+  redis:
+    timeout: 10s
+    database: 0
+    cluster:
+      nodes: 192.168.101.106:7000,192.168.101.106:7001,192.168.101.106:7002,192.168.101.106:7003,192.168.101.106:7004,192.168.101.106:7005
+      max-edirects: 3
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        max-wait: 500s
+        min-idle: 1
+    password: XjWBP9vw
+  mail:
+    to-receiver: zhangchao@1ziton.com,daige@1ziton.com,linzhenchao@1ziton.com,xieqizhou@1ziton.com,chenxiaoping@1ziton.com,wangxinqin@1ziton.com,xiaoyiguanlibu@1ziton.com,huangxiaohong@1ziton.com,tangwei@1ziton.com,xiongminmin@1ziton.com
+
+kafka:
+  services: 192.168.101.137:9092,192.168.101.137:9092,192.168.101.137:9092
+  AUTO_COMMIT_INTERVAL_MS_CONFIG: 1000
+  SESSION_TIMEOUT_MS_CONFIG: 6000
+orderno:
+  sychronized: true
+
+publicKeyValue:
+  -----BEGIN PUBLIC KEY-----
+  MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCXi9SYVE6AWt2sqPMQnQMOubKGVeOEyHkx78vNcvDckq7rm2HUqZ90xVzzK/cfEUhkEwN76I/DLWzo2OdLFOHYBpA5WM2E7Liy5HAGPJmRLUqFqxk4/o1b98T1zjJBz7tprzVzD9YU8a329wtsfxaHJjyzcJaOng8nei17G4E8fQIDAQAB
+  -----END PUBLIC KEY-----
+
+xxl:
+  job:
+    admin:
+      addresses: https://job.1ziton.com/
+    executor:
+      appname:  data-job-executor
+      port: 9999
+      logpath: /data/applogs/xxl-job/jobhandler/
+      accessToken: 43idFjrkjcQh2Tii
+      logretentiondays: 5
+
+historyDataImport:
+  scmPassport: https://passport.1ziton.com
+  scmDomain: https://gatewaydata.1ziton.com
+  cmpAuthorization: Bearer eyJraWQiOiI0NDdmM2VjZC03ODIxLTRiZDEtODdhZi01ZmRjNzBmY2U0NDIiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJpc3N1ZXIiLCJhdWQiOiJhdWRpZW5jZSIsImV4cCI6MTU0OTk0MzcyOCwianRpIjoiczJqYXhaeGRiRFFNMVpwc0oxY0VvZyIsImlhdCI6MTU0ODczNDEyOCwibmJmIjoxNTQ4NzM0MDA4LCJzdWIiOiIxODAwMDAwMDAwMCIsImF0dHJpYnV0ZXMiOiJ7XCJzZXR0bGVtZW50VHlwZVwiOlwiTU9OVEhMWVwiLFwiYWdlbnRJZFwiOlwiQ1lTQTIwMTcxMjAxNlwiLFwiZmxvd1RpbWVSdWxlXCI6XCJBUlJJVkFMX1RJTUVcIixcImFjY291bnRUeXBlXCI6XCJQQVJFTlRcIixcIm1vYmlsZVwiOlwiMTgwMDAwMDAwMDBcIixcImFjdGl2ZVwiOnRydWUsXCJhZ2VudE5hbWVcIjpcInRiYy3mtYvor5Xmib_ov5DllYZcIixcIm9ubGluZVwiOmZhbHNlLFwiJGV4cGlyYXRpb24tdGltZVwiOjE1NDk5NDM3MjgwNzEsXCJ1c2VyTmFtZVwiOlwi5bCP6ZmG5rWL6K-VXCJ9In0.AYTZQwfOy-Mbl5Bi8PwIhyfO4yAN6iffxsKW_vrsOwbeX-Dud5tt1wbZI33hPighYnj1S1mu14u3WvjCx7knRX7pTG7HJz5jMxVdozpstGtQO7EjhtkQWw97-mHKJxLNT_Inw67xw8-MUvZvdQUR4Js0NlVID8YmkQcfwE8Gi2H7NLawm2W483kF2c_wTgv3qB8V4Ir7WMnmmQNTa68NDuyCG9e19QEgk0hvZ0CfEpa1SrsLPP-zHq2h3i1sHSwpwZjbd8H54qMuQJOgRScBcTtfLUC8A_sJiOfzVixsQ1OMBAhh8MF0gBfC8OAkD4P-HUXiPJi6d5m1j-LrMnL8Zw
+  cmp: http://134.175.172.242:11307
+  ips: http://134.175.172.242:11501
+  ipsLogin: https://core.1ziton.com/api/core

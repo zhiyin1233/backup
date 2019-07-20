@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiziton.dataimport.waybill.dao.ext.MilestoneInfoExtMapper">
+  <resultMap id="BaseResultMap" type="com.yiziton.dataimport.waybill.bean.MilestoneInfo">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="waybill_id" jdbcType="VARCHAR" property="waybillId" />
+    <result column="related_bill_id" jdbcType="VARCHAR" property="relatedBillId" />
+    <result column="operation" jdbcType="VARCHAR" property="operation" />
+    <result column="operation_type" jdbcType="VARCHAR" property="operationType" />
+    <result column="operate_time" jdbcType="TIMESTAMP" property="operateTime" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+    <result column="operation_sys" jdbcType="VARCHAR" property="operationSys" />
+    <result column="operation_oganization" jdbcType="VARCHAR" property="operationOganization" />
+    <result column="next_node_restict_time" jdbcType="TIMESTAMP" property="nextNodeRestictTime" />
+    <result column="sent_time" jdbcType="TIMESTAMP" property="sentTime" />
+    <result column="message_from" jdbcType="VARCHAR" property="messageFrom" />
+    <result column="api_name" jdbcType="VARCHAR" property="apiName" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="data_type" jdbcType="INTEGER" property="dataType" />
+  </resultMap>
+
+  <select id="selectCountForSame" parameterType="com.yiziton.dataimport.waybill.bean.MilestoneInfo" resultType="Integer">
+    select count(1)
+    from milestone_info
+    where waybill_id = #{waybillId,jdbcType=VARCHAR}
+    and   operation = #{operation,jdbcType=VARCHAR}
+    and   sent_time = #{sentTime ,jdbcType=TIMESTAMP}
+  </select>
+  <select id="selectCountByWaybillIdAndSentTime" parameterType="map" resultType="Integer">
+    select count(1)
+    from milestone_info
+    where waybill_id = #{waybillId,jdbcType=VARCHAR}
+    and   sent_time = #{sentTime ,jdbcType=TIMESTAMP}
+  </select>
+</mapper>

@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiziton.dataimport.waybill.dao.CarrierDictInfoMapper">
+  <resultMap id="BaseResultMap" type="com.yiziton.dataimport.waybill.bean.CarrierDictInfo">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="carrier" jdbcType="VARCHAR" property="carrier" />
+    <result column="carrier_code" jdbcType="VARCHAR" property="carrierCode" />
+    <result column="carrier_phone" jdbcType="VARCHAR" property="carrierPhone" />
+    <result column="pick_up_method" jdbcType="VARCHAR" property="pickUpMethod" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="area_id" jdbcType="VARCHAR" property="areaId" />
+    <result column="carrier_address" jdbcType="VARCHAR" property="carrierAddress" />
+    <result column="carrier_cover_area" jdbcType="VARCHAR" property="carrierCoverArea" />
+    <result column="carrier_company_name" jdbcType="VARCHAR" property="carrierCompanyName" />
+    <result column="carrier_node" jdbcType="VARCHAR" property="carrierNode" />
+    <result column="register_time" jdbcType="TIMESTAMP" property="registerTime" />
+    <result column="begin_cooperate_time" jdbcType="TIMESTAMP" property="beginCooperateTime" />
+    <result column="start_sent_area" jdbcType="VARCHAR" property="startSentArea" />
+    <result column="carrier_destination" jdbcType="VARCHAR" property="carrierDestination" />
+    <result column="carrier_settlement_type" jdbcType="VARCHAR" property="carrierSettlementType" />
+    <result column="carrier_status" jdbcType="INTEGER" property="carrierStatus" />
+    <result column="business_license_code" jdbcType="VARCHAR" property="businessLicenseCode" />
+    <result column="business_license_picture" jdbcType="VARCHAR" property="businessLicensePicture" />
+    <result column="legal_certificates" jdbcType="VARCHAR" property="legalCertificates" />
+    <result column="legal_certificates_picture" jdbcType="VARCHAR" property="legalCertificatesPicture" />
+    <result column="legal_certificates_name" jdbcType="VARCHAR" property="legalCertificatesName" />
+    <result column="legal_certificates_phone" jdbcType="VARCHAR" property="legalCertificatesPhone" />
+    <result column="settlement_rules" jdbcType="VARCHAR" property="settlementRules" />
+    <result column="salesman" jdbcType="VARCHAR" property="salesman" />
+    <result column="salesman_phone" jdbcType="VARCHAR" property="salesmanPhone" />
+    <result column="last_modify" jdbcType="VARCHAR" property="lastModify" />
+    <result column="last_modify_time" jdbcType="TIMESTAMP" property="lastModifyTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, carrier, carrier_code, carrier_phone, pick_up_method, status, area_id, carrier_address, 
+    carrier_cover_area, carrier_company_name, carrier_node, register_time, begin_cooperate_time, 
+    start_sent_area, carrier_destination, carrier_settlement_type, carrier_status, business_license_code, 
+    business_license_picture, legal_certificates, legal_certificates_picture, legal_certificates_name, 
+    legal_certificates_phone, settlement_rules, salesman, salesman_phone, last_modify, 
+    last_modify_time, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from carrier_dict_info
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from carrier_dict_info
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yiziton.dataimport.waybill.bean.CarrierDictInfo">
+    insert into carrier_dict_info (id, carrier, carrier_code, 
+      carrier_phone, pick_up_method, status, 
+      area_id, carrier_address, carrier_cover_area, 
+      carrier_company_name, carrier_node, register_time, 
+      begin_cooperate_time, start_sent_area, carrier_destination, 
+      carrier_settlement_type, carrier_status, business_license_code, 
+      business_license_picture, legal_certificates, 
+      legal_certificates_picture, legal_certificates_name, 
+      legal_certificates_phone, settlement_rules, 
+      salesman, salesman_phone, last_modify, 
+      last_modify_time, create_time, update_time
+      )
+    values (#{id,jdbcType=VARCHAR}, #{carrier,jdbcType=VARCHAR}, #{carrierCode,jdbcType=VARCHAR}, 
+      #{carrierPhone,jdbcType=VARCHAR}, #{pickUpMethod,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+      #{areaId,jdbcType=VARCHAR}, #{carrierAddress,jdbcType=VARCHAR}, #{carrierCoverArea,jdbcType=VARCHAR}, 
+      #{carrierCompanyName,jdbcType=VARCHAR}, #{carrierNode,jdbcType=VARCHAR}, #{registerTime,jdbcType=TIMESTAMP}, 
+      #{beginCooperateTime,jdbcType=TIMESTAMP}, #{startSentArea,jdbcType=VARCHAR}, #{carrierDestination,jdbcType=VARCHAR}, 
+      #{carrierSettlementType,jdbcType=VARCHAR}, #{carrierStatus,jdbcType=INTEGER}, #{businessLicenseCode,jdbcType=VARCHAR}, 
+      #{businessLicensePicture,jdbcType=VARCHAR}, #{legalCertificates,jdbcType=VARCHAR}, 
+      #{legalCertificatesPicture,jdbcType=VARCHAR}, #{legalCertificatesName,jdbcType=VARCHAR}, 
+      #{legalCertificatesPhone,jdbcType=VARCHAR}, #{settlementRules,jdbcType=VARCHAR}, 
+      #{salesman,jdbcType=VARCHAR}, #{salesmanPhone,jdbcType=VARCHAR}, #{lastModify,jdbcType=VARCHAR}, 
+      #{lastModifyTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yiziton.dataimport.waybill.bean.CarrierDictInfo">
+    insert into carrier_dict_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="carrier != null">
+        carrier,
+      </if>
+      <if test="carrierCode != null">
+        carrier_code,
+      </if>
+      <if test="carrierPhone != null">
+        carrier_phone,
+      </if>
+      <if test="pickUpMethod != null">
+        pick_up_method,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="areaId != null">
+        area_id,
+      </if>
+      <if test="carrierAddress != null">
+        carrier_address,
+      </if>
+      <if test="carrierCoverArea != null">
+        carrier_cover_area,
+      </if>
+      <if test="carrierCompanyName != null">
+        carrier_company_name,
+      </if>
+      <if test="carrierNode != null">
+        carrier_node,
+      </if>
+      <if test="registerTime != null">
+        register_time,
+      </if>
+      <if test="beginCooperateTime != null">
+        begin_cooperate_time,
+      </if>
+      <if test="startSentArea != null">
+        start_sent_area,
+      </if>
+      <if test="carrierDestination != null">
+        carrier_destination,
+      </if>
+      <if test="carrierSettlementType != null">
+        carrier_settlement_type,
+      </if>
+      <if test="carrierStatus != null">
+        carrier_status,
+      </if>
+      <if test="businessLicenseCode != null">
+        business_license_code,
+      </if>
+      <if test="businessLicensePicture != null">
+        business_license_picture,
+      </if>
+      <if test="legalCertificates != null">
+        legal_certificates,
+      </if>
+      <if test="legalCertificatesPicture != null">
+        legal_certificates_picture,
+      </if>
+      <if test="legalCertificatesName != null">
+        legal_certificates_name,
+      </if>
+      <if test="legalCertificatesPhone != null">
+        legal_certificates_phone,
+      </if>
+      <if test="settlementRules != null">
+        settlement_rules,
+      </if>
+      <if test="salesman != null">
+        salesman,
+      </if>
+      <if test="salesmanPhone != null">
+        salesman_phone,
+      </if>
+      <if test="lastModify != null">
+        last_modify,
+      </if>
+      <if test="lastModifyTime != null">
+        last_modify_time,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="carrier != null">
+        #{carrier,jdbcType=VARCHAR},
+      </if>
+      <if test="carrierCode != null">
+        #{carrierCode,jdbcType=VARCHAR},
+      </if>
+      <if test="carrierPhone != null">
+        #{carrierPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="pickUpMethod != null">
+        #{pickUpMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="areaId != null">
+        #{areaId,jdbcType=VARCHAR},
+      </if>
+      <if test="carrierAddress != null">
+        #{carrierAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="carrierCoverArea != null">
+        #{carrierCoverArea,jdbcType=VARCHAR},
+      </if>
+      <if test="carrierCompanyName != null">
+        #{carrierCompanyName,jdbcType=VARCHAR},
+      </if>
+      <if test="carrierNode != null">
+        #{carrierNode,jdbcType=VARCHAR},
+      </if>
+      <if test="registerTime != null">
+        #{registerTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="beginCooperateTime != null">
+        #{beginCooperateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="startSentArea != null">
+        #{startSentArea,jdbcType=VARCHAR},
+      </if>
+      <if test="carrierDestination != null">
+        #{carrierDestination,jdbcType=VARCHAR},
+      </if>
+      <if test="carrierSettlementType != null">
+        #{carrierSettlementType,jdbcType=VARCHAR},
+      </if>
+      <if test="carrierStatus != null">
+        #{carrierStatus,jdbcType=INTEGER},
+      </if>
+      <if test="businessLicenseCode != null">
+        #{businessLicenseCode,jdbcType=VARCHAR},
+      </if>
+      <if test="businessLicensePicture != null">
+        #{businessLicensePicture,jdbcType=VARCHAR},
+      </if>
+      <if test="legalCertificates != null">
+        #{legalCertificates,jdbcType=VARCHAR},
+      </if>
+      <if test="legalCertificatesPicture != null">
+        #{legalCertificatesPicture,jdbcType=VARCHAR},
+      </if>
+      <if test="legalCertificatesName != null">
+        #{legalCertificatesName,jdbcType=VARCHAR},
+      </if>
+      <if test="legalCertificatesPhone != null">
+        #{legalCertificatesPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="settlementRules != null">
+        #{settlementRules,jdbcType=VARCHAR},
+      </if>
+      <if test="salesman != null">
+        #{salesman,jdbcType=VARCHAR},
+      </if>
+      <if test="salesmanPhone != null">
+        #{salesmanPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="lastModify != null">
+        #{lastModify,jdbcType=VARCHAR},
+      </if>
+      <if test="lastModifyTime != null">
+        #{lastModifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yiziton.dataimport.waybill.bean.CarrierDictInfo">
+    update carrier_dict_info
+    <set>
+      <if test="carrier != null">
+        carrier = #{carrier,jdbcType=VARCHAR},
+      </if>
+      <if test="carrierCode != null">
+        carrier_code = #{carrierCode,jdbcType=VARCHAR},
+      </if>
+      <if test="carrierPhone != null">
+        carrier_phone = #{carrierPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="pickUpMethod != null">
+        pick_up_method = #{pickUpMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="areaId != null">
+        area_id = #{areaId,jdbcType=VARCHAR},
+      </if>
+      <if test="carrierAddress != null">
+        carrier_address = #{carrierAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="carrierCoverArea != null">
+        carrier_cover_area = #{carrierCoverArea,jdbcType=VARCHAR},
+      </if>
+      <if test="carrierCompanyName != null">
+        carrier_company_name = #{carrierCompanyName,jdbcType=VARCHAR},
+      </if>
+      <if test="carrierNode != null">
+        carrier_node = #{carrierNode,jdbcType=VARCHAR},
+      </if>
+      <if test="registerTime != null">
+        register_time = #{registerTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="beginCooperateTime != null">
+        begin_cooperate_time = #{beginCooperateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="startSentArea != null">
+        start_sent_area = #{startSentArea,jdbcType=VARCHAR},
+      </if>
+      <if test="carrierDestination != null">
+        carrier_destination = #{carrierDestination,jdbcType=VARCHAR},
+      </if>
+      <if test="carrierSettlementType != null">
+        carrier_settlement_type = #{carrierSettlementType,jdbcType=VARCHAR},
+      </if>
+      <if test="carrierStatus != null">
+        carrier_status = #{carrierStatus,jdbcType=INTEGER},
+      </if>
+      <if test="businessLicenseCode != null">
+        business_license_code = #{businessLicenseCode,jdbcType=VARCHAR},
+      </if>
+      <if test="businessLicensePicture != null">
+        business_license_picture = #{businessLicensePicture,jdbcType=VARCHAR},
+      </if>
+      <if test="legalCertificates != null">
+        legal_certificates = #{legalCertificates,jdbcType=VARCHAR},
+      </if>
+      <if test="legalCertificatesPicture != null">
+        legal_certificates_picture = #{legalCertificatesPicture,jdbcType=VARCHAR},
+      </if>
+      <if test="legalCertificatesName != null">
+        legal_certificates_name = #{legalCertificatesName,jdbcType=VARCHAR},
+      </if>
+      <if test="legalCertificatesPhone != null">
+        legal_certificates_phone = #{legalCertificatesPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="settlementRules != null">
+        settlement_rules = #{settlementRules,jdbcType=VARCHAR},
+      </if>
+      <if test="salesman != null">
+        salesman = #{salesman,jdbcType=VARCHAR},
+      </if>
+      <if test="salesmanPhone != null">
+        salesman_phone = #{salesmanPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="lastModify != null">
+        last_modify = #{lastModify,jdbcType=VARCHAR},
+      </if>
+      <if test="lastModifyTime != null">
+        last_modify_time = #{lastModifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yiziton.dataimport.waybill.bean.CarrierDictInfo">
+    update carrier_dict_info
+    set carrier = #{carrier,jdbcType=VARCHAR},
+      carrier_code = #{carrierCode,jdbcType=VARCHAR},
+      carrier_phone = #{carrierPhone,jdbcType=VARCHAR},
+      pick_up_method = #{pickUpMethod,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      area_id = #{areaId,jdbcType=VARCHAR},
+      carrier_address = #{carrierAddress,jdbcType=VARCHAR},
+      carrier_cover_area = #{carrierCoverArea,jdbcType=VARCHAR},
+      carrier_company_name = #{carrierCompanyName,jdbcType=VARCHAR},
+      carrier_node = #{carrierNode,jdbcType=VARCHAR},
+      register_time = #{registerTime,jdbcType=TIMESTAMP},
+      begin_cooperate_time = #{beginCooperateTime,jdbcType=TIMESTAMP},
+      start_sent_area = #{startSentArea,jdbcType=VARCHAR},
+      carrier_destination = #{carrierDestination,jdbcType=VARCHAR},
+      carrier_settlement_type = #{carrierSettlementType,jdbcType=VARCHAR},
+      carrier_status = #{carrierStatus,jdbcType=INTEGER},
+      business_license_code = #{businessLicenseCode,jdbcType=VARCHAR},
+      business_license_picture = #{businessLicensePicture,jdbcType=VARCHAR},
+      legal_certificates = #{legalCertificates,jdbcType=VARCHAR},
+      legal_certificates_picture = #{legalCertificatesPicture,jdbcType=VARCHAR},
+      legal_certificates_name = #{legalCertificatesName,jdbcType=VARCHAR},
+      legal_certificates_phone = #{legalCertificatesPhone,jdbcType=VARCHAR},
+      settlement_rules = #{settlementRules,jdbcType=VARCHAR},
+      salesman = #{salesman,jdbcType=VARCHAR},
+      salesman_phone = #{salesmanPhone,jdbcType=VARCHAR},
+      last_modify = #{lastModify,jdbcType=VARCHAR},
+      last_modify_time = #{lastModifyTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

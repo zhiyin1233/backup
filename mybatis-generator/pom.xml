@@ -49,12 +49,12 @@
         </plugins>
     </build>
 
-    <repositories>
+   <!-- <repositories>
         <repository>
             <id>sonatype</id>
             <url>http://repository.sonatype.org/content/groups/public/</url>
-            <!--<url>https://mvnrepository.com/artifact/org.mybatis.generator/mybatis-generator</url>-->
+            &lt;!&ndash;<url>https://mvnrepository.com/artifact/org.mybatis.generator/mybatis-generator</url>&ndash;&gt;
         </repository>
     </repositories>
-
+-->
 </project>

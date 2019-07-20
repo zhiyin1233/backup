@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiziton.dataimport.exception.dao.SysExceptionMapper">
+    <resultMap id="BaseResultMap" type="com.yiziton.dataimport.exception.bean.SysExceptionInfo">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="no" jdbcType="VARCHAR" property="no"/>
+        <result column="no_type" jdbcType="VARCHAR" property="noType"/>
+        <result column="data_type" jdbcType="INTEGER" property="dataType"/>
+        <result column="source" jdbcType="VARCHAR" property="source"/>
+        <result column="exception_body" jdbcType="VARCHAR" property="exceptionBody"/>
+        <result column="exception_info" jdbcType="VARCHAR" property="exceptionInfo"/>
+        <result column="sent_time" jdbcType="TIMESTAMP" property="sentTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, no, no_type, data_type, source, exception_body, exception_info, sent_time, create_time,
+    update_time
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_exception_info
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    <select id="selectByNoForGetAll" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_exception_info
+        where no = #{no,jdbcType=VARCHAR}
+        and   no_type = "msgfix"
+    </select>
+
+    <select id="selectSysExceptionInfos" parameterType="com.yiziton.commons.vo.waybill.SysExceptionDealVO" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_exception_info
+        where no_type = #{noType,jdbcType=VARCHAR}
+        <if test="wayBillIds != null and wayBillIds.size > 0">
+            and no in
+            <foreach item="item" index="index" collection="wayBillIds"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="sentStartTime != null">
+            and <![CDATA[ sent_time >= #{sentStartTime,jdbcType=TIMESTAMP}  ]]>
+        </if>
+        <if test="sentEndTime != null">
+            and <![CDATA[ sent_time <= #{sentEndTime,jdbcType=TIMESTAMP} ]]>
+        </if>
+        and data_type != 9999
+        order by sent_time asc;
+    </select>
+
+
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from sys_exception_info
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+    <insert id="insert" parameterType="com.yiziton.dataimport.exception.bean.SysExceptionInfo">
+    insert into sys_exception_info (id, no, no_type, 
+      data_type, source, exception_body, exception_info,
+      sent_time, create_time, update_time
+      )
+    values (#{id,jdbcType=VARCHAR}, #{no,jdbcType=VARCHAR}, #{noType,jdbcType=VARCHAR}, 
+      #{dataType,jdbcType=INTEGER}, #{source,jdbcType=VARCHAR}, #{exceptionBody,jdbcType=VARCHAR}, #{exceptionInfo,jdbcType=VARCHAR},
+      #{sentTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.yiziton.dataimport.exception.bean.SysExceptionInfo">
+        insert into sys_exception_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="no != null">
+                no,
+            </if>
+            <if test="noType != null">
+                no_type,
+            </if>
+            <if test="source != null">
+                source,
+            </if>
+            <if test="dataType != null">
+                data_type,
+            </if>
+            <if test="exceptionBody != null">
+                exception_body,
+            </if>
+            <if test="exceptionInfo != null">
+                exception_info,
+            </if>
+            <if test="sentTime != null">
+                sent_time,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="no != null">
+                #{no,jdbcType=VARCHAR},
+            </if>
+            <if test="noType != null">
+                #{noType,jdbcType=VARCHAR},
+            </if>
+            <if test="source != null">
+                #{source,jdbcType=VARCHAR},
+            </if>
+            <if test="dataType != null">
+                #{dataType,jdbcType=INTEGER},
+            </if>
+            <if test="exceptionBody != null">
+                #{exceptionBody,jdbcType=VARCHAR},
+            </if>
+            <if test="exceptionInfo != null">
+                #{exceptionInfo,jdbcType=VARCHAR},
+            </if>
+            <if test="sentTime != null">
+                #{sentTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yiziton.dataimport.exception.bean.SysExceptionInfo">
+        update sys_exception_info
+        <set>
+            <if test="no != null">
+                no = #{no,jdbcType=VARCHAR},
+            </if>
+            <if test="noType != null">
+                no_type = #{noType,jdbcType=VARCHAR},
+            </if>
+            <if test="dataType != null">
+                data_type = #{dataType,jdbcType=INTEGER},
+            </if>
+            <if test="source != null">
+                source = #{source,jdbcType=VARCHAR},
+            </if>
+            <if test="exceptionBody != null">
+                exception_body = #{exceptionBody,jdbcType=VARCHAR},
+            </if>
+            <if test="exceptionInfo != null">
+                exception_info = #{exceptionInfo,jdbcType=VARCHAR},
+            </if>
+            <if test="sentTime != null">
+                sent_time = #{sentTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yiziton.dataimport.exception.bean.SysExceptionInfo">
+    update sys_exception_info
+    set no = #{no,jdbcType=VARCHAR},
+      no_type = #{noType,jdbcType=VARCHAR},
+      data_type = #{dataType,jdbcType=INTEGER},
+      source = #{source,jdbcType=VARCHAR},
+      exception_body = #{exceptionBody,jdbcType=VARCHAR},
+      exception_info = #{exceptionInfo,jdbcType=VARCHAR},
+      sent_time = #{sentTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+    <!--<select id="selectCountByNoAndDataType" parameterType="java.lang.String" resultType="Integer">
+    select count(1) from sys_exception_info where no = #{no,jdbcType=VARCHAR} and data_type = #{dataType,jdbcType=VARCHAR};
+  </select>-->
+    <select id="selectCountByNoAndNoTypeAndDataType" parameterType="map" resultType="Integer">
+    select count(1) from sys_exception_info where no = #{no,jdbcType=VARCHAR} and no_type = #{noType,jdbcType=VARCHAR} and data_type = #{dataType,jdbcType=INTEGER};
+  </select>
+
+</mapper>

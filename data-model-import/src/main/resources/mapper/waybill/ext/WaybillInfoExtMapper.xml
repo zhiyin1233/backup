@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiziton.dataimport.waybill.dao.ext.WaybillInfoExtMapper">
+  <resultMap id="BaseResultMap" type="com.yiziton.dataimport.waybill.bean.WaybillInfo">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="product_type" jdbcType="INTEGER" property="productType" />
+    <result column="service_type" jdbcType="INTEGER" property="serviceType" />
+    <result column="waybill_status" jdbcType="INTEGER" property="waybillStatus" />
+    <result column="check_type" jdbcType="INTEGER" property="checkType" />
+    <result column="check_code" jdbcType="VARCHAR" property="checkCode" />
+    <result column="check_bill_id" jdbcType="VARCHAR" property="checkBillId" />
+    <result column="check_status" jdbcType="INTEGER" property="checkStatus" />
+    <result column="check_method" jdbcType="INTEGER" property="checkMethod" />
+    <result column="channel_source" jdbcType="INTEGER" property="channelSource" />
+    <result column="payment_type" jdbcType="INTEGER" property="paymentType" />
+    <result column="settlement_type" jdbcType="INTEGER" property="settlementType" />
+    <result column="third_billing_id" jdbcType="VARCHAR" property="thirdBillingId" />
+    <result column="destination" jdbcType="VARCHAR" property="destination" />
+    <result column="total_volume" jdbcType="DOUBLE" property="totalVolume" />
+    <result column="total_install_items" jdbcType="INTEGER" property="totalInstallItems" />
+    <result column="total_packing_items" jdbcType="INTEGER" property="totalPackingItems" />
+    <result column="total_weight" jdbcType="DOUBLE" property="totalWeight" />
+    <result column="statement_value" jdbcType="DOUBLE" property="statementValue" />
+    <result column="open_bill_node" jdbcType="VARCHAR" property="openBillNode" />
+    <result column="open_bill_operator" jdbcType="VARCHAR" property="openBillOperator" />
+    <result column="arrival_node" jdbcType="VARCHAR" property="arrivalNode" />
+    <result column="open_bill_time" jdbcType="TIMESTAMP" property="openBillTime" />
+    <result column="sign_time" jdbcType="TIMESTAMP" property="signTime" />
+    <result column="sale_total_price" jdbcType="DOUBLE" property="saleTotalPrice" />
+    <result column="marble_blocks" jdbcType="INTEGER" property="marbleBlocks" />
+    <result column="salesman" jdbcType="VARCHAR" property="salesman" />
+    <result column="salesman_phone" jdbcType="VARCHAR" property="salesmanPhone" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_id" jdbcType="VARCHAR" property="updateId" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="waybill_type" jdbcType="INTEGER" property="waybillType" />
+    <result column="arrival_area" jdbcType="VARCHAR" property="arrivalArea" />
+    <result column="arrival_address" jdbcType="VARCHAR" property="arrivalAddress" />
+    <result column="pick_up_goods_phone" jdbcType="VARCHAR" property="pickUpGoodsPhone" />
+    <result column="pick_up_goods_password" jdbcType="VARCHAR" property="pickUpGoodsPassword" />
+    <result column="logistics_bill_id" jdbcType="VARCHAR" property="logisticsBillId" />
+    <result column="data_type" jdbcType="INTEGER" property="dataType" />
+    <result column="originating_node" jdbcType="VARCHAR" property="originatingNode" />
+    <result column="check_time" jdbcType="TIMESTAMP" property="checkTime" />
+    <result column="increment_service_type" jdbcType="INTEGER" property="incrementServiceType" />
+    <result column="increment_service_fee" jdbcType="DOUBLE" property="incrementServiceFee" />
+    <result column="goods_type" jdbcType="VARCHAR" property="goodsType" />
+    <result column="packing" jdbcType="VARCHAR" property="packing" />
+    <result column="picking_time" jdbcType="TIMESTAMP" property="pickingTime" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yiziton.dataimport.waybill.bean.WaybillInfo">
+    <result column="open_bill_remark" jdbcType="LONGVARCHAR" property="openBillRemark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, product_type, service_type, waybill_status, check_type, check_code, check_bill_id,
+    check_status, check_method, channel_source, payment_type, settlement_type, third_billing_id,
+    destination, total_volume, total_install_items, total_packing_items, total_weight,
+    statement_value, open_bill_node, open_bill_operator, arrival_node, open_bill_time,
+    sign_time, sale_total_price, marble_blocks, salesman, salesman_phone, status, create_time,
+    update_id, update_time, waybill_type, arrival_area, arrival_address, pick_up_goods_phone,
+    pick_up_goods_password, logistics_bill_id, data_type, originating_node, check_time,
+    increment_service_type, increment_service_fee, goods_type, packing, picking_time
+  </sql>
+  <sql id="Blob_Column_List">
+    open_bill_remark
+  </sql>
+  <!-- <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from waybill_info
+    where id = #{id,jdbcType=VARCHAR}
+  </select>-->
+  <select id="selectCountById" parameterType="java.lang.String" resultType="Integer">
+    select count(1)
+    from waybill_info
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+</mapper>

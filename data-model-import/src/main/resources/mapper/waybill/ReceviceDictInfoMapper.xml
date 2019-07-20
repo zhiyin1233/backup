@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiziton.dataimport.waybill.dao.ReceviceDictInfoMapper">
+  <resultMap id="BaseResultMap" type="com.yiziton.dataimport.waybill.bean.ReceviceDictInfo">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="recevice_name" jdbcType="VARCHAR" property="receviceName" />
+    <result column="recevice_mobile" jdbcType="VARCHAR" property="receviceMobile" />
+    <result column="recevice_phone" jdbcType="VARCHAR" property="recevicePhone" />
+    <result column="receive_address" jdbcType="VARCHAR" property="receiveAddress" />
+    <result column="receive_province" jdbcType="VARCHAR" property="receiveProvince" />
+    <result column="recevice_city" jdbcType="VARCHAR" property="receviceCity" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="recevice_area" jdbcType="TIMESTAMP" property="receviceArea" />
+    <result column="recevice_town" jdbcType="TIMESTAMP" property="receviceTown" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, recevice_name, recevice_mobile, recevice_phone, receive_address, receive_province, 
+    recevice_city, status, recevice_area, recevice_town, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from recevice_dict_info
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from recevice_dict_info
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yiziton.dataimport.waybill.bean.ReceviceDictInfo">
+    insert into recevice_dict_info (id, recevice_name, recevice_mobile, 
+      recevice_phone, receive_address, receive_province, 
+      recevice_city, status, recevice_area, 
+      recevice_town, create_time, update_time
+      )
+    values (#{id,jdbcType=VARCHAR}, #{receviceName,jdbcType=VARCHAR}, #{receviceMobile,jdbcType=VARCHAR}, 
+      #{recevicePhone,jdbcType=VARCHAR}, #{receiveAddress,jdbcType=VARCHAR}, #{receiveProvince,jdbcType=VARCHAR}, 
+      #{receviceCity,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{receviceArea,jdbcType=TIMESTAMP}, 
+      #{receviceTown,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yiziton.dataimport.waybill.bean.ReceviceDictInfo">
+    insert into recevice_dict_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="receviceName != null">
+        recevice_name,
+      </if>
+      <if test="receviceMobile != null">
+        recevice_mobile,
+      </if>
+      <if test="recevicePhone != null">
+        recevice_phone,
+      </if>
+      <if test="receiveAddress != null">
+        receive_address,
+      </if>
+      <if test="receiveProvince != null">
+        receive_province,
+      </if>
+      <if test="receviceCity != null">
+        recevice_city,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="receviceArea != null">
+        recevice_area,
+      </if>
+      <if test="receviceTown != null">
+        recevice_town,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="receviceName != null">
+        #{receviceName,jdbcType=VARCHAR},
+      </if>
+      <if test="receviceMobile != null">
+        #{receviceMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="recevicePhone != null">
+        #{recevicePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="receiveAddress != null">
+        #{receiveAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="receiveProvince != null">
+        #{receiveProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="receviceCity != null">
+        #{receviceCity,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="receviceArea != null">
+        #{receviceArea,jdbcType=TIMESTAMP},
+      </if>
+      <if test="receviceTown != null">
+        #{receviceTown,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yiziton.dataimport.waybill.bean.ReceviceDictInfo">
+    update recevice_dict_info
+    <set>
+      <if test="receviceName != null">
+        recevice_name = #{receviceName,jdbcType=VARCHAR},
+      </if>
+      <if test="receviceMobile != null">
+        recevice_mobile = #{receviceMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="recevicePhone != null">
+        recevice_phone = #{recevicePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="receiveAddress != null">
+        receive_address = #{receiveAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="receiveProvince != null">
+        receive_province = #{receiveProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="receviceCity != null">
+        recevice_city = #{receviceCity,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="receviceArea != null">
+        recevice_area = #{receviceArea,jdbcType=TIMESTAMP},
+      </if>
+      <if test="receviceTown != null">
+        recevice_town = #{receviceTown,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yiziton.dataimport.waybill.bean.ReceviceDictInfo">
+    update recevice_dict_info
+    set recevice_name = #{receviceName,jdbcType=VARCHAR},
+      recevice_mobile = #{receviceMobile,jdbcType=VARCHAR},
+      recevice_phone = #{recevicePhone,jdbcType=VARCHAR},
+      receive_address = #{receiveAddress,jdbcType=VARCHAR},
+      receive_province = #{receiveProvince,jdbcType=VARCHAR},
+      recevice_city = #{receviceCity,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      recevice_area = #{receviceArea,jdbcType=TIMESTAMP},
+      recevice_town = #{receviceTown,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiziton.dataimport.waybill.dao.OrganizeUserMapper">
+  <resultMap id="BaseResultMap" type="com.yiziton.dataimport.waybill.bean.OrganizeUser">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="telphone" jdbcType="VARCHAR" property="telphone" />
+    <result column="job_num" jdbcType="VARCHAR" property="jobNum" />
+    <result column="mail" jdbcType="VARCHAR" property="mail" />
+    <result column="position" jdbcType="VARCHAR" property="position" />
+    <result column="is_lessee_admin" jdbcType="BIT" property="isLesseeAdmin" />
+    <result column="is_director" jdbcType="BIT" property="isDirector" />
+    <result column="roles" jdbcType="VARCHAR" property="roles" />
+    <result column="organize_code" jdbcType="VARCHAR" property="organizeCode" />
+    <result column="organize_name" jdbcType="VARCHAR" property="organizeName" />
+    <result column="lessee_code" jdbcType="VARCHAR" property="lesseeCode" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name, code, telphone, job_num, mail, position, is_lessee_admin, is_director, 
+    roles, organize_code, organize_name, lessee_code, status, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from organize_user
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from organize_user
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yiziton.dataimport.waybill.bean.OrganizeUser">
+    insert into organize_user (id, name, code, 
+      telphone, job_num, mail, 
+      position, is_lessee_admin, is_director, 
+      roles, organize_code, organize_name, 
+      lessee_code, status, create_time, 
+      update_time)
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, 
+      #{telphone,jdbcType=VARCHAR}, #{jobNum,jdbcType=VARCHAR}, #{mail,jdbcType=VARCHAR}, 
+      #{position,jdbcType=VARCHAR}, #{isLesseeAdmin,jdbcType=BIT}, #{isDirector,jdbcType=BIT}, 
+      #{roles,jdbcType=VARCHAR}, #{organizeCode,jdbcType=VARCHAR}, #{organizeName,jdbcType=VARCHAR}, 
+      #{lesseeCode,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yiziton.dataimport.waybill.bean.OrganizeUser">
+    insert into organize_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="code != null">
+        code,
+      </if>
+      <if test="telphone != null">
+        telphone,
+      </if>
+      <if test="jobNum != null">
+        job_num,
+      </if>
+      <if test="mail != null">
+        mail,
+      </if>
+      <if test="position != null">
+        position,
+      </if>
+      <if test="isLesseeAdmin != null">
+        is_lessee_admin,
+      </if>
+      <if test="isDirector != null">
+        is_director,
+      </if>
+      <if test="roles != null">
+        roles,
+      </if>
+      <if test="organizeCode != null">
+        organize_code,
+      </if>
+      <if test="organizeName != null">
+        organize_name,
+      </if>
+      <if test="lesseeCode != null">
+        lessee_code,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="telphone != null">
+        #{telphone,jdbcType=VARCHAR},
+      </if>
+      <if test="jobNum != null">
+        #{jobNum,jdbcType=VARCHAR},
+      </if>
+      <if test="mail != null">
+        #{mail,jdbcType=VARCHAR},
+      </if>
+      <if test="position != null">
+        #{position,jdbcType=VARCHAR},
+      </if>
+      <if test="isLesseeAdmin != null">
+        #{isLesseeAdmin,jdbcType=BIT},
+      </if>
+      <if test="isDirector != null">
+        #{isDirector,jdbcType=BIT},
+      </if>
+      <if test="roles != null">
+        #{roles,jdbcType=VARCHAR},
+      </if>
+      <if test="organizeCode != null">
+        #{organizeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="organizeName != null">
+        #{organizeName,jdbcType=VARCHAR},
+      </if>
+      <if test="lesseeCode != null">
+        #{lesseeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yiziton.dataimport.waybill.bean.OrganizeUser">
+    update organize_user
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="telphone != null">
+        telphone = #{telphone,jdbcType=VARCHAR},
+      </if>
+      <if test="jobNum != null">
+        job_num = #{jobNum,jdbcType=VARCHAR},
+      </if>
+      <if test="mail != null">
+        mail = #{mail,jdbcType=VARCHAR},
+      </if>
+      <if test="position != null">
+        position = #{position,jdbcType=VARCHAR},
+      </if>
+      <if test="isLesseeAdmin != null">
+        is_lessee_admin = #{isLesseeAdmin,jdbcType=BIT},
+      </if>
+      <if test="isDirector != null">
+        is_director = #{isDirector,jdbcType=BIT},
+      </if>
+      <if test="roles != null">
+        roles = #{roles,jdbcType=VARCHAR},
+      </if>
+      <if test="organizeCode != null">
+        organize_code = #{organizeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="organizeName != null">
+        organize_name = #{organizeName,jdbcType=VARCHAR},
+      </if>
+      <if test="lesseeCode != null">
+        lessee_code = #{lesseeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yiziton.dataimport.waybill.bean.OrganizeUser">
+    update organize_user
+    set name = #{name,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR},
+      telphone = #{telphone,jdbcType=VARCHAR},
+      job_num = #{jobNum,jdbcType=VARCHAR},
+      mail = #{mail,jdbcType=VARCHAR},
+      position = #{position,jdbcType=VARCHAR},
+      is_lessee_admin = #{isLesseeAdmin,jdbcType=BIT},
+      is_director = #{isDirector,jdbcType=BIT},
+      roles = #{roles,jdbcType=VARCHAR},
+      organize_code = #{organizeCode,jdbcType=VARCHAR},
+      organize_name = #{organizeName,jdbcType=VARCHAR},
+      lessee_code = #{lesseeCode,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

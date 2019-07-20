@@ -1,0 +1,795 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiziton.dataweb.waybill.dao.CustomWaybillInfoMapper">
+
+    <resultMap id="waybillInfoResultMap" type="com.yiziton.dataweb.waybill.bean.WayBillInfo">
+        <id property="id" column="id" javaType="String"/>
+        <result column="product_type" property="productType"/>
+        <result column="service_type" property="serviceType"/>
+        <result column="waybill_status" property="waybillStatus"/>
+        <result column="check_type" property="checkType"/>
+        <result column="check_method" property="checkMethod"/>
+        <result column="check_code" property="checkCode"/>
+        <result column="check_status" property="checkStatus"/>
+        <result column="check_bill_id" property="checkBillId"/>
+        <result column="channel_source" property="channelSource"/>
+        <result column="payment_type" property="paymentType"/>
+        <result column="settlement_type" property="settlementType"/>
+        <result column="marble_blocks" property="marbleBlocks"/>
+        <result column="total_volume" property="totalVolume"/>
+        <result column="total_packing_items" property="totalPackingItems"/>
+        <result column="total_install_items" property="totalInstallItems"/>
+        <result column="total_weight" property="totalWeight"/>
+        <result column="statement_value" property="statementValue"/>
+        <result column="open_bill_node" property="openBillNode"/>
+        <result column="open_bill_operator" property="openBillOperator"/>
+        <result column="sale_total_price" property="saleTotalPrice"/>
+        <result column="salesman" property="salesman"/>
+        <result column="open_bill_time" property="openBillTime"/>
+        <result column="sign_time" property="signTime"/>
+        <result column="consignor_code" property="consignorCode"/>
+        <result column="consignor_name" property="consignorName"/>
+        <result column="consignor_mobile" property="consignorMobile"/>
+        <result column="second_code" property="secondCode"/>
+        <result column="second_name" property="secondName"/>
+        <result column="customer_type" property="customerType"/>
+        <result column="consignee_name" property="consigneeName"/>
+        <result column="consignee_mobile" property="consigneeMobile"/>
+        <result column="consignee_address" property="consigneeAddress"/>
+        <result column="elevator" property="elevator"/>
+        <result column="floor" property="floor"/>
+        <result column="province" property="province"/>
+        <result column="city" property="city"/>
+        <result column="area" property="area"/>
+        <result column="master_name" property="masterName"/>
+        <result column="master_phone" property="masterPhone"/>
+        <result column="master_node" property="masterNode"/>
+        <result column="actual_door_time" property="actualDoorTime"/>
+        <result column="arrival_area" property="arrivalArea"/>
+        <result column="arrival_address" property="arrivalAddress"/>
+        <result column="pick_up_goods_phone" property="pickUpGoodsPhone"/>
+        <result column="pick_up_goods_password" property="pickUpGoodsPassword"/>
+        <result column="logistics_bill_id" property="logisticsBillId"/>
+        <result column="carrier" property="carrier" javaType="String"/>
+        <result column="destination" property="destination"/>
+        <result column="increment_service_type" jdbcType="INTEGER" property="incrementServiceType"/>
+        <result column="increment_service_fee" property="incrementServiceFee"/>
+    </resultMap>
+
+    <resultMap id="WaybillAfterSaleTaskResultMap" type="com.yiziton.dataweb.waybill.bean.AfterSaleTaskInfo">
+        <id property="id" column="id" javaType="String"/>
+        <result column="waybill_id" property="waybillId"/>
+        <result column="task_bill_id" property="taskBillId"/>
+        <result column="task_type" property="taskType"/>
+        <result column="carrier_code" property="carrierCode"/>
+        <result column="carrier" property="carrier"/>
+        <result column="pick_up_method" property="pickUpMethod"/>
+        <result column="carrier_receiver" property="carrierReceiver"/>
+        <result column="carrier_receiver_phone" property="carrierReceiverPhone"/>
+        <result column="after_sale_create_time" property="createTime"/>
+        <result column="master_name" property="masterName"/>
+        <result column="master_phone" property="masterPhone"/>
+        <result column="exception_code" property="exceptionCode"/>
+        <result column="total_price" property="totalPrice"/>
+        <collection property="goodsInfoList" ofType="com.yiziton.dataweb.waybill.bean.GoodsInfo">
+            <id property="id" column="goods_info_id"/>
+            <result column="waybill_id" property="waybillId"/>
+            <result column="customer_goods_name" property="customerGoodsName"/>
+            <result column="goods_name" property="goodsName"/>
+            <result column="packing_items" property="packingItems"/>
+            <result column="install_items" property="installItems"/>
+            <result column="install_fee" property="installFee"/>
+            <result column="volume" property="volume"/>
+            <result column="weight" property="weight"/>
+        </collection>
+    </resultMap>
+
+    <resultMap id="ExceptionInfoResultMap" type="com.yiziton.dataweb.waybill.bean.ExceptionInfo">
+        <id property="id" column="id"/>
+        <result property="waybillId" column="waybill_id"/>
+        <result property="exceptionCode" column="exception_code"/>
+        <result property="feedbackTime" column="feedback_time"/>
+        <result property="exceptionType" column="exception_type"/>
+        <result property="exceptionMessage" column="exception_message"/>
+        <result property="exceptionDescribe" column="exception_describe"/>
+        <result property="feedback" column="feedback"/>
+        <result property="dispose" column="dispose"/>
+        <result property="disposeNode" column="dispose_node"/>
+        <result property="actualDisposeTime" column="actual_dispose_time"/>
+        <result property="disposeResult" column="dispose_result"/>
+        <result property="disposeRemark" column="dispose_remark"/>
+        <result property="exceptionStatus" column="exception_status"/>
+        <result property="arbitrationType" column="arbitration_type"/>
+        <result property="arbitrationResult" column="arbitration_result"/>
+        <result property="exceptionLargeType" column="exception_large_type"/>
+        <result property="exceptionSubType" column="exception_sub_type"/>
+        <result property="disposeSys" column="dispose_sys"/>
+        <result property="disposeObject" column="dispose_object"/>
+        <collection property="taskBillIdList" ofType="java.lang.String">
+            <result column="task_bill_id"/>
+        </collection>
+    </resultMap>
+
+    <resultMap id="MilestoneInfoResultMap" type="com.yiziton.dataweb.waybill.bean.MilestoneInfo">
+        <id column="id" property="id"/>
+        <result column="waybill_id" property="waybillId"/>
+        <result column="related_bill_id" property="relatedBillId"/>
+        <result column="operate_time" property="operateTime"/>
+        <result column="operation_type" property="operationType"/>
+        <result column="operation" property="operation"/>
+        <result column="operator" property="operator"/>
+        <result column="operation_oganization" property="operationOganization"/>
+        <result column="operation_sys" property="operationSys"/>
+        <collection property="operationDetailInfoList" ofType="com.yiziton.dataweb.waybill.bean.OperationDetailInfo">
+            <id column="operation_detail_id" property="id"/>
+            <result column="field" property="field"/>
+            <result column="val" property="val"/>
+            <result column="create_time" property="createTime"/>
+        </collection>
+    </resultMap>
+
+    <!--查询运单信息(包括运单基本信息、发货人信息、收货人信息和货物信息)列表-->
+    <select id="selectWaybillInfoListByCondition" parameterType="com.yiziton.dataweb.waybill.vo.WayBillConditionVO"
+            resultMap="waybillInfoResultMap">
+        SELECT
+        a.id,
+        a.product_type,
+        a.service_type,
+        a.increment_service_type,
+        a.increment_service_fee,
+        a.waybill_status,
+        a.check_type,
+        a.check_method,
+        a.check_code,
+        a.check_status,
+        a.check_bill_id,
+        a.payment_type,
+        a.channel_source,
+        a.settlement_type,
+        a.marble_blocks,
+        a.total_volume,
+        a.total_packing_items,
+        a.total_install_items,
+        a.total_weight,
+        a.statement_value,
+        a.open_bill_node,
+        a.open_bill_operator,
+        a.sale_total_price,
+        a.salesman,
+        a.salesman_phone,
+        a.open_bill_time,
+        a.sign_time,
+        a.destination,
+        b.`code` AS consignor_code,
+        b.`name` AS consignor_name,
+        b.mobile AS consignor_mobile,
+        b.second_code,
+        b.second_name,
+        b.customer_type,
+        d.`name` AS consignee_name,
+        d.mobile AS consignee_mobile,
+        d.address AS consignee_address,
+        d.elevator,
+        d.floor,
+        d.province,
+        d.city,
+        d.area,
+        case when isnull(mst2.master_phone) then mst1.master_phone else mst2.master_phone end as master_phone,
+        case when isnull(mst2.master_phone) then mst1.master_name else mst2.master_name end as master_name,
+        case when isnull(mst2.master_phone) then mst1.master_node else mst2.master_node end as master_node,
+        case when isnull(mst2.master_phone) then mst1.actual_door_time else mst2.actual_door_time end as actual_door_time,
+        a.arrival_area,
+        a.arrival_address,
+        a.pick_up_goods_phone,
+        a.pick_up_goods_password,
+        a.logistics_bill_id,
+        f.carrier
+        FROM
+        waybill_info a
+        LEFT JOIN consignor_info b ON a.id = b.waybill_id and b.status=1
+        LEFT JOIN recevice_info d ON a.id = d.waybill_id and d.status=1
+        LEFT JOIN (SELECT * FROM carrier_info where carrier_type = 1 AND `status`= 1) f ON a.id = f.waybill_id
+        left join master_info mst1 on a.`id`=mst1.waybill_id and mst1.status=1 and mst1.distribution_type=1
+        left join master_info mst2 on a.`id`=mst2.waybill_id and mst2.status=1 and mst2.distribution_type=2
+        WHERE
+        a.`status` = 1
+        AND a.waybill_type = 1
+        <if test="wayBillConditionVo.waybillIdList != null and wayBillConditionVo.waybillIdList.size > 0">
+            AND a.id IN
+            <foreach item="item" index="index" collection="wayBillConditionVo.waybillIdList"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="wayBillConditionVo.openBillNode != null">
+            AND a.open_bill_node = #{wayBillConditionVo.openBillNode}
+        </if>
+        <if test="wayBillConditionVo.serviceTypeCode != null">
+            AND a.service_type = #{wayBillConditionVo.serviceTypeCode}
+        </if>
+        <if test="wayBillConditionVo.incrementServiceCode != null">
+            AND a.increment_service_type = #{wayBillConditionVo.incrementServiceCode}
+        </if>
+        <if test="wayBillConditionVo.checkTypeCode != null">
+            AND a.check_type = #{wayBillConditionVo.checkTypeCode}
+        </if>
+        <if test="wayBillConditionVo.checkMethodCode != null">
+            AND a.check_method =#{wayBillConditionVo.checkMethodCode}
+        </if>
+        <if test="wayBillConditionVo.waybillStatusCode != null">
+            AND a.waybill_status = #{wayBillConditionVo.waybillStatusCode}
+        </if>
+        <if test="wayBillConditionVo.settlementTypeCode != null">
+            AND a.settlement_type = #{wayBillConditionVo.settlementTypeCode}
+        </if>
+        <if test="wayBillConditionVo.destination != null and wayBillConditionVo.destination.length() gt 0">
+            AND a.destination like CONCAT('%',#{wayBillConditionVo.destination},'%')
+        </if>
+        <if test="wayBillConditionVo.arrivalAddress != null and wayBillConditionVo.arrivalAddress.length() gt 0">
+            AND a.arrival_address LIKE CONCAT('%', #{wayBillConditionVo.arrivalAddress}, '%')
+        </if>
+        <if test="wayBillConditionVo.openBillTimeBegin != null">
+            AND a.open_bill_time &gt; #{wayBillConditionVo.openBillTimeBegin}
+        </if>
+        <if test="wayBillConditionVo.openBillTimeEnd != null">
+            AND a.open_bill_time &lt; #{wayBillConditionVo.openBillTimeEnd}
+        </if>
+        <if test="wayBillConditionVo.signTimeBegin != null">
+            AND a.sign_time &gt; #{wayBillConditionVo.signTimeBegin}
+        </if>
+        <if test="wayBillConditionVo.signTimeEnd != null">
+            AND a.sign_time &lt; #{wayBillConditionVo.signTimeEnd}
+        </if>
+        <if test="wayBillConditionVo.consignorNameList != null and wayBillConditionVo.consignorNameList.size > 0">
+            AND b.`name` IN
+            <foreach item="item" index="index" collection="wayBillConditionVo.consignorNameList"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="wayBillConditionVo.secondNameList != null and wayBillConditionVo.secondNameList.size > 0">
+            AND b.second_name IN
+            <foreach item="item" index="index" collection="wayBillConditionVo.secondNameList"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="wayBillConditionVo.customerTypeCode != null">
+            AND b.customer_type = #{wayBillConditionVo.customerTypeCode}
+        </if>
+        <if test="wayBillConditionVo.consigneeNameList != null and wayBillConditionVo.consigneeNameList.size > 0">
+            AND d.`name` IN
+            <foreach item="item" index="index" collection="wayBillConditionVo.consigneeNameList"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="wayBillConditionVo.consigneeMobile != null">
+            AND d.mobile LIKE CONCAT('%', #{wayBillConditionVo.consigneeMobile}, '%')
+        </if>
+        <if test="wayBillConditionVo.consigneeAddress != null">
+            AND d.address LIKE CONCAT('%', #{wayBillConditionVo.consigneeAddress}, '%')
+        </if>
+        <if test="wayBillConditionVo.masterNameList != null and wayBillConditionVo.masterNameList.size > 0">
+            AND ((mst1.master_name IN
+            <foreach item="item" index="index" collection="wayBillConditionVo.masterNameList"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+            and mst2.master_phone is null)
+            or (mst2.master_name IN
+            <foreach item="item" index="index" collection="wayBillConditionVo.masterNameList"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+            and mst2.master_phone is not null))
+        </if>
+        ORDER BY
+        a.open_bill_time DESC
+    </select>
+
+
+    <select id="selectWaybillOperationDetailVal" resultType="java.lang.String">
+        SELECT
+            b.val
+        FROM
+            milestone_info a
+        LEFT JOIN operation_detail b ON a.id = b.milestone_id
+        WHERE
+            a.`status` = 1
+        AND b.`status` = 1
+        AND a.waybill_id =  #{waybillId}
+        AND a.operation = #{operation}
+        AND b.field = #{field}
+        ORDER BY a.operate_time DESC LIMIT 0,1;
+    </select>
+
+    <select id="selectWaybillBillingSum" resultType="java.math.BigDecimal">
+        SELECT
+            SUM(total_price)
+        FROM
+            billing_info
+        WHERE
+            `status` = 1
+        AND waybill_id = #{waybillId}
+        AND billing_object = #{billingObject}
+        AND billing_type = #{billingType}
+    </select>
+
+    <select id="selectGoodsInfo" parameterType="com.yiziton.dataweb.waybill.vo.WayBillConditionVO"
+            resultType="com.yiziton.dataweb.waybill.bean.GoodsInfo">
+        SELECT
+        id,
+        waybill_id AS waybillId,
+        customer_goods_name AS customerGoodsName,
+        goods_name AS goodsName,
+        packing_items AS packingItems,
+        install_items AS installItems,
+        install_fee AS installFee,
+        volume AS volume,
+        weight AS weight
+        FROM
+        goods_info
+        WHERE
+        `status` = 1
+        <if test="waybillId != null">
+            AND waybill_id = #{waybillId}
+        </if>
+
+    </select>
+
+    <select id="selectWaybillRelationInfo" parameterType="com.yiziton.dataweb.waybill.vo.WayBillConditionVO"
+            resultType="com.yiziton.dataweb.waybill.bean.WaybillRelationInfo">
+        SELECT
+            waybill_id AS waybillId,
+            customer_bill_id AS customerBillId,
+            order_bill_id AS orderBillId
+        FROM
+            bill_relation_info
+        WHERE
+            `status` = 1
+         AND waybill_id =#{waybillId};
+    </select>
+
+    <!--查询运单异常信息-->
+    <select id="selectExceptionInfoList" parameterType="com.yiziton.dataweb.waybill.vo.WayBillConditionVO"
+            resultMap="ExceptionInfoResultMap">
+        SELECT
+            a.id,
+            a.waybill_id,
+            a.exception_code,
+            a.feedback_time,
+            a.exception_type,
+            a.exception_message,
+            a.exception_describe,
+            a.feedback,
+            a.dispose,
+            a.actual_dispose_time,
+            a.dispose_result,
+            a.dispose_remark,
+            a.exception_status,
+            a.arbitration_type,
+            a.arbitration_result,
+            a.dispose_node,
+            a.exception_large_type,
+            a.exception_sub_type,
+            a.dispose_sys,
+            a.dispose_object,
+            b.task_bill_id
+        FROM
+            exception_info a
+        LEFT JOIN after_sale_info b ON a.exception_code = b.exception_code
+        WHERE
+            a.`status` = 1
+        AND a.waybill_id = #{waybillId};
+
+    </select>
+
+    <!--查询运单里程碑轨迹信息-->
+    <select id="selectMilestoneInfoList" parameterType="com.yiziton.dataweb.waybill.vo.WayBillConditionVO"
+            resultMap="MilestoneInfoResultMap">
+       SELECT
+            a.id,
+            a.waybill_id,
+            a.related_bill_id,
+            a.operate_time,
+            a.operation_type,
+            a.operation,
+            a.operator,
+            a.operation_oganization,
+            a.operation_sys,
+            b.id AS operation_detail_id,
+            b.field,
+            CASE b.val WHEN 'MASTER' THEN '安装师傅'
+					    WHEN 'AFFILIATE_POINT' THEN '加盟点'
+						WHEN 'DIRECT_POINT' THEN '直营点'
+						WHEN 'CROWDSOURCING_POINT' THEN '众包点'
+						ELSE b.val
+						END AS val,
+            b.create_time
+        FROM
+            milestone_info a LEFT JOIN operation_detail b ON a.id = b.milestone_id AND b.field != 'masterCode'
+        WHERE
+            a.`status` = 1
+        AND a.waybill_id = #{waybillId}
+        ORDER BY a.operate_time DESC, a.operation DESC
+    </select>
+
+    <!--查询运单每一个里程碑的操作明细信息-->
+    <select id="selectOperationDetailList" parameterType="com.yiziton.dataweb.waybill.vo.WayBillConditionVO"
+            resultType="com.yiziton.dataweb.waybill.bean.OperationDetailInfo">
+        SELECT
+            id,
+            field,
+            val,
+            create_time AS createTime,
+            update_time AS updateTime
+        FROM
+            operation_detail
+        WHERE
+            `status` = 1
+        AND milestone_id = #{milestoneId}
+        ORDER BY
+            create_time DESC;
+    </select>
+
+    <!--查询运单流水信息-->
+    <select id="selectBillDetailList" parameterType="com.yiziton.dataweb.waybill.vo.WayBillConditionVO"
+            resultType="com.yiziton.dataweb.waybill.bean.BillDetailInfo">
+        SELECT
+        a.id,
+        a.waybill_id AS waybillId,
+        a.billing_object AS billingObject,
+        a.billing_name AS billingName,
+        a.billing_type AS billingType,
+        a.transaction_name AS transactionName,
+        a.total_price AS totalPrice,
+        a.related_bill_id AS relatedBillId,
+        b.fee_type AS feeTypeCode,
+        b.fee
+        FROM
+        billing_info a
+        LEFT JOIN fee_info b ON a.id = b.billing_id
+        WHERE
+        a.`status` = 1
+        AND b.`status` = 1
+        AND a.waybill_id = #{waybillId}
+        <!-- 不显示费用等于0的费用信息 -->
+        AND b.fee != 0
+    </select>
+
+    <!--查询运单的售后任务信息-->
+    <select id="selectAfterSaleTaskList" parameterType="com.yiziton.dataweb.waybill.vo.WayBillConditionVO"
+            resultMap="WaybillAfterSaleTaskResultMap">
+        SELECT
+            a.id,
+            a.waybill_id,
+            a.task_bill_id,
+            a.task_type,
+            a.exception_code,
+            a.after_sale_create_time,
+            f.carrier_code,
+            f.carrier,
+            f.pick_up_method,
+            f.carrier_receiver,
+            f.carrier_receiver_phone,
+            case when isnull(mst2.master_phone) then mst1.master_phone else mst2.master_phone end as master_phone,
+            case when isnull(mst2.master_phone) then mst1.master_name else mst2.master_name end as master_name,
+            a.exception_code,
+            d.total_price,
+            e.id AS goods_info_id,
+            e.goods_name,
+            e.packing_items,
+            e.volume
+        FROM
+            after_sale_info a
+        LEFT JOIN waybill_info b ON a.task_bill_id = b.id and b.status=1
+        LEFT JOIN carrier_info f ON a.task_bill_id = f.waybill_id and f.status=1
+        left join master_info mst1 on a.task_bill_id=mst1.waybill_id and mst1.status=1 and mst1.distribution_type=1
+        left join master_info mst2 on a.task_bill_id=mst2.waybill_id and mst2.status=1 and mst2.distribution_type=2
+        LEFT JOIN billing_info d ON a.task_bill_id = d.related_bill_id and d.status=1
+        LEFT JOIN goods_info e ON a.task_bill_id = e.waybill_id and e.status=1
+        WHERE
+            a.`status` = 1
+        AND a.waybill_id = #{waybillId};
+    </select>
+
+    <!--查询运单的外发、中转、分配的承接信息-->
+    <select id="selectTransferInfo" parameterType="com.yiziton.dataweb.waybill.vo.WayBillConditionVO"
+            resultType="com.yiziton.dataweb.waybill.bean.TransferInfo">
+        SELECT
+            t1.id AS waybill_id,
+            t2.carrier AS carrier,
+            t2.out_deliver_relayId AS outDeliverRelayId,
+            t2.carrier_departure_line AS carrierDepartureLine,
+            t2.carrier_departure_time AS carrierDepartureTime,
+            t2.limit_arrival_time AS limitArrivalTime,
+            t2.actual_arrival_time AS actualArrivalTime,
+            t2.transfer_bill_id AS transferBillId,
+            t2.carrier_receiver AS carrierReceiver,
+            t2.carrier_receiver_phone AS carrierReceiverPhone,
+            t2.carrier_address AS carrierAddress,
+            t2.pick_up_method AS pickUpMethod,
+            case when isnull(mst2.master_phone) then mst1.master_node else mst2.master_node end as masterNode,
+            case when isnull(mst2.master_phone) then mst1.node_code else mst2.node_code end as nodeCode,
+            case when isnull(mst2.master_phone) then mst1.node_type else mst2.node_type end as nodeType,
+            case when isnull(mst2.master_phone) then mst1.node_duty_name else mst2.node_duty_name end as nodeDutyName,
+            case when isnull(mst2.master_phone) then mst1.limit_distribute_time else mst2.limit_distribute_time end as limitDistributeTime,
+            case when isnull(mst2.master_phone) then mst1.actual_distribute_time else mst2.actual_distribute_time end as actualDistributeTime,
+            case when isnull(mst2.master_phone) then mst1.master_name else mst2.master_name end as masterName,
+            case when isnull(mst2.master_phone) then mst1.master_phone else mst2.master_phone end as masterPhone,
+            case when isnull(mst2.master_phone) then mst1.limit_appointment_time else mst2.limit_appointment_time end as limitAppointmentTime,
+            case when isnull(mst2.master_phone) then mst1.actual_appoinment_time else mst2.actual_appoinment_time end as actualAppoinmentTime,
+            case when isnull(mst2.master_phone) then mst1.limit_door_time else mst2.limit_door_time end as limitDoorTime,
+            case when isnull(mst2.master_phone) then mst1.actual_door_time else mst2.actual_door_time end as actualDoorTime,
+            case when isnull(mst2.master_phone) then mst1.limit_sign_time else mst2.limit_sign_time end as limitSignTime,
+            case when isnull(mst2.master_phone) then mst1.actual_sign_time else mst2.actual_sign_time end as actualSignTime,
+            case when isnull(mst2.master_phone) then mst1.master_type else mst2.master_type end as masterType
+        FROM
+            waybill_info t1
+        LEFT JOIN carrier_info t2 ON t1.id = t2.waybill_id AND t2.STATUS = 1 AND t2.carrier_type = 1
+        left join master_info mst1 on t1.`id`=mst1.waybill_id and mst1.status=1 and mst1.distribution_type=1
+        left join master_info mst2 on t1.`id`=mst2.waybill_id and mst2.status=1 and mst2.distribution_type=2
+        WHERE
+            t1.id = #{waybillId}
+        AND t1. STATUS = 1;
+    </select>
+
+    <!--查询运单节点轨迹信息-->
+    <select id="selectWaybillNodeInfo" parameterType="com.yiziton.dataweb.waybill.vo.WayBillConditionVO"
+            resultType="com.yiziton.dataweb.waybill.bean.WaybillNodeInfo">
+
+    </select>
+
+    <!--查询商家理赔信息-->
+    <select id="selectClaimInfo" parameterType="java.lang.String" resultType="java.util.Map">
+        SELECT
+            a.related_bill_id AS claimNo,
+            a.operate_time AS claimCreateTime,
+            b.claimReason,
+            c.applyClaimType,
+            d.claimFee,
+            e.claimGoodsIds
+        FROM
+            milestone_info a
+        LEFT JOIN (SELECT val as claimReason , milestone_id  FROM operation_detail WHERE field = 'claimReason') b ON a.id = b.milestone_id
+        LEFT JOIN (SELECT val as applyClaimType ,milestone_id FROM operation_detail WHERE field = 'applyClaimType') c ON a.id = c.milestone_id
+        LEFT JOIN (SELECT val as claimFee, milestone_id  FROM operation_detail WHERE field = 'claimFee') d ON a.id = d.milestone_id
+        LEFT JOIN (SELECT val as claimGoodsIds ,milestone_id  FROM operation_detail WHERE field = 'claimGoodsIds') e ON a.id = e.milestone_id
+        WHERE a.waybill_id = #{waybillId}
+        AND a.operation = 415 or a.operation = 434
+        GROUP BY related_bill_id;
+    </select>
+    <!--查询商家理赔信息-->
+    <select id="selectApplyClaimType" parameterType="java.lang.String" resultType="java.util.Map">
+        select
+          case when rs2.applyClaimType is not null then rs2.related_bill_id else rs1.related_bill_id end claimNo,
+          case when rs2.applyClaimType is not null then rs2.applyClaimType else rs1.applyClaimType end applyClaimType
+        from
+          (SELECT a.id, a.related_bill_id, a.operate_time, c.applyClaimType
+          FROM milestone_info a
+            LEFT JOIN (SELECT val as applyClaimType ,milestone_id FROM operation_detail WHERE field = 'applyClaimType') c ON a.id = c.milestone_id
+          WHERE a.`status` = 1 AND a.waybill_id = #{waybillId} AND a.operation = 415) rs1
+        left join (select a.id,a.related_bill_id,c.applyClaimType from
+(select a.id,rs.related_bill_id,rs.operate_time from milestone_info a left join (
+SELECT related_bill_id, MAX(a.operate_time) operate_time FROM milestone_info a WHERE a.`status` = 1 AND a.waybill_id = #{waybillId} AND a.operation = 434 and related_bill_id is not null group by a.related_bill_id) rs
+on a.related_bill_id=rs.related_bill_id and a.operate_time=rs.operate_time
+where  a.`status` = 1 AND a.waybill_id = #{waybillId} and rs.related_bill_id is not null  AND a.operation = 434 ) a
+  LEFT JOIN (SELECT val as applyClaimType ,milestone_id FROM operation_detail WHERE field = 'applyClaimType') c ON a.id = c.milestone_id) rs2 on rs1.related_bill_id=rs2.related_bill_id;
+    </select>
+    <select id="selectHandleClaimType" parameterType="java.lang.String" resultType="java.util.Map">
+        SELECT related_bill_id as claimNo, MAX(a.operate_time) operate_time, c.applyClaimType
+        FROM milestone_info a
+        LEFT JOIN (SELECT val as applyClaimType ,milestone_id FROM operation_detail WHERE field = 'handleClaimType') c ON a.id = c.milestone_id
+        WHERE a.`status` = 1 AND a.waybill_id = #{waybillId} AND a.operation = 416 group by related_bill_id
+    </select>
+
+    <!--处理理赔信息-->
+    <select id="selectClaimProcessInfo" resultType="java.util.Map">
+        SELECT
+            a.related_bill_id,
+            a.operate_time AS claimProcessTime,
+            b.handleClaimType,
+            c.handleFee AS chaimHandleFee,
+            d.fullOffer,
+            e.handleView AS claimHandleView
+        FROM
+            milestone_info a
+        LEFT JOIN (SELECT val as handleClaimType , milestone_id  FROM operation_detail WHERE field = 'handleClaimType')b ON a.id = b.milestone_id
+        LEFT JOIN (SELECT val as handleFee , milestone_id  FROM operation_detail WHERE field = 'handleFee')c ON a.id = c.milestone_id
+        LEFT JOIN (SELECT val as fullOffer , milestone_id  FROM operation_detail WHERE field = 'fullOffer')d ON a.id = d.milestone_id
+        LEFT JOIN (SELECT val as handleView , milestone_id  FROM operation_detail WHERE field = 'handleView')e ON a.id = e.milestone_id
+        WHERE a.`status` = 1
+        AND a.waybill_id = #{waybillId}
+        AND a.related_bill_id = #{relatedBillId}
+        AND a.operation = 416;
+    </select>
+
+    <!--理赔结案信息-->
+    <select id="selectClaimSettlementInfo" resultType="java.util.Map">
+        SELECT
+            a.related_bill_id,
+            a.operate_time AS claimSettlementTime,
+            b.billMonth AS  claimBillMonth,
+            c.closeFee AS claimCloseFee,
+            d.closeView AS claimCloseView
+        FROM
+            milestone_info a
+        LEFT JOIN (SELECT val as billMonth , milestone_id  FROM operation_detail WHERE field = 'billMonth')b ON a.id = b.milestone_id
+        LEFT JOIN (SELECT val as closeFee , milestone_id  FROM operation_detail WHERE field = 'closeFee')c ON a.id = c.milestone_id
+        LEFT JOIN (SELECT val as closeView , milestone_id  FROM operation_detail WHERE field = 'closeView')d ON a.id = d.milestone_id
+        WHERE a.`status` = 1
+        AND a.waybill_id = #{waybillId}
+        AND a.related_bill_id = #{relatedBillId}
+        AND a.operation = 418;
+    </select>
+
+    <!--查询追赔信息-->
+    <select id="selectChaseClaimInfo" parameterType="java.lang.String" resultType="java.util.Map">
+        SELECT
+            a.related_bill_id AS chaseClaimNo,
+            a.operate_time AS chaseClaimCreateTime,
+            b.addReason,
+            c.addType,
+            d.addFee,
+            e.addGoodsIds
+        FROM
+            milestone_info a
+        LEFT JOIN (SELECT val as addReason , milestone_id  FROM operation_detail WHERE field = 'addReason')b ON a.id = b.milestone_id
+        LEFT JOIN (SELECT val as addType ,milestone_id FROM operation_detail WHERE field = 'addType')c ON a.id = c.milestone_id
+        LEFT JOIN (SELECT val as addFee, milestone_id  FROM operation_detail WHERE field = 'addFee')d ON a.id = d.milestone_id
+        LEFT JOIN (SELECT val as addGoodsIds ,milestone_id  FROM operation_detail WHERE field = 'addGoodsIds')e ON a.id = e.milestone_id
+        WHERE a.`status` = 1
+        AND a.waybill_id = #{waybillId}
+        AND a.operation = 419
+    </select>
+
+    <!--追赔处理信息-->
+    <select id="selectChaseClaimProcessInfo" resultType="java.util.Map">
+        SELECT
+            a.related_bill_id,
+            a.operate_time AS chaseClaimProcessTime,
+            b.handleFee AS chaseClaimHandleFee,
+            c.handleView AS chaimClaimHandleView
+        FROM
+            milestone_info a
+        LEFT JOIN (SELECT val as handleFee , milestone_id  FROM operation_detail WHERE field = 'handleFee')b ON a.id = b.milestone_id
+        LEFT JOIN (SELECT val as handleView , milestone_id  FROM operation_detail WHERE field = 'handleView')c ON a.id = c.milestone_id
+        WHERE a.`status` = 1
+        AND a.waybill_id = #{waybillId}
+        AND a.related_bill_id = #{relatedBillId}
+        AND a.operation = 420
+    </select>
+
+    <!--追配结案信息-->
+    <select id="selectChaseClaimSettlementInfo" parameterType="java.lang.String" resultType="java.util.Map">
+        SELECT
+            a.related_bill_id,
+            a.operate_time AS chaseClaimSettlementTime,
+            b.billMonth AS chaseClaimBillMonth ,
+            c.closeFee AS chaseClaimCloseFee,
+            d.closeView AS chaseClaimCloseView
+        FROM
+            milestone_info a
+        LEFT JOIN (SELECT val as billMonth , milestone_id  FROM operation_detail WHERE field = 'billMonth')b ON a.id = b.milestone_id
+        LEFT JOIN (SELECT val as closeFee , milestone_id  FROM operation_detail WHERE field = 'closeFee')c ON a.id = c.milestone_id
+        LEFT JOIN (SELECT val as closeView , milestone_id  FROM operation_detail WHERE field = 'closeView')d ON a.id = d.milestone_id
+        WHERE a.`status` = 1
+        AND a.waybill_id = #{waybillId}
+        AND a.related_bill_id = #{relatedBillId}
+        AND a.operation = 422
+    </select>
+
+    <select id="selectWaybillMilestone" parameterType="java.lang.String"
+            resultType="com.yiziton.dataweb.waybill.bean.MilestoneInfo">
+        SELECT
+            MAX(operate_time),
+            waybill_id,
+            operation
+        FROM
+            milestone_info
+        WHERE
+            `status` = 1
+        AND operation_type = 1
+        AND waybill_id = #{waybillId}
+        GROUP BY
+            operation
+        ORDER BY
+            operate_time ASC,
+            operation ASC;
+    </select>
+
+    <select id="selectAllWaybillMilestone" parameterType="java.lang.String"
+            resultType="com.yiziton.dataweb.waybill.bean.MilestoneInfo">
+        SELECT
+            MAX(operate_time) as operate_time,
+            waybill_id,
+            operation
+        FROM
+            milestone_info
+        WHERE
+            `status` = 1
+        AND operation_type in(1,2)
+        AND waybill_id = #{waybillId}
+        GROUP BY
+            operation
+        ORDER BY
+            operate_time ASC,
+            operation ASC;
+    </select>
+    <!--增值服务收款状态信息-->
+    <select id="selectWaybillIncrementStatus" resultType="java.lang.String">
+        SELECT
+        CASE WHEN (c.increment_service_type =2 AND c.fee is not null) THEN "已收款"
+        WHEN(c.increment_service_type =2 AND c.fee is null) THEN "未收款"
+        ELSE null END as status
+        FROM (
+        SELECT
+        a.increment_service_type,b.fee
+        FROM waybill_info a
+        LEFT JOIN
+        (SELECT
+        SUM(fee) as fee,waybill_id
+        FROM fee_info
+        where  fee_type ='collectionOnDeliveryFee' GROUP BY waybill_id)b
+        ON a.id = b.waybill_id
+        WHERE a.id = #{waybillId}
+        ) c
+    </select>
+
+    <!--查询运单基本信息-->
+    <select id="findWaybillBaseInfo" parameterType="java.lang.String" resultType="com.yiziton.dataweb.waybill.dataobject.WaybillbaseInfoDO">
+        SELECT
+          wbif.id AS waybillId,
+          wbif.service_type AS serviceType,
+          wbif.open_bill_node AS openBillNode,
+          wbif.open_bill_operator AS openBillOperator,
+          wbif.channel_source AS channelSource,
+          wbif.product_type AS productType,
+          (SELECT total_price FROM billing_info WHERE waybill_id = wbif.id AND `status` = 1 AND billing_object = 1 AND billing_type = 1 ) AS merchantFee,
+          wbif.sale_total_price AS saleTotalPrice,
+          wbif.payment_type AS paymentType,
+          wbif.open_bill_time AS openBillTime,
+          wbif.sign_time AS signTime,
+          wbif.goods_type AS goodsType,
+          -- 发货人信息
+          cif.name AS cName,
+          cif.second_name AS cSecondName,
+          cif.mobile AS cMobile,
+          cif.second_code AS cSecondCode,
+          cif.code AS cCode,
+          cif.customer_type AS cCustomerType,
+          -- 收货人信息
+          rif.name AS rName,
+          CONCAT(rif.province,rif.city,rif.area) AS rDestination,
+          rif.mobile AS rMobile,
+          rif.address AS rAddress,
+          IF((SELECT operation FROM milestone_info WHERE waybill_id = wbif.id AND operation in (2600,270,320) ORDER BY operate_time DESC LIMIT 1) = 2600,NULL,(SELECT CONCAT(( SELECT DATE_FORMAT(od.val, '%Y-%m-%d') FROM operation_detail od WHERE od.`status` = 1 AND od.waybill_id = wbif.id AND od.field = 'doorTime' ORDER BY od.create_time DESC LIMIT 1 ), ' ', ( SELECT CASE WHEN od.val = 'Night' THEN '晚上(17:30-23:00)' WHEN od.val = 'Afternoon' THEN '下午(13:00-17:00)' WHEN od.val = 'Morning' THEN '上午(07:00-13:00)' ELSE NULL END val FROM operation_detail od WHERE od.`status` = 1 AND od.waybill_id = wbif.id AND od.field = 'doorPeriod' ORDER BY od.create_time DESC LIMIT 1 )))) AS doorTime,
+          rif.floor AS floor,
+          -- 核销信息
+          wbif.check_type AS checkType,
+          wbif.check_method AS checkMethod,
+          wbif.check_bill_id AS checkBillId,
+          wbif.check_code AS checkCode,
+          wbif.check_status AS checkStatus,
+          -- 提货信息
+          wbif.logistics_bill_id AS logisticsBillId,
+          wbif.pick_up_goods_phone AS pickUpGoodsPhone,
+          wbif.pick_up_goods_password AS pickUpGoodsPassword,
+          CONCAT(wbif.arrival_area,wbif.arrival_address) AS arrivalAddress,
+          -- 销售人员
+          wbif.salesman AS salesman,
+          wbif.salesman_phone AS salesmanPhone,
+          -- 业务员组织预留
+          -- 增值服务
+          wbif.increment_service_type AS incrementServiceType,
+          wbif.increment_service_fee AS incrementServiceFee,
+          (SELECT CASE WHEN ( wif.increment_service_type = 2 AND fa.fee IS NOT NULL ) THEN "已收款" WHEN ( wif.increment_service_type = 2 AND fa.fee IS NULL ) THEN "未收款" ELSE NULL END AS 'STATUS' FROM waybill_info wif LEFT JOIN ( SELECT SUM(fee) AS fee, waybill_id FROM fee_info WHERE fee_type = 'collectionOnDeliveryFee' AND `status` = 1 ) fa ON wif.id = fa.waybill_id WHERE wif.id = wbif.id AND wif.`status` = 1) AS incrementServiceStatus
+        FROM
+          waybill_info wbif
+            LEFT JOIN consignor_info cif ON wbif.id = cif.waybill_id and cif.status=1
+            LEFT JOIN recevice_info rif ON wbif.id = rif.waybill_id and rif.status=1
+        WHERE
+            wbif.id = #{waybillId} AND wbif.`status` = 1;
+    </select>
+</mapper>

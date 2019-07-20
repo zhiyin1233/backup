@@ -1,0 +1,461 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiziton.dataimport.waybill.dao.ExceptionInfoMapper">
+  <resultMap id="BaseResultMap" type="com.yiziton.dataimport.waybill.bean.ExceptionInfo">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="waybill_id" jdbcType="VARCHAR" property="waybillId" />
+    <result column="exception_code" jdbcType="VARCHAR" property="exceptionCode" />
+    <result column="exception_type" jdbcType="VARCHAR" property="exceptionType" />
+    <result column="exception_message" jdbcType="VARCHAR" property="exceptionMessage" />
+    <result column="exception_describe" jdbcType="VARCHAR" property="exceptionDescribe" />
+    <result column="feedback_sys" jdbcType="VARCHAR" property="feedbackSys" />
+    <result column="feedback_time" jdbcType="TIMESTAMP" property="feedbackTime" />
+    <result column="feedback" jdbcType="VARCHAR" property="feedback" />
+    <result column="feedback_party" jdbcType="VARCHAR" property="feedbackParty" />
+    <result column="dispose" jdbcType="VARCHAR" property="dispose" />
+    <result column="dispose_result" jdbcType="VARCHAR" property="disposeResult" />
+    <result column="arbitration_result" jdbcType="VARCHAR" property="arbitrationResult" />
+    <result column="restrict_dispose_time" jdbcType="TIMESTAMP" property="restrictDisposeTime" />
+    <result column="actual_dispose_time" jdbcType="TIMESTAMP" property="actualDisposeTime" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="exception_status" jdbcType="VARCHAR" property="exceptionStatus" />
+    <result column="feedback_phone" jdbcType="VARCHAR" property="feedbackPhone" />
+    <result column="feedback_node" jdbcType="VARCHAR" property="feedbackNode" />
+    <result column="arbitration_code" jdbcType="VARCHAR" property="arbitrationCode" />
+    <result column="arbitration_type" jdbcType="VARCHAR" property="arbitrationType" />
+    <result column="dispose_node" jdbcType="VARCHAR" property="disposeNode" />
+    <result column="data_type" jdbcType="INTEGER" property="dataType" />
+    <result column="dispose_remark" jdbcType="VARCHAR" property="disposeRemark" />
+    <result column="exception_large_type" jdbcType="VARCHAR" property="exceptionLargeType" />
+    <result column="exception_sub_type" jdbcType="VARCHAR" property="exceptionSubType" />
+    <result column="dispose_phone" jdbcType="VARCHAR" property="disposePhone" />
+    <result column="dispose_bill_id" jdbcType="VARCHAR" property="disposeBillId" />
+    <result column="duty" jdbcType="VARCHAR" property="duty" />
+    <result column="duty_account" jdbcType="VARCHAR" property="dutyAccount" />
+    <result column="is_claim" jdbcType="VARCHAR" property="isClaim" />
+    <result column="claim_bill_id" jdbcType="VARCHAR" property="claimBillId" />
+    <result column="dispose_sys" jdbcType="VARCHAR" property="disposeSys" />
+    <result column="dispose_object" jdbcType="VARCHAR" property="disposeObject" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, waybill_id, exception_code, exception_type, exception_message, exception_describe, 
+    feedback_sys, feedback_time, feedback, feedback_party, dispose, dispose_result, arbitration_result, 
+    restrict_dispose_time, actual_dispose_time, status, create_time, update_time, exception_status, 
+    feedback_phone, feedback_node, arbitration_code, arbitration_type, dispose_node, 
+    data_type, dispose_remark, exception_large_type, exception_sub_type, dispose_phone, 
+    dispose_bill_id, duty, duty_account, is_claim, claim_bill_id, dispose_sys, dispose_object
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from exception_info
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from exception_info
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yiziton.dataimport.waybill.bean.ExceptionInfo">
+    insert into exception_info (id, waybill_id, exception_code, 
+      exception_type, exception_message, exception_describe, 
+      feedback_sys, feedback_time, feedback, 
+      feedback_party, dispose, dispose_result, 
+      arbitration_result, restrict_dispose_time, 
+      actual_dispose_time, status, create_time, 
+      update_time, exception_status, feedback_phone, 
+      feedback_node, arbitration_code, arbitration_type, 
+      dispose_node, data_type, dispose_remark, 
+      exception_large_type, exception_sub_type, dispose_phone, 
+      dispose_bill_id, duty, duty_account, 
+      is_claim, claim_bill_id, dispose_sys, 
+      dispose_object)
+    values (#{id,jdbcType=VARCHAR}, #{waybillId,jdbcType=VARCHAR}, #{exceptionCode,jdbcType=VARCHAR}, 
+      #{exceptionType,jdbcType=VARCHAR}, #{exceptionMessage,jdbcType=VARCHAR}, #{exceptionDescribe,jdbcType=VARCHAR}, 
+      #{feedbackSys,jdbcType=VARCHAR}, #{feedbackTime,jdbcType=TIMESTAMP}, #{feedback,jdbcType=VARCHAR}, 
+      #{feedbackParty,jdbcType=VARCHAR}, #{dispose,jdbcType=VARCHAR}, #{disposeResult,jdbcType=VARCHAR}, 
+      #{arbitrationResult,jdbcType=VARCHAR}, #{restrictDisposeTime,jdbcType=TIMESTAMP}, 
+      #{actualDisposeTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{exceptionStatus,jdbcType=VARCHAR}, #{feedbackPhone,jdbcType=VARCHAR}, 
+      #{feedbackNode,jdbcType=VARCHAR}, #{arbitrationCode,jdbcType=VARCHAR}, #{arbitrationType,jdbcType=VARCHAR}, 
+      #{disposeNode,jdbcType=VARCHAR}, #{dataType,jdbcType=INTEGER}, #{disposeRemark,jdbcType=VARCHAR}, 
+      #{exceptionLargeType,jdbcType=VARCHAR}, #{exceptionSubType,jdbcType=VARCHAR}, #{disposePhone,jdbcType=VARCHAR}, 
+      #{disposeBillId,jdbcType=VARCHAR}, #{duty,jdbcType=VARCHAR}, #{dutyAccount,jdbcType=VARCHAR}, 
+      #{isClaim,jdbcType=VARCHAR}, #{claimBillId,jdbcType=VARCHAR}, #{disposeSys,jdbcType=VARCHAR}, 
+      #{disposeObject,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yiziton.dataimport.waybill.bean.ExceptionInfo">
+    insert into exception_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="waybillId != null">
+        waybill_id,
+      </if>
+      <if test="exceptionCode != null">
+        exception_code,
+      </if>
+      <if test="exceptionType != null">
+        exception_type,
+      </if>
+      <if test="exceptionMessage != null">
+        exception_message,
+      </if>
+      <if test="exceptionDescribe != null">
+        exception_describe,
+      </if>
+      <if test="feedbackSys != null">
+        feedback_sys,
+      </if>
+      <if test="feedbackTime != null">
+        feedback_time,
+      </if>
+      <if test="feedback != null">
+        feedback,
+      </if>
+      <if test="feedbackParty != null">
+        feedback_party,
+      </if>
+      <if test="dispose != null">
+        dispose,
+      </if>
+      <if test="disposeResult != null">
+        dispose_result,
+      </if>
+      <if test="arbitrationResult != null">
+        arbitration_result,
+      </if>
+      <if test="restrictDisposeTime != null">
+        restrict_dispose_time,
+      </if>
+      <if test="actualDisposeTime != null">
+        actual_dispose_time,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="exceptionStatus != null">
+        exception_status,
+      </if>
+      <if test="feedbackPhone != null">
+        feedback_phone,
+      </if>
+      <if test="feedbackNode != null">
+        feedback_node,
+      </if>
+      <if test="arbitrationCode != null">
+        arbitration_code,
+      </if>
+      <if test="arbitrationType != null">
+        arbitration_type,
+      </if>
+      <if test="disposeNode != null">
+        dispose_node,
+      </if>
+      <if test="dataType != null">
+        data_type,
+      </if>
+      <if test="disposeRemark != null">
+        dispose_remark,
+      </if>
+      <if test="exceptionLargeType != null">
+        exception_large_type,
+      </if>
+      <if test="exceptionSubType != null">
+        exception_sub_type,
+      </if>
+      <if test="disposePhone != null">
+        dispose_phone,
+      </if>
+      <if test="disposeBillId != null">
+        dispose_bill_id,
+      </if>
+      <if test="duty != null">
+        duty,
+      </if>
+      <if test="dutyAccount != null">
+        duty_account,
+      </if>
+      <if test="isClaim != null">
+        is_claim,
+      </if>
+      <if test="claimBillId != null">
+        claim_bill_id,
+      </if>
+      <if test="disposeSys != null">
+        dispose_sys,
+      </if>
+      <if test="disposeObject != null">
+        dispose_object,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="waybillId != null">
+        #{waybillId,jdbcType=VARCHAR},
+      </if>
+      <if test="exceptionCode != null">
+        #{exceptionCode,jdbcType=VARCHAR},
+      </if>
+      <if test="exceptionType != null">
+        #{exceptionType,jdbcType=VARCHAR},
+      </if>
+      <if test="exceptionMessage != null">
+        #{exceptionMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="exceptionDescribe != null">
+        #{exceptionDescribe,jdbcType=VARCHAR},
+      </if>
+      <if test="feedbackSys != null">
+        #{feedbackSys,jdbcType=VARCHAR},
+      </if>
+      <if test="feedbackTime != null">
+        #{feedbackTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="feedback != null">
+        #{feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="feedbackParty != null">
+        #{feedbackParty,jdbcType=VARCHAR},
+      </if>
+      <if test="dispose != null">
+        #{dispose,jdbcType=VARCHAR},
+      </if>
+      <if test="disposeResult != null">
+        #{disposeResult,jdbcType=VARCHAR},
+      </if>
+      <if test="arbitrationResult != null">
+        #{arbitrationResult,jdbcType=VARCHAR},
+      </if>
+      <if test="restrictDisposeTime != null">
+        #{restrictDisposeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="actualDisposeTime != null">
+        #{actualDisposeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="exceptionStatus != null">
+        #{exceptionStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="feedbackPhone != null">
+        #{feedbackPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="feedbackNode != null">
+        #{feedbackNode,jdbcType=VARCHAR},
+      </if>
+      <if test="arbitrationCode != null">
+        #{arbitrationCode,jdbcType=VARCHAR},
+      </if>
+      <if test="arbitrationType != null">
+        #{arbitrationType,jdbcType=VARCHAR},
+      </if>
+      <if test="disposeNode != null">
+        #{disposeNode,jdbcType=VARCHAR},
+      </if>
+      <if test="dataType != null">
+        #{dataType,jdbcType=INTEGER},
+      </if>
+      <if test="disposeRemark != null">
+        #{disposeRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="exceptionLargeType != null">
+        #{exceptionLargeType,jdbcType=VARCHAR},
+      </if>
+      <if test="exceptionSubType != null">
+        #{exceptionSubType,jdbcType=VARCHAR},
+      </if>
+      <if test="disposePhone != null">
+        #{disposePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="disposeBillId != null">
+        #{disposeBillId,jdbcType=VARCHAR},
+      </if>
+      <if test="duty != null">
+        #{duty,jdbcType=VARCHAR},
+      </if>
+      <if test="dutyAccount != null">
+        #{dutyAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="isClaim != null">
+        #{isClaim,jdbcType=VARCHAR},
+      </if>
+      <if test="claimBillId != null">
+        #{claimBillId,jdbcType=VARCHAR},
+      </if>
+      <if test="disposeSys != null">
+        #{disposeSys,jdbcType=VARCHAR},
+      </if>
+      <if test="disposeObject != null">
+        #{disposeObject,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yiziton.dataimport.waybill.bean.ExceptionInfo">
+    update exception_info
+    <set>
+      <if test="waybillId != null">
+        waybill_id = #{waybillId,jdbcType=VARCHAR},
+      </if>
+      <if test="exceptionCode != null">
+        exception_code = #{exceptionCode,jdbcType=VARCHAR},
+      </if>
+      <if test="exceptionType != null">
+        exception_type = #{exceptionType,jdbcType=VARCHAR},
+      </if>
+      <if test="exceptionMessage != null">
+        exception_message = #{exceptionMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="exceptionDescribe != null">
+        exception_describe = #{exceptionDescribe,jdbcType=VARCHAR},
+      </if>
+      <if test="feedbackSys != null">
+        feedback_sys = #{feedbackSys,jdbcType=VARCHAR},
+      </if>
+      <if test="feedbackTime != null">
+        feedback_time = #{feedbackTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="feedback != null">
+        feedback = #{feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="feedbackParty != null">
+        feedback_party = #{feedbackParty,jdbcType=VARCHAR},
+      </if>
+      <if test="dispose != null">
+        dispose = #{dispose,jdbcType=VARCHAR},
+      </if>
+      <if test="disposeResult != null">
+        dispose_result = #{disposeResult,jdbcType=VARCHAR},
+      </if>
+      <if test="arbitrationResult != null">
+        arbitration_result = #{arbitrationResult,jdbcType=VARCHAR},
+      </if>
+      <if test="restrictDisposeTime != null">
+        restrict_dispose_time = #{restrictDisposeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="actualDisposeTime != null">
+        actual_dispose_time = #{actualDisposeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="exceptionStatus != null">
+        exception_status = #{exceptionStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="feedbackPhone != null">
+        feedback_phone = #{feedbackPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="feedbackNode != null">
+        feedback_node = #{feedbackNode,jdbcType=VARCHAR},
+      </if>
+      <if test="arbitrationCode != null">
+        arbitration_code = #{arbitrationCode,jdbcType=VARCHAR},
+      </if>
+      <if test="arbitrationType != null">
+        arbitration_type = #{arbitrationType,jdbcType=VARCHAR},
+      </if>
+      <if test="disposeNode != null">
+        dispose_node = #{disposeNode,jdbcType=VARCHAR},
+      </if>
+      <if test="dataType != null">
+        data_type = #{dataType,jdbcType=INTEGER},
+      </if>
+      <if test="disposeRemark != null">
+        dispose_remark = #{disposeRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="exceptionLargeType != null">
+        exception_large_type = #{exceptionLargeType,jdbcType=VARCHAR},
+      </if>
+      <if test="exceptionSubType != null">
+        exception_sub_type = #{exceptionSubType,jdbcType=VARCHAR},
+      </if>
+      <if test="disposePhone != null">
+        dispose_phone = #{disposePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="disposeBillId != null">
+        dispose_bill_id = #{disposeBillId,jdbcType=VARCHAR},
+      </if>
+      <if test="duty != null">
+        duty = #{duty,jdbcType=VARCHAR},
+      </if>
+      <if test="dutyAccount != null">
+        duty_account = #{dutyAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="isClaim != null">
+        is_claim = #{isClaim,jdbcType=VARCHAR},
+      </if>
+      <if test="claimBillId != null">
+        claim_bill_id = #{claimBillId,jdbcType=VARCHAR},
+      </if>
+      <if test="disposeSys != null">
+        dispose_sys = #{disposeSys,jdbcType=VARCHAR},
+      </if>
+      <if test="disposeObject != null">
+        dispose_object = #{disposeObject,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yiziton.dataimport.waybill.bean.ExceptionInfo">
+    update exception_info
+    set waybill_id = #{waybillId,jdbcType=VARCHAR},
+      exception_code = #{exceptionCode,jdbcType=VARCHAR},
+      exception_type = #{exceptionType,jdbcType=VARCHAR},
+      exception_message = #{exceptionMessage,jdbcType=VARCHAR},
+      exception_describe = #{exceptionDescribe,jdbcType=VARCHAR},
+      feedback_sys = #{feedbackSys,jdbcType=VARCHAR},
+      feedback_time = #{feedbackTime,jdbcType=TIMESTAMP},
+      feedback = #{feedback,jdbcType=VARCHAR},
+      feedback_party = #{feedbackParty,jdbcType=VARCHAR},
+      dispose = #{dispose,jdbcType=VARCHAR},
+      dispose_result = #{disposeResult,jdbcType=VARCHAR},
+      arbitration_result = #{arbitrationResult,jdbcType=VARCHAR},
+      restrict_dispose_time = #{restrictDisposeTime,jdbcType=TIMESTAMP},
+      actual_dispose_time = #{actualDisposeTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      exception_status = #{exceptionStatus,jdbcType=VARCHAR},
+      feedback_phone = #{feedbackPhone,jdbcType=VARCHAR},
+      feedback_node = #{feedbackNode,jdbcType=VARCHAR},
+      arbitration_code = #{arbitrationCode,jdbcType=VARCHAR},
+      arbitration_type = #{arbitrationType,jdbcType=VARCHAR},
+      dispose_node = #{disposeNode,jdbcType=VARCHAR},
+      data_type = #{dataType,jdbcType=INTEGER},
+      dispose_remark = #{disposeRemark,jdbcType=VARCHAR},
+      exception_large_type = #{exceptionLargeType,jdbcType=VARCHAR},
+      exception_sub_type = #{exceptionSubType,jdbcType=VARCHAR},
+      dispose_phone = #{disposePhone,jdbcType=VARCHAR},
+      dispose_bill_id = #{disposeBillId,jdbcType=VARCHAR},
+      duty = #{duty,jdbcType=VARCHAR},
+      duty_account = #{dutyAccount,jdbcType=VARCHAR},
+      is_claim = #{isClaim,jdbcType=VARCHAR},
+      claim_bill_id = #{claimBillId,jdbcType=VARCHAR},
+      dispose_sys = #{disposeSys,jdbcType=VARCHAR},
+      dispose_object = #{disposeObject,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

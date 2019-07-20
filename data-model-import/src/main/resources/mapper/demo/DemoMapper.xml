@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiziton.dataimport.demo.dao.DemoMapper">
+    <resultMap id="BaseResultMap" type="com.yiziton.commons.vo.demo.DemoBean">
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="value" jdbcType="INTEGER" property="age" />
+    </resultMap>
+    <sql id="Base_Column_List">
+      name, age
+    </sql>
+    <insert id="insert" parameterType="com.yiziton.commons.vo.demo.DemoBean">
+        insert into demo (name,value)
+        values (#{name,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER})
+    </insert>
+</mapper>

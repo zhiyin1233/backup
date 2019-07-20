@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiziton.dataimport.waybill.dao.WayBillExportInfoMapper">
+  <resultMap id="BaseResultMap" type="com.yiziton.dataweb.waybill.bean.WayBillInfo">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="waybill_id" jdbcType="VARCHAR" property="id" />
+    <result column="operation" jdbcType="VARCHAR" property="checkBillId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    waybill_id, operation
+  </sql>
+  <select id="selectWayBillInfoByCondition" parameterType="com.yiziton.dataweb.waybill.vo.WayBillConditionVO" resultType="java.util.HashMap" statementType="STATEMENT">
+    select 
+        ${columns}
+    from  milestone_info
+    where ${condition}
+    order by waybill_id limit ${offset}, ${size}
+  </select>
+
+  <select id="selectWayBillInfoPageByCondition" resultMap="BaseResultMap">
+    select waybill_id, operation
+    from  milestone_info
+    where operation = 0
+  </select>
+
+</mapper>

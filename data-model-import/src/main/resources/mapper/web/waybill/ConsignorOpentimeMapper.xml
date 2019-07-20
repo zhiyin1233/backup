@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiziton.dataweb.waybill.dao.ConsignorOpentimeMapper">
+
+    <resultMap id="noCamelConsignorOpentimeDO" type="com.yiziton.dataweb.salesindex.pojo.ConsignorOpentimeDO" autoMapping="true">
+       <!-- <id column="waybill_id" property="waybill_id"></id>-->
+        <result column="customer_code" property="customerCode"></result>
+        <result column="customer_name" property="customerName"></result>
+        <result column="open_bill_month" property="openBillMonth"></result>
+    </resultMap>
+
+    <select id="queryAll" resultMap="noCamelConsignorOpentimeDO">
+      select * from consignor_opentime
+    </select>
+
+
+
+</mapper>

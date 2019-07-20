@@ -1,0 +1,924 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiziton.dataweb.waybill.dao.ReportExportMapper">
+    <select id="selectCustomerReports" resultType="com.yiziton.dataweb.waybill.vo.report_vo.CustomerProfitReportsVO">
+        SELECT
+          c.name as consignorName,
+          sum(b1.income) as income,
+          sum(b2.cost) as cost,
+          ((sum(b1.income)-sum(b2.cost))/sum(b1.income))*100 as profitMargin
+        from waybill_info w
+        INNER JOIN consignor_info c on (w.id = c.waybill_id)
+        INNER JOIN (SELECT waybill_id,sum(total_price) as income from billing_info where billing_type in (1,2) and status = 1 and total_price&gt;=0 GROUP BY waybill_id)  b1 on (w.id = b1.waybill_id)
+        INNER JOIN (SELECT waybill_id,abs(sum(total_price)) as cost from billing_info where billing_type in (1,2) and status = 1 and total_price&lt;=0 GROUP BY waybill_id)  b2 on (w.id = b2.waybill_id)
+        where
+          TO_DAYS(NOW())-TO_DAYS(w.sign_time) = 1 and w.status = 1
+        GROUP BY c.`name`
+        HAVING c.`name` in (select consignor_info_name from customer_label_info where customer_label = #{label})
+    </select>
+
+
+
+    <select id="selectEngineeringReports" resultType="com.yiziton.dataweb.waybill.vo.report_vo.CustomerProfitReportsVO">
+        SELECT bb.consignor_info_name                                               as consignorName,
+        case when a1.income is null then 0.00 else a1.income end             AS todayIncome,
+        case when a1.cost is null then 0.00 else a1.cost end                 AS todayCost,
+        case when a1.profitMargin is null then 0.00 else a1.profitMargin end AS todayProfitMargin,
+        case when a2.income is null then 0.00 else a2.income end             AS monthIncome,
+        case when a2.cost is null then 0.00 else a2.cost end                 AS monthCost,
+        case when a2.profitMargin is null then 0.00 else a2.profitMargin end AS monthProfitMargin
+        FROM customer_label_info bb
+        left join (
+        SELECT c.name                                                   as consignorName,
+        sum(b1.income)                                           as income,
+        sum(b2.cost)                                             as cost,
+        ((sum(b1.income) - sum(b2.cost)) / sum(b1.income)) * 100 as profitMargin
+        from waybill_info w
+        INNER JOIN consignor_info c on (w.id = c.waybill_id)
+        INNER JOIN (SELECT waybill_id, sum(total_price) as income
+        from billing_info
+        where billing_type in (1, 2, 3)
+        and status = 1
+        and total_price >= 0
+        GROUP BY waybill_id) b1 on (w.id = b1.waybill_id)
+        INNER JOIN (SELECT waybill_id, abs(sum(total_price)) as cost
+        from billing_info
+        where billing_type in (1, 2, 3)
+        and status = 1
+        and total_price &lt;= 0
+        GROUP BY waybill_id) b2 on (w.id = b2.waybill_id)
+        where TO_DAYS(NOW()) - TO_DAYS(w.sign_time) = 1
+        and w.status = 1
+        and w.service_type in
+        <foreach item="item" index="index" collection="services" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        GROUP BY c.`name`
+        HAVING c.`name` in (select consignor_info_name from customer_label_info where customer_label = '工程业务客户')) a1
+        on a1.consignorName = bb.consignor_info_name
+
+        left join (
+        SELECT c.name                                                   as consignorName,
+        sum(b1.income)                                           as income,
+        sum(b2.cost)                                             as cost,
+        ((sum(b1.income) - sum(b2.cost)) / sum(b1.income)) * 100 as profitMargin
+        from waybill_info w
+        INNER JOIN consignor_info c on (w.id = c.waybill_id)
+        INNER JOIN (SELECT waybill_id, sum(total_price) as income
+        from billing_info
+        where billing_type in (1, 2, 3)
+        and status = 1
+        and total_price >= 0
+        GROUP BY waybill_id) b1 on (w.id = b1.waybill_id)
+        INNER JOIN (SELECT waybill_id, abs(sum(total_price)) as cost
+        from billing_info
+        where billing_type in (1, 2, 3)
+        and status = 1
+        and total_price &lt;= 0
+        GROUP BY waybill_id) b2 on (w.id = b2.waybill_id)
+        where DATE_FORMAT(w.sign_time, '%Y%m') = DATE_FORMAT(TIMESTAMP(DATE_SUB(CURDATE(), INTERVAL 1 DAY)), '%Y%m')
+        AND TO_DAYS(NOW()) - TO_DAYS(w.sign_time) >= 1
+        and w.status = 1
+        and w.service_type in
+        <foreach item="item" index="index" collection="services" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        GROUP BY c.`name`
+        HAVING c.`name` in (select consignor_info_name from customer_label_info where customer_label = '工程业务客户')) a2
+        on a2.consignorName = bb.consignor_info_name
+        where bb.customer_label = '工程业务客户';
+    </select>
+
+    <select id="selectIncomeStatementReports"
+            resultType="com.yiziton.dataweb.waybill.vo.report_vo.IncomeStatementReportsVo">
+            SELECT billing_name as 'consignorName',
+            customer_label as 'consignorLabel',
+            DATE_FORMAT(CURDATE()-1, ' %Y-%m-%d' ) as 'today',
+            today_count_num as 'todayNum',
+            today_total_price as 'todayPrice',
+            (today_total_price/s.sum_today_price) * 100 AS  'todayRatio',
+            DATE_FORMAT(TIMESTAMP(DATE_SUB(CURDATE(), INTERVAL 1 DAY)), '%Y-%m') as 'month',
+            month_total_price 'monthPrice',
+            month_count_num 'monthCount',
+            (month_total_price/s.sum_month_price) * 100 AS  'monthRatio'
+            FROM
+            (
+            SELECT b.billing_name,c.customer_label,sum(IF(TO_DAYS(NOW())-TO_DAYS(w.open_bill_time)=1,1,0)) AS today_count_num,sum(IF (TO_DAYS(NOW())-TO_DAYS(w.open_bill_time)=1,b.total_price,0)) AS today_total_price,count(b.id) month_count_num,sum(b.total_price) month_total_price
+            FROM waybill_info w
+            INNER JOIN billing_info b ON w.id = b.waybill_id AND b.billing_type = 1 AND b.billing_object = 1 AND b.status = 1
+            INNER JOIN customer_label_info c on c.consignor_info_name=b.billing_name and c.customer_label in
+            <foreach item="item" index="index" collection="consignorList"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+            WHERE DATE_FORMAT(w.open_bill_time,'%Y%m') = DATE_FORMAT(TIMESTAMP(DATE_SUB(CURDATE(), INTERVAL 1 DAY)), '%Y%m') AND TO_DAYS(NOW()) - TO_DAYS(w.open_bill_time) >= 1 GROUP BY billing_name,customer_label) AS a,
+            (
+            SELECT sum(b.total_price) sum_month_price,sum(IF(TO_DAYS(NOW())-TO_DAYS(w.open_bill_time)=1,b.total_price,0)) as sum_today_price
+            FROM waybill_info w
+            INNER JOIN billing_info b ON w.id = b.waybill_id  AND b.billing_type = 1 AND b.billing_object = 1 AND b.status = 1
+            INNER JOIN customer_label_info c on c.consignor_info_name=b.billing_name and c.customer_label in
+            <foreach item="item" index="index" collection="consignorList"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+            WHERE DATE_FORMAT(w.open_bill_time,'%Y%m') = DATE_FORMAT(TIMESTAMP(DATE_SUB(CURDATE(), INTERVAL 1 DAY)), '%Y%m') AND TO_DAYS(NOW()) - TO_DAYS(w.open_bill_time) >= 1
+            ) AS s
+            ORDER BY today_count_num desc,month_total_price desc;
+    </select>
+
+    <select id="selectOutDeliveryVolume"
+            resultType="com.yiziton.dataweb.waybill.vo.OutDeliveryVolumeVO">
+SELECT bb.operation_oganization                                                                            AS 'operationOganization',
+       CASE WHEN aa.operate_time IS NULL THEN DATE_SUB(curdate(), INTERVAL 1 DAY) ELSE aa.operate_time END AS 'today',
+       CASE WHEN aa.outDeliverCost IS NULL THEN 0.00 ELSE (0 - aa.outDeliverCost) END                      AS 'todayOutDeliverCost',
+       CASE WHEN aa.takeGoodsFee IS NULL THEN 0.00 ELSE aa.takeGoodsFee END                                AS 'todayTakeGoodsFee',
+       CASE WHEN aa.volume IS NULL THEN 0.00 ELSE aa.volume END                                            AS 'todayVolume',
+       bb.operate_time                                                                                     AS 'month',
+       CASE WHEN bb.outDeliverCost IS NULL THEN 0.00 ELSE (0 - bb.outDeliverCost) END                      AS 'monthOutDeliverCost',
+       CASE WHEN bb.takeGoodsFee IS NULL THEN 0.00 ELSE bb.takeGoodsFee END                                AS 'monthTakeGoodsFee',
+       CASE WHEN bb.volume IS NULL THEN 0.00 ELSE bb.volume END                                            AS 'monthVolume'
+FROM (SELECT d.operation_oganization,
+             SUM(volume)                          volume,
+             SUM(outDeliverCost)                  outDeliverCost,
+             SUM(takeGoodsFee)                    takeGoodsFee,
+             DATE_FORMAT(d.operate_time, '%Y-%m') operate_time
+      FROM waybill_info a
+             LEFT JOIN (SELECT waybill_id, SUM(volume) AS volume FROM goods_info GROUP BY waybill_id) c
+                       ON a.id = c.waybill_id
+             LEFT JOIN (SELECT t1.waybill_id, t1.operate_time, t1.operation_oganization
+                        FROM (SELECT waybill_id, MAX(operate_time) AS operate_time, operation_oganization
+                              FROM milestone_info
+                              WHERE operatiON = 160
+                                AND DATE_FORMAT(operate_time, '%Y%m') = DATE_FORMAT(TIMESTAMP(DATE_SUB(CURDATE(), INTERVAL 1 DAY)), '%Y%m')
+                                AND TO_DAYS(NOW()) - TO_DAYS(operate_time) >= 1
+                                AND status = 1
+                              GROUP BY waybill_id) t1
+                               LEFT JOIN
+                             (SELECT waybill_id, MAX(operate_time) AS operate_time
+                              FROM milestone_info
+                              WHERE operatiON = 1600
+                                AND status = 1
+                              GROUP BY waybill_id) t2
+                             ON t1.waybill_id = t2.waybill_id AND t1.operate_time > t2.operate_time) d
+                       ON a.id = d.waybill_id
+             LEFT JOIN (SELECT w.id, sum(if(f.fee_type = 'takeGoodsFee', f.fee, 0.00)) AS takeGoodsFee
+                        FROM waybill_info w
+                               LEFT JOIN billing_info b
+                                         ON w.id = b.waybill_id AND b.billing_object = 1 AND b.billing_type = 1 AND
+                                            b.status = 1
+                               LEFT JOIN fee_info f ON b.id = f.billing_id AND f.status = 1
+                        WHERE w.waybill_status != 29
+                          AND w.status = 1
+                        GROUP BY w.id) rs1 on d.waybill_id = rs1.id
+             LEFT JOIN (SELECT w.id, sum(if(f.fee_type = 'outDeliverCost', f.fee, 0.00)) AS outDeliverCost
+                        FROM waybill_info w
+                               LEFT JOIN billing_info b
+                                         ON w.id = b.waybill_id AND b.billing_object = 3 AND b.billing_type = 1 AND
+                                            b.status = 1
+                               LEFT JOIN fee_info f ON b.id = f.billing_id AND f.status = 1
+                        WHERE w.waybill_status != 29
+                          AND w.status = 1
+                        GROUP BY w.id) rs2 on d.waybill_id = rs2.id
+      WHERE a.status = 1
+        AND d.operation_oganizatiON IS NOT NULL
+      GROUP BY operation_oganization) bb
+       LEFT JOIN
+     (SELECT d.operation_oganization,
+             SUM(volume)                             volume,
+             SUM(outDeliverCost)                     outDeliverCost,
+             SUM(takeGoodsFee)                       takeGoodsFee,
+             DATE_FORMAT(d.operate_time, '%Y-%m-%d') operate_time
+      FROM waybill_info a
+             LEFT JOIN (SELECT waybill_id, SUM(volume) AS volume FROM goods_info GROUP BY waybill_id) c
+                       ON a.id = c.waybill_id
+             LEFT JOIN (SELECT t1.waybill_id, t1.operate_time, t1.operation_oganization
+                        FROM (SELECT waybill_id, MAX(operate_time) AS operate_time, operation_oganization
+                              FROM milestone_info
+                              WHERE operatiON = 160
+                                AND TO_DAYS(NOW()) - TO_DAYS(operate_time) = 1
+                                AND status = 1
+                              GROUP BY waybill_id) t1
+                               LEFT JOIN
+                             (SELECT waybill_id, MAX(operate_time) AS operate_time
+                              FROM milestone_info
+                              WHERE operatiON = 1600
+                                AND status = 1
+                              GROUP BY waybill_id) t2
+                             ON t1.waybill_id = t2.waybill_id AND t1.operate_time > t2.operate_time) d
+                       ON a.id = d.waybill_id
+             LEFT JOIN (SELECT w.id, sum(if(f.fee_type = 'takeGoodsFee', f.fee, 0.00)) AS takeGoodsFee
+                        FROM waybill_info w
+                               LEFT JOIN billing_info b
+                                         ON w.id = b.waybill_id AND b.billing_object = 1 AND b.billing_type = 1 AND
+                                            b.status = 1
+                               LEFT JOIN fee_info f ON b.id = f.billing_id AND f.status = 1
+                        WHERE w.waybill_status != 29
+                          AND w.status = 1
+                        GROUP BY w.id) rs1 on d.waybill_id = rs1.id
+             LEFT JOIN (SELECT w.id, sum(if(f.fee_type = 'outDeliverCost', f.fee, 0.00)) AS outDeliverCost
+                        FROM waybill_info w
+                               LEFT JOIN billing_info b
+                                         ON w.id = b.waybill_id AND b.billing_object = 3 AND b.billing_type = 1 AND
+                                            b.status = 1
+                               LEFT JOIN fee_info f ON b.id = f.billing_id AND f.status = 1
+                        WHERE w.waybill_status != 29
+                          AND w.status = 1
+                        GROUP BY w.id) rs2 on d.waybill_id = rs2.id
+      WHERE a.status = 1
+        AND d.operation_oganization IS NOT NULL
+      GROUP BY operation_oganization) aa ON aa.operation_oganization = bb.operation_oganization;
+    </select>
+
+    <select id="selectVehicleBusinessGrossProfitRate"
+            resultType="com.yiziton.dataweb.waybill.vo.VehicleBusinessGrossProfitRateVO">
+        select today.customerLabel ,
+        today.consignorName,
+        today.totalPrice AS todayTotalPrice,
+        today.abnIncome AS todayAbnIncome,
+        today.outCost AS todayOutCost,
+        today.abnCost AS todayAbnCost,
+        today.income AS todayIncome,
+        today.cost AS todayCost,
+        today.grossProfitRate AS todayGrossProfitRate,
+        m.totalPrice AS monthTotalPrice,
+        m.abnIncome AS monthAbnIncome,
+        m.outCost AS monthOutCost,
+        m.abnCost AS monthAbnCost,
+        m.income AS monthIncome,
+        m.cost AS monthCost,
+        m.grossProfitRate AS monthGrossProfitRate
+        from (SELECT aaa.customer_label AS 'customerLabel',
+        aaa.consignor_info_name AS 'consignorName',
+        aaa.total_price AS 'totalPrice',
+        aaa.income AS 'abnIncome',
+        (0 - aaa.out_cost) AS 'outCost',
+        (0 - aaa.abn_cost) AS 'abnCost',
+        (aaa.total_price + aaa.income) AS 'income',
+        (0 - (aaa.out_cost + aaa.abn_cost)) AS 'cost',
+        case
+        when (aaa.total_price + aaa.income) = 0 then 0
+        else ((aaa.total_price + aaa.income) + (aaa.out_cost + aaa.abn_cost)) / (aaa.total_price + aaa.income) *
+        100 end AS 'grossProfitRate'
+        FROM (SELECT bb.customer_label,
+        bb.consignor_info_name,
+        case when aa.total_price is null then 0.00 else aa.total_price end AS total_price,
+        case when aa.income is null then 0.00 else aa.income end AS income,
+        case when aa.out_cost is null then 0.00 else aa.out_cost end AS out_cost,
+        case when aa.abn_cost is null then 0.00 else aa.abn_cost end AS abn_cost
+        FROM customer_label_info bb
+        left join (SELECT b.name,
+        case
+        when SUM(c.total_price) is null then 0.00
+        else SUM(c.total_price) end AS total_price,
+        case when SUM(d.income) is null then 0.00 else SUM(d.income) end AS income,
+        case when SUM(e.total_price) is null then 0.00 else SUM(e.total_price) end AS out_cost,
+        case when SUM(f.abn_cost) is null then 0.00 else SUM(f.abn_cost) end AS abn_cost
+        FROM waybill_info a
+        LEFT JOIN consignor_info b ON a.id = b.waybill_id AND b.status = 1
+        LEFT JOIN billing_info c
+        ON a.id = c.waybill_id AND c.status = 1 AND c.billing_object = 1 AND
+        c.billing_type = 1
+        LEFT JOIN (SELECT a1.waybill_id, SUM(b1.fee) AS income
+        FROM billing_info a1
+        LEFT JOIN fee_info b1 ON a1.id = b1.billing_id AND b1.status = 1
+        WHERE a1.status = 1
+        AND a1.billing_type = 3
+        AND a1.accounting = 1
+        GROUP BY a1.waybill_id) d ON a.id = d.waybill_id
+        LEFT JOIN billing_info e
+        ON a.id = e.waybill_id AND e.status = 1 AND e.billing_object = 3 AND
+        e.billing_type = 1
+        LEFT JOIN (SELECT a2.waybill_id, SUM(b2.fee) AS abn_cost
+        FROM billing_info a2
+        LEFT JOIN fee_info b2 ON a2.id = b2.billing_id AND b2.status = 1
+        WHERE a2.status = 1
+        AND a2.billing_type = 2
+        AND a2.accounting = 2
+        AND b2.fee &lt; 0
+        GROUP BY a2.waybill_id) f ON a.id = f.waybill_id
+        WHERE a.status = 1 AND b.name IS NOT NULL AND a.service_type in
+        <foreach item="item" index="index" collection="services" open="(" separator="," close=")">#{item}</foreach>
+        AND TO_DAYS(NOW()) - TO_DAYS(a.sign_time) = 1
+        GROUP BY b.`name`
+        ) aa on aa.name=bb.consignor_info_name where customer_label in
+        <foreach item="item" index="index" collection="labels" open="(" separator="," close=")">#{item}</foreach>) aaa)
+        today
+        left join (
+        SELECT aaa.customer_label AS 'customerLabel',
+        aaa.consignor_info_name AS 'consignorName',
+        aaa.total_price AS 'totalPrice',
+        aaa.income AS 'abnIncome',
+        (0 - aaa.out_cost) AS 'outCost',
+        (0 - aaa.abn_cost) AS 'abnCost',
+        (aaa.total_price + aaa.income) AS 'income',
+        (0 - (aaa.out_cost + aaa.abn_cost)) AS 'cost',
+        case
+        when (aaa.total_price + aaa.income) = 0 then 0
+        else ((aaa.total_price + aaa.income) + (aaa.out_cost + aaa.abn_cost)) / (aaa.total_price + aaa.income) *
+        100 end AS 'grossProfitRate'
+        FROM (SELECT bb.customer_label,
+        bb.consignor_info_name,
+        case when aa.total_price is null then 0.00 else aa.total_price end AS total_price,
+        case when aa.income is null then 0.00 else aa.income end AS income,
+        case when aa.out_cost is null then 0.00 else aa.out_cost end AS out_cost,
+        case when aa.abn_cost is null then 0.00 else aa.abn_cost end AS abn_cost
+        FROM customer_label_info bb
+        left join (SELECT b.name,
+        case
+        when SUM(c.total_price) is null then 0.00
+        else SUM(c.total_price) end AS total_price,
+        case when SUM(d.income) is null then 0.00 else SUM(d.income) end AS income,
+        case when SUM(e.total_price) is null then 0.00 else SUM(e.total_price) end AS out_cost,
+        case when SUM(f.abn_cost) is null then 0.00 else SUM(f.abn_cost) end AS abn_cost
+        FROM waybill_info a
+        LEFT JOIN consignor_info b ON a.id = b.waybill_id AND b.status = 1
+        LEFT JOIN billing_info c
+        ON a.id = c.waybill_id AND c.status = 1 AND c.billing_object = 1 AND
+        c.billing_type = 1
+        LEFT JOIN (SELECT a1.waybill_id, SUM(b1.fee) AS income
+        FROM billing_info a1
+        LEFT JOIN fee_info b1 ON a1.id = b1.billing_id AND b1.status = 1
+        WHERE a1.status = 1
+        AND a1.billing_type = 3
+        AND a1.accounting = 1
+        GROUP BY a1.waybill_id) d ON a.id = d.waybill_id
+        LEFT JOIN billing_info e
+        ON a.id = e.waybill_id AND e.status = 1 AND e.billing_object = 3 AND
+        e.billing_type = 1
+        LEFT JOIN (SELECT a2.waybill_id, SUM(b2.fee) AS abn_cost
+        FROM billing_info a2
+        LEFT JOIN fee_info b2 ON a2.id = b2.billing_id AND b2.status = 1
+        WHERE a2.status = 1
+        AND a2.billing_type = 2
+        AND a2.accounting = 2
+        AND b2.fee &lt; 0
+        GROUP BY a2.waybill_id) f ON a.id = f.waybill_id
+        WHERE a.status = 1 AND b.name IS NOT NULL AND a.service_type in
+        <foreach item="item" index="index" collection="services" open="(" separator="," close=")">#{item}</foreach>
+        AND DATE_FORMAT(a.sign_time, '%Y%m') = DATE_FORMAT(TIMESTAMP(DATE_SUB(CURDATE(), INTERVAL 1 DAY)), '%Y%m')
+        AND TO_DAYS(NOW()) - TO_DAYS(a.sign_time) >= 1
+        GROUP BY b.`name`
+        ) aa on aa.name=bb.consignor_info_name where customer_label in
+        <foreach item="item" index="index" collection="labels" open="(" separator="," close=")">#{item}</foreach>) aaa)
+        m on today.consignorName=m.consignorName;
+    </select>
+
+    <select id="selectCapacityManagementDay" resultType="com.yiziton.dataweb.waybill.vo.CapacityManagementVO">
+        SELECT
+        mif.operate_time AS 'operateTime',
+        wif.sign_time AS 'signTime',
+        wc.waybill_id AS 'waybillId',
+        wc.carrier AS 'carrier',
+        ABS(wf.fee) AS 'fee',
+        mif.operation_oganization AS 'operationOganization',
+        cli.customer_label AS 'customerLabel',
+        ci.`name` AS 'ciName',
+        ci.second_name AS 'secondName',
+        CASE wif.service_type
+        WHEN 1 THEN '专线送货'
+        WHEN 2 THEN '自提'
+        WHEN 3 THEN '同城配送并安装'
+        WHEN 4 THEN '同城配送'
+        WHEN 5 THEN '安装'
+        WHEN 6 THEN '配送到楼下'
+        WHEN 7 THEN '配送到站'
+        WHEN 8 THEN '配送到家并安装'
+        WHEN 9 THEN '配送到家'
+        WHEN 10 THEN '同城配送到家'
+        WHEN 11 THEN '售后取件'
+        WHEN 12 THEN '同城配送到楼下'
+        WHEN 13 THEN '承运商返货'
+        WHEN 14 THEN '服务商返货'
+        WHEN 15 THEN '二次上门'
+        WHEN 16 THEN '维修'
+        WHEN 16 THEN '补件'
+        ELSE
+        NULL
+        END 'serviceType',
+        gi.goods_name AS 'goodsName',
+        wif.goods_type AS 'goodsType',
+        wif.marble_blocks AS 'marbleBlocks',
+        wif.total_install_items AS 'totalInstallItems',
+        wif.total_packing_items AS 'totalPackingItems',
+        wif.total_volume AS 'totalVolume',
+        wif.total_weight AS 'totalWeight',
+        ri.`name` AS 'riName',
+        ri.mobile AS 'mobile',
+        ri.province AS 'province',
+        ri.city AS 'city',
+        ri.area AS 'area',
+        ri.address AS 'address'
+        FROM (
+        SELECT waybill_id,carrier FROM carrier_info WHERE waybill_id IN (
+        SELECT id FROM waybill_info WHERE `status`=1 AND TO_DAYS( NOW( ) ) - TO_DAYS( sign_time ) = 1) AND carrier_type=1 AND carrier IS NOT NULL) wc
+        LEFT JOIN (
+        SELECT waybill_id,SUM(fee) AS fee FROM fee_info WHERE fee_type='outDeliverCost' AND `status`=1 AND waybill_id IN (
+        SELECT id FROM waybill_info WHERE `status`=1 AND TO_DAYS( NOW( ) ) - TO_DAYS( sign_time ) = 1) GROUP BY waybill_id) wf ON wf.waybill_id=wc.waybill_id
+        LEFT JOIN (
+        SELECT result.waybill_id,result.operation_oganization,result.operate_time FROM (
+        SELECT heyf_tmp.*,@rownum :=@rownum+1 AS rankNum,IF (@pdept=heyf_tmp.waybill_id,@rank :=@rank+1,@rank :=1) AS rank,@pdept :=heyf_tmp.waybill_id AS wid FROM (
+        SELECT * FROM milestone_info a WHERE waybill_id IN (
+        SELECT id FROM waybill_info WHERE `status`=1 AND TO_DAYS( NOW( ) ) - TO_DAYS( sign_time ) = 1) AND `status`=1 AND operation=160 ORDER BY a.waybill_id,a.operate_time DESC,a.operation_oganization) heyf_tmp,(
+        SELECT @rownum :=0,@pdept :=NULL,@rank :=0) a) result WHERE result.rank=1) mif ON mif.waybill_id=wc.waybill_id
+        LEFT JOIN recevice_info ri ON ri.waybill_id = wc.waybill_id  AND ri.`status` = 1
+        LEFT JOIN consignor_info ci ON ci.waybill_id = wc.waybill_id AND ci.`status` =1
+        LEFT JOIN (SELECT id, sign_time, marble_blocks, total_install_items, total_packing_items, total_volume, total_weight, service_type, goods_type FROM waybill_info WHERE `status` = 1 AND TO_DAYS( NOW( ) ) - TO_DAYS( sign_time ) = 1) wif ON wif.id = wc.waybill_id
+        LEFT JOIN (SELECT waybill_id,GROUP_CONCAT(goods_name ORDER BY update_time DESC SEPARATOR ';') AS goods_name FROM goods_info WHERE waybill_id IN (
+        SELECT id FROM waybill_info WHERE `status`=1 AND TO_DAYS( NOW( ) ) - TO_DAYS( sign_time ) = 1) AND `status` = 1 GROUP BY waybill_id) gi ON gi.waybill_id = wc.waybill_id
+        JOIN (SELECT * FROM customer_label_info WHERE customer_label IN ('标准价格客户','非标准价格客户')) cli ON cli.consignor_info_name = ci.`name`
+        ORDER BY
+        wc.carrier,
+        wc.waybill_id;
+    </select>
+
+    <select id="selectCapacityManagementMonty" resultType="com.yiziton.dataweb.waybill.vo.CapacityManagementVO">
+        SELECT
+        mif.operate_time AS 'operateTime',
+        wif.sign_time AS 'signTime',
+        wc.waybill_id AS 'waybillId',
+        wc.carrier AS 'carrier',
+        ABS(wf.fee) AS 'fee',
+        mif.operation_oganization AS 'operationOganization',
+        cli.customer_label AS 'customerLabel',
+        ci.`name` AS 'ciName',
+        ci.second_name AS 'secondName',
+        CASE wif.service_type
+        WHEN 1 THEN '专线送货'
+        WHEN 2 THEN '自提'
+        WHEN 3 THEN '同城配送并安装'
+        WHEN 4 THEN '同城配送'
+        WHEN 5 THEN '安装'
+        WHEN 6 THEN '配送到楼下'
+        WHEN 7 THEN '配送到站'
+        WHEN 8 THEN '配送到家并安装'
+        WHEN 9 THEN '配送到家'
+        WHEN 10 THEN '同城配送到家'
+        WHEN 11 THEN '售后取件'
+        WHEN 12 THEN '同城配送到楼下'
+        WHEN 13 THEN '承运商返货'
+        WHEN 14 THEN '服务商返货'
+        WHEN 15 THEN '二次上门'
+        WHEN 16 THEN '维修'
+        WHEN 16 THEN '补件'
+        ELSE
+        NULL
+        END 'serviceType',
+        gi.goods_name AS 'goodsName',
+        wif.goods_type AS 'goodsType',
+        wif.marble_blocks AS 'marbleBlocks',
+        wif.total_install_items AS 'totalInstallItems',
+        wif.total_packing_items AS 'totalPackingItems',
+        wif.total_volume AS 'totalVolume',
+        wif.total_weight AS 'totalWeight',
+        ri.`name` AS 'riName',
+        ri.mobile AS 'mobile',
+        ri.province AS 'province',
+        ri.city AS 'city',
+        ri.area AS 'area',
+        ri.address AS 'address'
+        FROM (
+        SELECT waybill_id,carrier FROM carrier_info WHERE waybill_id IN (
+        SELECT id FROM waybill_info WHERE `status`=1 AND DATE_FORMAT( sign_time, '%Y%m' ) = DATE_FORMAT(TIMESTAMP(DATE_SUB(CURDATE(), INTERVAL 1 DAY)), '%Y%m') AND TO_DAYS(NOW()) - TO_DAYS(sign_time) >= 1) AND carrier_type=1 AND carrier IS NOT NULL) wc
+        LEFT JOIN (
+        SELECT waybill_id,SUM(fee) AS fee FROM fee_info WHERE fee_type='outDeliverCost' AND `status`=1 AND waybill_id IN (
+        SELECT id FROM waybill_info WHERE `status`=1 AND DATE_FORMAT( sign_time, '%Y%m' ) = DATE_FORMAT(TIMESTAMP(DATE_SUB(CURDATE(), INTERVAL 1 DAY)), '%Y%m') AND TO_DAYS(NOW()) - TO_DAYS(sign_time) >= 1) GROUP BY waybill_id) wf ON wf.waybill_id=wc.waybill_id
+        LEFT JOIN (
+        SELECT result.waybill_id,result.operation_oganization,result.operate_time FROM (
+        SELECT heyf_tmp.*,@rownum :=@rownum+1 AS rankNum,IF (@pdept=heyf_tmp.waybill_id,@rank :=@rank+1,@rank :=1) AS rank,@pdept :=heyf_tmp.waybill_id AS wid FROM (
+        SELECT * FROM milestone_info a WHERE waybill_id IN (
+        SELECT id FROM waybill_info WHERE `status`=1 AND DATE_FORMAT( sign_time, '%Y%m' ) = DATE_FORMAT(TIMESTAMP(DATE_SUB(CURDATE(), INTERVAL 1 DAY)), '%Y%m') AND TO_DAYS(NOW()) - TO_DAYS(sign_time) >= 1) AND `status`=1 AND operation=160 ORDER BY a.waybill_id,a.operate_time DESC,a.operation_oganization) heyf_tmp,(
+        SELECT @rownum :=0,@pdept :=NULL,@rank :=0) a) result WHERE result.rank=1) mif ON mif.waybill_id=wc.waybill_id
+        LEFT JOIN recevice_info ri ON ri.waybill_id = wc.waybill_id  AND ri.`status` = 1
+        LEFT JOIN consignor_info ci ON ci.waybill_id = wc.waybill_id AND ci.`status` =1
+        LEFT JOIN (SELECT id, sign_time, marble_blocks, total_install_items, total_packing_items, total_volume, total_weight, service_type, goods_type FROM waybill_info WHERE `status` = 1 AND DATE_FORMAT( sign_time, '%Y%m' ) = DATE_FORMAT(TIMESTAMP(DATE_SUB(CURDATE(), INTERVAL 1 DAY)), '%Y%m') AND TO_DAYS(NOW()) - TO_DAYS(sign_time) >= 1) wif ON wif.id = wc.waybill_id
+        LEFT JOIN (SELECT waybill_id,GROUP_CONCAT(goods_name ORDER BY update_time DESC SEPARATOR ';') AS goods_name FROM goods_info WHERE waybill_id IN (
+        SELECT id FROM waybill_info WHERE `status`=1 AND DATE_FORMAT( sign_time, '%Y%m' ) = DATE_FORMAT(TIMESTAMP(DATE_SUB(CURDATE(), INTERVAL 1 DAY)), '%Y%m') AND TO_DAYS(NOW()) - TO_DAYS(sign_time) >= 1) AND `status` = 1 GROUP BY waybill_id) gi ON gi.waybill_id = wc.waybill_id
+        JOIN (SELECT * FROM customer_label_info WHERE customer_label IN ('标准价格客户','非标准价格客户')) cli ON cli.consignor_info_name = ci.`name`
+        ORDER BY
+        wc.carrier,
+        wc.waybill_id;
+    </select>
+
+
+    <select id="selectWaybillInstallDeliveryFee" resultType="com.yiziton.dataweb.waybill.vo.WaybillInstallDeliveryFeeVO">
+
+        SELECT customer.customer_label as 'customerLabel', waybill.* from (
+        SELECT
+        a.id as 'id',
+        b.`code` AS 'code',
+        b.`name` AS 'name',
+        b.mobile AS 'mobile' ,
+        b.second_name as 'secondName',
+        CASE b.customer_type
+        WHEN 1 THEN '发货客户'
+        WHEN 2 THEN '收货客户'
+        WHEN 3 THEN '新的发货人'
+        WHEN 4 THEN '普通'
+        WHEN 5 THEN '京东物流'
+        WHEN 6 THEN 'VIP'
+        END
+        as 'customerType',
+        CASE
+        a.service_type
+        WHEN 3 THEN '同城配送并安装'
+        WHEN 4 THEN '同城配送'
+        WHEN 5 THEN '安装'
+        WHEN 6 THEN '配送到楼下'
+        WHEN 7 THEN '配送到站'
+        WHEN 8 THEN '配送到家并安装'
+        WHEN 9 THEN '配送到家'
+        WHEN 10 THEN '同城配送到家'
+        WHEN 12 THEN '同城配送到楼下'
+        END
+        AS 'serviceType',
+        h.installFee AS 'installFee',
+        i.deliveryFee AS 'deliveryFee',
+        CASE a.product_type
+        WHEN 1 THEN '优达'
+        WHEN 2 THEN '48到家'
+        WHEN 3 THEN '优达+48到家'
+        WHEN 4 THEN '普通'
+        END
+        as 'productType',
+        CASE a.increment_service_type
+        WHEN 1 THEN '到付运费'
+        WHEN 2 THEN '代收货款'
+        ELSE ''
+        END
+        AS 'incrementServiceType',
+        a.increment_service_fee as 'incrementServiceFee',
+        CASE a.waybill_status
+        WHEN 21 THEN '已完成'
+        END
+        as 'waybillStatus',
+        CASE a.check_type
+        WHEN 1 THEN '天猫'
+        WHEN 2 THEN '京东'
+        END
+        as 'checkType',
+        CASE
+        WHEN 1 THEN '精准核销'
+        WHEN 2 THEN '模糊核销'
+        WHEN 3 THEN '无需核销'
+        END
+        as 'checkMethod',
+        a.check_code as 'checkCode',
+        CASE a.check_status
+        WHEN 1 THEN '已核销'
+        WHEN 2 THEN '未核销'
+        END
+        as 'checkStatus',
+        a.check_bill_id as 'checkBillId',
+        CASE a.payment_type
+        WHEN 1 THEN '余额'
+        WHEN 2 THEN '微信'
+        WHEN 3 THEN '支付宝'
+        WHEN 4 THEN '记账'
+        WHEN 5 THEN '现金'
+        END
+        as 'paymentType',
+        CASE a.channel_source
+        WHEN 1 THEN '官网'
+        WHEN 2 THEN '京东安维'
+        WHEN 3 THEN '京东3PL'
+        WHEN 4 THEN '天猫'
+        WHEN 5 THEN 'EDI'
+        WHEN 6 THEN '普通'
+        END
+        as 'channelSource',
+        CASE a.settlement_type
+        WHEN 1 THEN '现付'
+        WHEN 2 THEN '月结'
+        WHEN 3 THEN '预充值'
+        WHEN 4 THEN '短欠'
+        END
+        as 'settlementType',
+        g.goods_name as 'goodsName',
+        a.marble_blocks as 'marbleBlocks',
+        a.total_volume as 'totalVolume',
+        a.total_packing_items as 'totalPackingItems',
+        a.total_install_items as 'totalInstallItems',
+        a.total_weight as 'totalWeight',
+        a.statement_value as 'statementValue',
+        a.open_bill_node as 'openBillNode',
+        a.open_bill_operator as 'openBillOperator',
+        a.sale_total_price as 'saleTotalPrice',
+        a.salesman as 'salesman',
+        a.salesman_phone as 'salesmanPhone',
+        a.open_bill_time as 'openBillTime',
+        a.sign_time 'signTime',
+        a.destination as 'destination',
+        d.`name` AS 'consigneeName',
+        d.mobile AS 'consigneeMobile',
+        d.address AS 'address',
+        CASE d.elevator
+        WHEN 1 THEN '有'
+        ELSE '无'
+        END
+        as 'elevator',
+        d.floor AS 'floor',
+        d.province AS 'province',
+        d.city AS 'city',
+        d.area AS 'area',
+        case when isnull(mst2.master_phone) then mst1.master_phone else mst2.master_phone end as 'masterPhone',
+        case when isnull(mst2.master_phone) then mst1.master_name else mst2.master_name end as 'masterName',
+        case when isnull(mst2.master_phone) then mst1.master_node else mst2.master_node end as 'masterNode',
+        a.arrival_area AS 'arrivalArea',
+        a.arrival_address AS 'arrivalAddress',
+        a.pick_up_goods_phone AS 'pickUpGoodsPhone',
+        a.pick_up_goods_password AS 'pickUpGoodsPassword',
+        a.logistics_bill_id AS 'logisticsBillId',
+        f.carrier AS 'carrier'
+        FROM
+        waybill_info a
+        LEFT JOIN consignor_info b ON a.id = b.waybill_id and b.status= 1
+        LEFT JOIN recevice_info d ON a.id = d.waybill_id and d.status= 1
+
+        LEFT JOIN (SELECT * FROM carrier_info where carrier_type = 1 AND `status`= 1) f
+        ON a.id = f.waybill_id
+        left join master_info mst1 on a.`id`=mst1.waybill_id and mst1.status=1 and mst1.distribution_type=1
+        left join master_info mst2 on a.`id`=mst2.waybill_id and mst2.status=1 and mst2.distribution_type=2
+        left join (SELECT waybill_id, GROUP_CONCAT(goods_name) AS goods_name from goods_info WHERE `status` = 1 GROUP BY waybill_id) g ON a.id = g.waybill_id
+        left join (SELECT waybill_id, abs(fee) as 'installFee' from fee_info where `status` = 1 and fee_type = 'installFee' and accounting = 2) h on a.id = h.waybill_id
+        left join (SELECT waybill_id, abs(fee) as 'deliveryFee' from fee_info where `status` = 1 and  fee_type = 'deliveryFee' and accounting = 2) i on a.id = i.waybill_id
+        WHERE
+        a.`status` = 1
+        AND a.waybill_type = 1
+        AND a.service_type in (3, 4, 5, 6, 7, 8, 9, 10, 12)
+        and a.waybill_status = 21
+        and a.sign_time &gt;= #{startTime}
+        and a.sign_time &lt;= #{endTime}
+        ORDER BY a.open_bill_time DESC ) waybill,
+        (SELECT * from customer_label_info where customer_label in ('标准价格客户', '非标准价格客户', '其他')) 	customer where waybill.name = customer.consignor_info_name order by customer.customer_label;
+    </select>
+
+    <select id="installCostDetailedReports" resultType="com.yiziton.dataweb.waybill.vo.InstallCostDetailedVO">
+        SELECT
+        cl.customer_label as customerLabel,
+        a.id as waybillId,
+        a.sign_time as signTime,
+        m.master_name as masterMame,
+        m.master_phone as masterPhone,
+        m.master_node as masterNode,
+        r.`name` as receiveName,
+        r.mobile as receiveMobile,
+        r.province,
+        r.city,
+        r.area,
+        r.address,
+        g.goods_name as goodsName,
+        g.install_items as installItems,
+        abs(f.fee) as installFee,
+        c.name as consignorName
+        FROM
+        waybill_info a
+        LEFT JOIN consignor_info c ON a.id=c.waybill_id AND c.STATUS=1
+        LEFT JOIN recevice_info r ON a.id=r.waybill_id AND r.STATUS=1
+        LEFT JOIN goods_info g ON a.id=g.waybill_id AND g.STATUS=1
+        LEFT JOIN fee_info f ON a.id=f.waybill_id AND f.STATUS=1 AND f.fee_type='installFee' AND accounting=2
+        LEFT JOIN master_info m ON m.id=(SELECT id FROM master_info WHERE waybill_id=a.id AND `status`=1 ORDER BY create_time DESC LIMIT 1)
+        INNER JOIN customer_label_info cl ON cl.consignor_info_name=c.`name` AND cl.customer_label IN ('非标准价格客户','标准价格客户','其他')
+        WHERE a.sign_time &gt;= #{startTime} AND a.sign_time &lt;= #{endTime} AND a.sign_time IS NOT NULL ORDER BY a.id;
+    </select>
+
+    <select id="selectStandardAndNonStandardCustomer" resultType="com.yiziton.dataweb.waybill.vo.StandardAndNonStandardCustomerVO">
+        SELECT sign.name,
+       cl.customer_label                                                                              customerLabel,
+       case when sign.signs is null then 0.00 else sign.signs end                                     signs,
+       case when branch.branchs is null then 0.00 else branch.branchs end                             branchs,
+       case when trunk.trunks is null then 0.00 else trunk.trunks end                                 trunks,
+       case when ending.endings is null then 0.00 else ending.endings end                             endings,
+       case when fee.transportFee is null then 0.00 else fee.transportFee end                         customerTransportFee,
+       case when fee.deliveryFee is null then 0.00 else fee.deliveryFee end                           customerDeliveryFee,
+       case when fee.installFee is null then 0.00 else fee.installFee end                             customerInstallFee,
+       case when fee.upstairsFee is null then 0.00 else fee.upstairsFee end                           customerUpstairsFee,
+       case when fee.insuranceFee is null then 0.00 else fee.insuranceFee end                         customerInsuranceFee,
+       case when alls.totalPrice is null then 0.00 else alls.totalPrice end                           customerTotalPrice,
+       case when compensation.addFee is null then 0.00 else compensation.addFee end                   customerAddFee,
+       case when (0 - carrier.outDeliverCost) is null then 0.00 else (0 - carrier.outDeliverCost) end carrierOutDeliverCost,
+       case when (0 - master.installFee) is null then 0.00 else (0 - master.installFee) end           masterInstallFee,
+       case when (0 - master.deliveryFee) is null then 0.00 else (0 - master.deliveryFee) end         masterDeliveryFee,
+       case when abn.abnTotal is null then 0.00 else abn.abnTotal end                                 abnTotal
+from
+  (SELECT c.name, count(1) signs
+   FROM waybill_info w
+          LEFT JOIN consignor_info c ON w.id=c.waybill_id AND c.status=1
+   WHERE c.name IS NOT NULL
+     AND (c.name NOT LIKE '%线上' or c.name = '南方线上')
+     AND sign_time > DATE_FORMAT(DATE_ADD(NOW(), INTERVAL -1 MONTH), '%Y-%m')
+     AND sign_time &lt; DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 0 MONTH), '%Y-%m')
+     AND w.waybill_status !=29
+     AND w.status = 1
+   GROUP BY c.name) sign
+    LEFT JOIN
+  (SELECT c.name, count(1) branchs
+   FROM waybill_info w
+          LEFT JOIN consignor_info c ON w.id=c.waybill_id AND c.status=1
+   WHERE c.name IS NOT NULL
+     AND (c.name NOT LIKE '%线上' or c.name = '南方线上')
+     AND sign_time > DATE_FORMAT(DATE_ADD(NOW(), INTERVAL -1 MONTH), '%Y-%m')
+     AND sign_time &lt; DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 0 MONTH), '%Y-%m')
+     AND w.service_type in (3,4,5,10,11,12)
+     AND w.waybill_status !=29
+     AND w.status = 1
+   GROUP BY c.name) branch ON sign.name=branch.name
+    LEFT JOIN
+  (SELECT c.name, count(1) trunks
+   FROM waybill_info w
+          LEFT JOIN consignor_info c ON w.id=c.waybill_id AND c.status=1
+   WHERE c.name IS NOT NULL
+     AND (c.name NOT LIKE '%线上' or c.name = '南方线上')
+     AND sign_time > DATE_FORMAT(DATE_ADD(NOW(), INTERVAL -1 MONTH), '%Y-%m')
+     AND sign_time &lt; DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 0 MONTH), '%Y-%m')
+     AND w.service_type in (1,2,6,8,9)
+     AND w.waybill_status !=29
+     AND w.status = 1
+   GROUP BY c.name) trunk ON sign.name=trunk.name
+    LEFT JOIN
+  (SELECT c.name, count(1) endings
+   FROM waybill_info w
+          LEFT JOIN consignor_info c ON w.id=c.waybill_id AND c.status=1
+   WHERE c.name IS NOT NULL
+     AND (c.name NOT LIKE '%线上' or c.name = '南方线上')
+     AND sign_time > DATE_FORMAT(DATE_ADD(NOW(), INTERVAL -1 MONTH), '%Y-%m')
+     AND sign_time &lt; DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 0 MONTH), '%Y-%m')
+     AND w.service_type in (3,4,5,6,8,9,10,12)
+     AND w.waybill_status !=29
+     AND w.status = 1
+   GROUP BY c.name) ending ON sign.name=ending.name
+    LEFT JOIN
+  (SELECT c.name,
+          sum(if(f.fee_type = 'transportFee', f.fee, 0.00)) AS transportFee,
+          sum(if(f.fee_type = 'deliveryFee', f.fee, 0.00))  AS deliveryFee,
+          sum(if(f.fee_type = 'installFee', f.fee, 0.00))   AS installFee,
+          sum(if(f.fee_type = 'upstairsFee', f.fee, 0.00))  AS upstairsFee,
+          sum(if(f.fee_type = 'insuranceFee', f.fee, 0.00)) AS insuranceFee
+   FROM waybill_info w
+          LEFT JOIN consignor_info c ON w.id=c.waybill_id AND c.status=1
+          LEFT JOIN billing_info b ON w.id=b.waybill_id AND b.billing_object=1 AND b.billing_type=1 AND b.status=1
+          LEFT JOIN fee_info f ON b.id=f.billing_id AND f.status=1
+   WHERE c.name IS NOT NULL
+     AND (c.name NOT LIKE '%线上' or c.name = '南方线上')
+     AND sign_time > DATE_FORMAT(DATE_ADD(NOW(), INTERVAL -1 MONTH), '%Y-%m')
+     AND sign_time &lt; DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 0 MONTH), '%Y-%m')
+     AND w.waybill_status !=29
+     AND w.status = 1
+   GROUP BY c.name) fee ON sign.name=fee.name
+    LEFT JOIN
+  (SELECT c.name, sum(b.total_price) totalPrice
+   FROM waybill_info w
+          LEFT JOIN consignor_info c ON w.id=c.waybill_id AND c.status=1
+          LEFT JOIN billing_info b ON w.id=b.waybill_id AND b.billing_object=1 AND b.billing_type=1 AND b.status=1
+   WHERE c.name IS NOT NULL
+     AND (c.name NOT LIKE '%线上' or c.name = '南方线上')
+     AND sign_time > DATE_FORMAT(DATE_ADD(NOW(), INTERVAL -1 MONTH), '%Y-%m')
+     AND sign_time &lt; DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 0 MONTH), '%Y-%m')
+     AND w.waybill_status !=29
+     AND w.status = 1
+   GROUP BY c.name) alls ON sign.name=alls.name
+    LEFT JOIN
+  (SELECT c.name, sum(if(f.fee_type = 'addFee', f.fee, 0.00)) AS addFee
+   FROM waybill_info w
+          LEFT JOIN consignor_info c ON w.id=c.waybill_id AND c.status=1
+          LEFT JOIN billing_info b ON w.id=b.waybill_id AND b.billing_object=1 AND b.billing_type=3 AND b.status=1
+          LEFT JOIN fee_info f ON b.id=f.billing_id AND f.status=1
+   WHERE c.name IS NOT NULL
+     AND (c.name NOT LIKE '%线上' or c.name = '南方线上')
+     AND sign_time > DATE_FORMAT(DATE_ADD(NOW(), INTERVAL -1 MONTH), '%Y-%m')
+     AND sign_time &lt; DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 0 MONTH), '%Y-%m')
+     AND w.waybill_status !=29
+     AND w.status = 1
+     AND b.related_bill_id like 'ZP%'
+   GROUP BY c.name) compensation ON sign.name=compensation.name
+    LEFT JOIN
+  (SELECT c.name, sum(if(f.fee_type = 'outDeliverCost', f.fee, 0.00)) AS outDeliverCost
+   FROM waybill_info w
+          LEFT JOIN consignor_info c ON w.id=c.waybill_id AND c.status=1
+          LEFT JOIN billing_info b ON w.id=b.waybill_id AND b.billing_object=3 AND b.billing_type=1 AND b.status=1
+          LEFT JOIN fee_info f ON b.id=f.billing_id AND f.status=1
+   WHERE c.name IS NOT NULL
+     AND (c.name NOT LIKE '%线上' or c.name = '南方线上')
+     AND sign_time > DATE_FORMAT(DATE_ADD(NOW(), INTERVAL -1 MONTH), '%Y-%m')
+     AND sign_time &lt; DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 0 MONTH), '%Y-%m')
+     AND w.waybill_status !=29
+     AND w.status = 1
+   GROUP BY c.name) carrier ON sign.name=carrier.name
+    LEFT JOIN
+  (SELECT c.name,
+          sum(if(f.fee_type = 'installFee', f.fee, 0.00)) AS installFee,
+          sum(if(f.fee_type = 'deliveryFee', f.fee, 0.00)) AS deliveryFee
+   FROM waybill_info w
+          LEFT JOIN consignor_info c ON w.id=c.waybill_id AND c.status=1
+          LEFT JOIN billing_info b ON w.id=b.waybill_id AND b.billing_object=2 AND b.billing_type=1 AND b.status=1
+          LEFT JOIN fee_info f ON b.id=f.billing_id AND f.status=1
+   WHERE c.name IS NOT NULL
+     AND (c.name NOT LIKE '%线上' or c.name = '南方线上')
+     AND sign_time > DATE_FORMAT(DATE_ADD(NOW(), INTERVAL -1 MONTH), '%Y-%m')
+     AND sign_time &lt; DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 0 MONTH), '%Y-%m')
+     AND w.waybill_status !=29
+     AND w.status = 1
+   GROUP BY c.name) master ON sign.name=master.name
+    LEFT JOIN
+  (SELECT rs.name,SUM( abnAdvanceFee + abnAllocateFee + abnAppeaseFee + abnBackFee + abnDeliveryFee + abnDismountingFee + abnDropGoodFee + abnEmptyRunFee + abnExceedAreaFee + abnExceedSquareFee + abnFloorFee + abnHoistingBuildFee + abnInstallationRate + abnInstallFee + abnInsuranceFee + abnRecoveryFee + abnMaxUpstairsFee + abnMinUpstairsFee + abnMoveBuildFee + abnPackFee + abnPartFee + abnPickUpGoodsFee + abnPutawayFee + abnRepairFee + abnReservationRate + abnSecondDoorFee + abnServiceDebit + abnSpecialAreaFee + abnStorageFee + abnTransferFee + abnTranslationalFee + abnTransportFee + abnUnloadFee + abnUpstairsFee + abnUrgentFee + repairFee + backFee + abnCollectionServiceFee + abnWoodenFee + abnOtherFee ) AS abnTotal
+   FROM (SELECT c.name,
+                sum(if(f.fee_type = 'abnAdvanceFee', f.fee, 0.00))           AS abnAdvanceFee,
+                sum(if(f.fee_type = 'abnAllocateFee', f.fee, 0.00))          AS abnAllocateFee,
+                sum(if(f.fee_type = 'abnAppeaseFee', f.fee, 0.00))           AS abnAppeaseFee,
+                sum(if(f.fee_type = 'abnBackFee', f.fee, 0.00))              AS abnBackFee,
+                sum(if(f.fee_type = 'abnDeliveryFee', f.fee, 0.00))          AS abnDeliveryFee,
+                sum(if(f.fee_type = 'abnDismountingFee', f.fee, 0.00))       AS abnDismountingFee,
+                sum(if(f.fee_type = 'abnDropGoodFee', f.fee, 0.00))          AS abnDropGoodFee,
+                sum(if(f.fee_type = 'abnEmptyRunFee', f.fee, 0.00))          AS abnEmptyRunFee,
+                sum(if(f.fee_type = 'abnExceedAreaFee', f.fee, 0.00))        AS abnExceedAreaFee,
+                sum(if(f.fee_type = 'abnExceedSquareFee', f.fee, 0.00))      AS abnExceedSquareFee,
+                sum(if(f.fee_type = 'abnFloorFee', f.fee, 0.00))             AS abnFloorFee,
+                sum(if(f.fee_type = 'abnHoistingBuildFee', f.fee, 0.00))     AS abnHoistingBuildFee,
+                sum(if(f.fee_type = 'abnInstallationRate', f.fee, 0.00))     AS abnInstallationRate,
+                sum(if(f.fee_type = 'abnInstallFee', f.fee, 0.00))           AS abnInstallFee,
+                sum(if(f.fee_type = 'abnInsuranceFee', f.fee, 0.00))         AS abnInsuranceFee,
+                sum(if(f.fee_type = 'abnRecoveryFee', f.fee, 0.00))          AS abnRecoveryFee,
+                sum(if(f.fee_type = 'abnMaxUpstairsFee', f.fee, 0.00))       AS abnMaxUpstairsFee,
+                sum(if(f.fee_type = 'abnMinUpstairsFee', f.fee, 0.00))       AS abnMinUpstairsFee,
+                sum(if(f.fee_type = 'abnMoveBuildFee', f.fee, 0.00))         AS abnMoveBuildFee,
+                sum(if(f.fee_type = 'abnPackFee', f.fee, 0.00))              AS abnPackFee,
+                sum(if(f.fee_type = 'abnPartFee', f.fee, 0.00))              AS abnPartFee,
+                sum(if(f.fee_type = 'abnPickUpGoodsFee', f.fee, 0.00))       AS abnPickUpGoodsFee,
+                sum(if(f.fee_type = 'abnPutawayFee', f.fee, 0.00))           AS abnPutawayFee,
+                sum(if(f.fee_type = 'abnRepairFee', f.fee, 0.00))            AS abnRepairFee,
+                sum(if(f.fee_type = 'abnReservationRate', f.fee, 0.00))      AS abnReservationRate,
+                sum(if(f.fee_type = 'abnSecondDoorFee', f.fee, 0.00))        AS abnSecondDoorFee,
+                sum(if(f.fee_type = 'abnServiceDebit', f.fee, 0.00))         AS abnServiceDebit,
+                sum(if(f.fee_type = 'abnSpecialAreaFee', f.fee, 0.00))       AS abnSpecialAreaFee,
+                sum(if(f.fee_type = 'abnStorageFee', f.fee, 0.00))           AS abnStorageFee,
+                sum(if(f.fee_type = 'abnTransferFee', f.fee, 0.00))          AS abnTransferFee,
+                sum(if(f.fee_type = 'abnTranslationalFee', f.fee, 0.00))     AS abnTranslationalFee,
+                sum(if(f.fee_type = 'abnTransportFee', f.fee, 0.00))         AS abnTransportFee,
+                sum(if(f.fee_type = 'abnUnloadFee', f.fee, 0.00))            AS abnUnloadFee,
+                sum(if(f.fee_type = 'abnUpstairsFee', f.fee, 0.00))          AS abnUpstairsFee,
+                sum(if(f.fee_type = 'abnUrgentFee', f.fee, 0.00))            AS abnUrgentFee,
+                sum(if(f.fee_type = 'repairFee', f.fee, 0.00))               AS repairFee,
+                sum(if(f.fee_type = 'backFee', f.fee, 0.00))                 AS backFee,
+                sum(if(f.fee_type = 'abnCollectionServiceFee', f.fee, 0.00)) AS abnCollectionServiceFee,
+                sum(if(f.fee_type = 'abnWoodenFee', f.fee, 0.00))            AS abnWoodenFee,
+                sum(if(f.fee_type = 'abnOtherFee', f.fee, 0.00))             AS abnOtherFee
+         FROM waybill_info w
+                LEFT JOIN consignor_info c ON w.id = c.waybill_id AND c.status = 1
+                LEFT JOIN billing_info b ON w.id = b.waybill_id AND b.billing_object!=1 AND b.billing_type = 2 AND b.status = 1
+                LEFT JOIN fee_info f ON b.id = f.billing_id AND f.status = 1
+         WHERE c.name IS NOT NULL
+           AND (c.name NOT LIKE '%线上' or c.name = '南方线上')
+           AND sign_time > DATE_FORMAT(DATE_ADD(NOW(), INTERVAL -1 MONTH), '%Y-%m')
+           AND sign_time &lt; DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 0 MONTH), '%Y-%m')
+           AND w.waybill_status != 29
+           AND w.status = 1
+         GROUP BY c.name
+        )rs GROUP BY rs.name) abn ON sign.name=abn.name
+LEFT JOIN customer_label_info cl ON sign.name=cl.consignor_info_name;
+    </select>
+
+    <select id="selectCarrierTrunkBenefitAnalysis" resultType="com.yiziton.dataweb.waybill.vo.CarrierTrunkBenefitAnalysisVO">
+        SELECT
+        cw.carrier AS carrier,
+        SUM(fit.fee) AS transportFee,
+        SUM(fio.fee) AS outDeliverCost,
+        ROUND(((SUM(fit.fee) + SUM(fio.fee)) / SUM(fit.fee)) * 100, 2) AS profitRate
+        FROM (SELECT carrier, waybill_id FROM carrier_info WHERE waybill_id IN (
+        SELECT waybill_id FROM consignor_info WHERE waybill_id IN(SELECT id FROM waybill_info WHERE `status`=1 AND sign_time > DATE_FORMAT(DATE_ADD(NOW(), INTERVAL -1 MONTH), '%Y-%m') AND sign_time &lt; DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 0 MONTH), '%Y-%m')) AND (`name` NOT LIKE '%线上' OR `name` = '南方线上')) AND `status` = 1 AND carrier_type=1 AND carrier IS NOT NULL) cw
+        LEFT JOIN (SELECT waybill_id,SUM(fee) AS fee FROM fee_info WHERE fee_type='transportFee' AND `status`=1 AND waybill_id IN (
+        SELECT waybill_id FROM consignor_info WHERE waybill_id IN(SELECT id FROM waybill_info WHERE `status`=1 AND sign_time > DATE_FORMAT(DATE_ADD(NOW(), INTERVAL -1 MONTH), '%Y-%m') AND sign_time &lt; DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 0 MONTH), '%Y-%m')) AND (`name` NOT LIKE '%线上' OR `name` = '南方线上') OR `name` = '南方线上') GROUP BY waybill_id) fit ON fit.waybill_id = cw.waybill_id
+        LEFT JOIN (SELECT waybill_id,SUM(fee) AS fee FROM fee_info WHERE fee_type='outDeliverCost' AND `status`=1 AND waybill_id IN (
+        SELECT waybill_id FROM consignor_info WHERE waybill_id IN(SELECT id FROM waybill_info WHERE `status`=1 AND sign_time > DATE_FORMAT(DATE_ADD(NOW(), INTERVAL -1 MONTH), '%Y-%m') AND sign_time &lt; DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 0 MONTH), '%Y-%m')) AND (`name` NOT LIKE '%线上' OR `name` = '南方线上') OR `name` = '南方线上') GROUP BY waybill_id) fio ON fio.waybill_id = cw.waybill_id
+        GROUP BY cw.carrier;
+    </select>
+
+    <select id="selectHubTrunkBenefitAnalysis" resultType="com.yiziton.dataweb.waybill.vo.HubTrunkBenefitAnalysisVO">
+        SELECT t4.open_bill_node as openBillNode,
+        t4.transportFee as transportFee,
+        t4.outDeliverCost as outDeliverCost,
+        convert((t4.transportFee + t4.outDeliverCost)/t4.transportFee,decimal(10,4))*100 as profitRate
+        FROM
+        (SELECT t1.open_bill_node,IFNULL(SUM(t2.transportFee),0.00) as transportFee ,IFNULL(SUM(t3.outDeliverCost),0.00) as outDeliverCost FROM
+        (SELECT id,open_bill_node FROM waybill_info WHERE `status`=1 AND sign_time > DATE_FORMAT(DATE_ADD(NOW(), INTERVAL -1 MONTH), '%Y-%m')
+        AND sign_time &lt; DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 0 MONTH), '%Y-%m') AND id in(
+        SELECT waybill_id FROM consignor_info WHERE (name NOT LIKE '%线上' or name = '南方线上') and
+        status =1
+        ) )t1
+        LEFT JOIN
+        (SELECT waybill_id,SUM(fee) as transportFee FROM fee_info WHERE status =1 AND fee_type ='transportFee' AND waybill_id IN (
+        SELECT id FROM waybill_info WHERE `status`=1 AND sign_time > DATE_FORMAT(DATE_ADD(NOW(), INTERVAL -1 MONTH), '%Y-%m')
+        AND sign_time &lt; DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 0 MONTH), '%Y-%m') AND id in(
+        SELECT waybill_id FROM consignor_info WHERE (name NOT LIKE '%线上' or name = '南方线上') and
+        status =1
+        )) GROUP BY waybill_id )t2
+        ON t1.id = t2.waybill_id
+        LEFT JOIN
+        (SELECT waybill_id,SUM(fee) as outDeliverCost FROM fee_info WHERE status =1 AND fee_type ='outDeliverCost' AND waybill_id IN (
+        SELECT id FROM waybill_info WHERE `status`=1 AND sign_time > DATE_FORMAT(DATE_ADD(NOW(), INTERVAL -1 MONTH), '%Y-%m')
+        AND sign_time &lt; DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 0 MONTH), '%Y-%m') AND id in(
+        SELECT waybill_id FROM consignor_info WHERE (name NOT LIKE '%线上' or name = '南方线上') and
+        status =1
+        )) GROUP BY waybill_id )t3
+        ON t1.id = t3.waybill_id
+        GROUP BY open_bill_node)t4;
+    </select>
+</mapper>

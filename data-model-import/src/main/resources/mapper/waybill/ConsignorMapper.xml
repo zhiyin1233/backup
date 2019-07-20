@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiziton.dataimport.waybill.dao.ConsignorMapper">
+  <resultMap id="BaseResultMap" type="com.yiziton.dataimport.waybill.bean.Consignor">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="telephone" jdbcType="VARCHAR" property="telephone" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="type_name" jdbcType="VARCHAR" property="typeName" />
+    <result column="is_vip" jdbcType="BIT" property="isVip" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="contact" jdbcType="VARCHAR" property="contact" />
+    <result column="contact_telephone" jdbcType="VARCHAR" property="contactTelephone" />
+    <result column="contact_address" jdbcType="VARCHAR" property="contactAddress" />
+    <result column="business_contact" jdbcType="VARCHAR" property="businessContact" />
+    <result column="business_contact_job_num" jdbcType="VARCHAR" property="businessContactJobNum" />
+    <result column="business_contact_telephone" jdbcType="VARCHAR" property="businessContactTelephone" />
+    <result column="user_code" jdbcType="VARCHAR" property="userCode" />
+    <result column="user_account" jdbcType="VARCHAR" property="userAccount" />
+    <result column="pay_password" jdbcType="VARCHAR" property="payPassword" />
+    <result column="shipping_method" jdbcType="INTEGER" property="shippingMethod" />
+    <result column="shipping_method_name" jdbcType="VARCHAR" property="shippingMethodName" />
+    <result column="source_system" jdbcType="VARCHAR" property="sourceSystem" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="creator_name" jdbcType="VARCHAR" property="creatorName" />
+    <result column="modifier" jdbcType="VARCHAR" property="modifier" />
+    <result column="modifier_name" jdbcType="VARCHAR" property="modifierName" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="level" jdbcType="INTEGER" property="level" />
+    <result column="level_name" jdbcType="VARCHAR" property="levelName" />
+    <result column="label" jdbcType="INTEGER" property="label" />
+    <result column="label_name" jdbcType="VARCHAR" property="labelName" />
+    <result column="account_period" jdbcType="INTEGER" property="accountPeriod" />
+    <result column="account_period_name" jdbcType="VARCHAR" property="accountPeriodName" />
+    <result column="logistics_cost" jdbcType="DOUBLE" property="logisticsCost" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, code, name, telephone, type, type_name, is_vip, remark, contact, contact_telephone, 
+    contact_address, business_contact, business_contact_job_num, business_contact_telephone, 
+    user_code, user_account, pay_password, shipping_method, shipping_method_name, source_system, 
+    creator, creator_name, modifier, modifier_name, status, level, level_name, label, 
+    label_name, account_period, account_period_name, logistics_cost, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from consignor
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from consignor
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yiziton.dataimport.waybill.bean.Consignor">
+    insert into consignor (id, code, name, 
+      telephone, type, type_name, 
+      is_vip, remark, contact, 
+      contact_telephone, contact_address, business_contact, 
+      business_contact_job_num, business_contact_telephone, 
+      user_code, user_account, pay_password, 
+      shipping_method, shipping_method_name, source_system, 
+      creator, creator_name, modifier, 
+      modifier_name, status, level, 
+      level_name, label, label_name, 
+      account_period, account_period_name, logistics_cost, 
+      create_time, update_time)
+    values (#{id,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{telephone,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{typeName,jdbcType=VARCHAR}, 
+      #{isVip,jdbcType=BIT}, #{remark,jdbcType=VARCHAR}, #{contact,jdbcType=VARCHAR}, 
+      #{contactTelephone,jdbcType=VARCHAR}, #{contactAddress,jdbcType=VARCHAR}, #{businessContact,jdbcType=VARCHAR}, 
+      #{businessContactJobNum,jdbcType=VARCHAR}, #{businessContactTelephone,jdbcType=VARCHAR}, 
+      #{userCode,jdbcType=VARCHAR}, #{userAccount,jdbcType=VARCHAR}, #{payPassword,jdbcType=VARCHAR}, 
+      #{shippingMethod,jdbcType=INTEGER}, #{shippingMethodName,jdbcType=VARCHAR}, #{sourceSystem,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{creatorName,jdbcType=VARCHAR}, #{modifier,jdbcType=VARCHAR}, 
+      #{modifierName,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{level,jdbcType=INTEGER}, 
+      #{levelName,jdbcType=VARCHAR}, #{label,jdbcType=INTEGER}, #{labelName,jdbcType=VARCHAR}, 
+      #{accountPeriod,jdbcType=INTEGER}, #{accountPeriodName,jdbcType=VARCHAR}, #{logisticsCost,jdbcType=DOUBLE}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yiziton.dataimport.waybill.bean.Consignor">
+    insert into consignor
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="code != null">
+        code,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="telephone != null">
+        telephone,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="typeName != null">
+        type_name,
+      </if>
+      <if test="isVip != null">
+        is_vip,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="contact != null">
+        contact,
+      </if>
+      <if test="contactTelephone != null">
+        contact_telephone,
+      </if>
+      <if test="contactAddress != null">
+        contact_address,
+      </if>
+      <if test="businessContact != null">
+        business_contact,
+      </if>
+      <if test="businessContactJobNum != null">
+        business_contact_job_num,
+      </if>
+      <if test="businessContactTelephone != null">
+        business_contact_telephone,
+      </if>
+      <if test="userCode != null">
+        user_code,
+      </if>
+      <if test="userAccount != null">
+        user_account,
+      </if>
+      <if test="payPassword != null">
+        pay_password,
+      </if>
+      <if test="shippingMethod != null">
+        shipping_method,
+      </if>
+      <if test="shippingMethodName != null">
+        shipping_method_name,
+      </if>
+      <if test="sourceSystem != null">
+        source_system,
+      </if>
+      <if test="creator != null">
+        creator,
+      </if>
+      <if test="creatorName != null">
+        creator_name,
+      </if>
+      <if test="modifier != null">
+        modifier,
+      </if>
+      <if test="modifierName != null">
+        modifier_name,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="level != null">
+        level,
+      </if>
+      <if test="levelName != null">
+        level_name,
+      </if>
+      <if test="label != null">
+        label,
+      </if>
+      <if test="labelName != null">
+        label_name,
+      </if>
+      <if test="accountPeriod != null">
+        account_period,
+      </if>
+      <if test="accountPeriodName != null">
+        account_period_name,
+      </if>
+      <if test="logisticsCost != null">
+        logistics_cost,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null">
+        #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="typeName != null">
+        #{typeName,jdbcType=VARCHAR},
+      </if>
+      <if test="isVip != null">
+        #{isVip,jdbcType=BIT},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="contact != null">
+        #{contact,jdbcType=VARCHAR},
+      </if>
+      <if test="contactTelephone != null">
+        #{contactTelephone,jdbcType=VARCHAR},
+      </if>
+      <if test="contactAddress != null">
+        #{contactAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="businessContact != null">
+        #{businessContact,jdbcType=VARCHAR},
+      </if>
+      <if test="businessContactJobNum != null">
+        #{businessContactJobNum,jdbcType=VARCHAR},
+      </if>
+      <if test="businessContactTelephone != null">
+        #{businessContactTelephone,jdbcType=VARCHAR},
+      </if>
+      <if test="userCode != null">
+        #{userCode,jdbcType=VARCHAR},
+      </if>
+      <if test="userAccount != null">
+        #{userAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="payPassword != null">
+        #{payPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="shippingMethod != null">
+        #{shippingMethod,jdbcType=INTEGER},
+      </if>
+      <if test="shippingMethodName != null">
+        #{shippingMethodName,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceSystem != null">
+        #{sourceSystem,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null">
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="creatorName != null">
+        #{creatorName,jdbcType=VARCHAR},
+      </if>
+      <if test="modifier != null">
+        #{modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="modifierName != null">
+        #{modifierName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="level != null">
+        #{level,jdbcType=INTEGER},
+      </if>
+      <if test="levelName != null">
+        #{levelName,jdbcType=VARCHAR},
+      </if>
+      <if test="label != null">
+        #{label,jdbcType=INTEGER},
+      </if>
+      <if test="labelName != null">
+        #{labelName,jdbcType=VARCHAR},
+      </if>
+      <if test="accountPeriod != null">
+        #{accountPeriod,jdbcType=INTEGER},
+      </if>
+      <if test="accountPeriodName != null">
+        #{accountPeriodName,jdbcType=VARCHAR},
+      </if>
+      <if test="logisticsCost != null">
+        #{logisticsCost,jdbcType=DOUBLE},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yiziton.dataimport.waybill.bean.Consignor">
+    update consignor
+    <set>
+      <if test="code != null">
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null">
+        telephone = #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="typeName != null">
+        type_name = #{typeName,jdbcType=VARCHAR},
+      </if>
+      <if test="isVip != null">
+        is_vip = #{isVip,jdbcType=BIT},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="contact != null">
+        contact = #{contact,jdbcType=VARCHAR},
+      </if>
+      <if test="contactTelephone != null">
+        contact_telephone = #{contactTelephone,jdbcType=VARCHAR},
+      </if>
+      <if test="contactAddress != null">
+        contact_address = #{contactAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="businessContact != null">
+        business_contact = #{businessContact,jdbcType=VARCHAR},
+      </if>
+      <if test="businessContactJobNum != null">
+        business_contact_job_num = #{businessContactJobNum,jdbcType=VARCHAR},
+      </if>
+      <if test="businessContactTelephone != null">
+        business_contact_telephone = #{businessContactTelephone,jdbcType=VARCHAR},
+      </if>
+      <if test="userCode != null">
+        user_code = #{userCode,jdbcType=VARCHAR},
+      </if>
+      <if test="userAccount != null">
+        user_account = #{userAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="payPassword != null">
+        pay_password = #{payPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="shippingMethod != null">
+        shipping_method = #{shippingMethod,jdbcType=INTEGER},
+      </if>
+      <if test="shippingMethodName != null">
+        shipping_method_name = #{shippingMethodName,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceSystem != null">
+        source_system = #{sourceSystem,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null">
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="creatorName != null">
+        creator_name = #{creatorName,jdbcType=VARCHAR},
+      </if>
+      <if test="modifier != null">
+        modifier = #{modifier,jdbcType=VARCHAR},
+      </if>
+      <if test="modifierName != null">
+        modifier_name = #{modifierName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="level != null">
+        level = #{level,jdbcType=INTEGER},
+      </if>
+      <if test="levelName != null">
+        level_name = #{levelName,jdbcType=VARCHAR},
+      </if>
+      <if test="label != null">
+        label = #{label,jdbcType=INTEGER},
+      </if>
+      <if test="labelName != null">
+        label_name = #{labelName,jdbcType=VARCHAR},
+      </if>
+      <if test="accountPeriod != null">
+        account_period = #{accountPeriod,jdbcType=INTEGER},
+      </if>
+      <if test="accountPeriodName != null">
+        account_period_name = #{accountPeriodName,jdbcType=VARCHAR},
+      </if>
+      <if test="logisticsCost != null">
+        logistics_cost = #{logisticsCost,jdbcType=DOUBLE},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yiziton.dataimport.waybill.bean.Consignor">
+    update consignor
+    set code = #{code,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      telephone = #{telephone,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      type_name = #{typeName,jdbcType=VARCHAR},
+      is_vip = #{isVip,jdbcType=BIT},
+      remark = #{remark,jdbcType=VARCHAR},
+      contact = #{contact,jdbcType=VARCHAR},
+      contact_telephone = #{contactTelephone,jdbcType=VARCHAR},
+      contact_address = #{contactAddress,jdbcType=VARCHAR},
+      business_contact = #{businessContact,jdbcType=VARCHAR},
+      business_contact_job_num = #{businessContactJobNum,jdbcType=VARCHAR},
+      business_contact_telephone = #{businessContactTelephone,jdbcType=VARCHAR},
+      user_code = #{userCode,jdbcType=VARCHAR},
+      user_account = #{userAccount,jdbcType=VARCHAR},
+      pay_password = #{payPassword,jdbcType=VARCHAR},
+      shipping_method = #{shippingMethod,jdbcType=INTEGER},
+      shipping_method_name = #{shippingMethodName,jdbcType=VARCHAR},
+      source_system = #{sourceSystem,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=VARCHAR},
+      creator_name = #{creatorName,jdbcType=VARCHAR},
+      modifier = #{modifier,jdbcType=VARCHAR},
+      modifier_name = #{modifierName,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      level = #{level,jdbcType=INTEGER},
+      level_name = #{levelName,jdbcType=VARCHAR},
+      label = #{label,jdbcType=INTEGER},
+      label_name = #{labelName,jdbcType=VARCHAR},
+      account_period = #{accountPeriod,jdbcType=INTEGER},
+      account_period_name = #{accountPeriodName,jdbcType=VARCHAR},
+      logistics_cost = #{logisticsCost,jdbcType=DOUBLE},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>
